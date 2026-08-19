@@ -1,0 +1,311 @@
+<!DOCTYPE html><html class="light" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Ride It - How It Works</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&amp;family=Outfit:wght@600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-secondary-fixed-variant": "#2f2ebe",
+                    "primary": "#0058be",
+                    "surface-tint": "#005ac2",
+                    "outline-variant": "#c2c6d6",
+                    "tertiary-container": "#b75b00",
+                    "on-error-container": "#93000a",
+                    "tertiary-fixed-dim": "#ffb786",
+                    "surface-container": "#ecedf7",
+                    "surface-container-low": "#f2f3fd",
+                    "surface": "#f9f9ff",
+                    "on-secondary": "#ffffff",
+                    "surface-dim": "#d8d9e3",
+                    "error": "#ba1a1a",
+                    "tertiary": "#924700",
+                    "primary-container": "#2170e4",
+                    "inverse-on-surface": "#eff0fa",
+                    "on-primary-container": "#fefcff",
+                    "on-primary": "#ffffff",
+                    "on-secondary-container": "#fffbff",
+                    "surface-container-lowest": "#ffffff",
+                    "outline": "#727785",
+                    "surface-container-highest": "#e1e2ec",
+                    "on-primary-fixed": "#001a42",
+                    "secondary-fixed": "#e1e0ff",
+                    "error-container": "#ffdad6",
+                    "background": "#f9f9ff",
+                    "inverse-primary": "#adc6ff",
+                    "surface-container-high": "#e6e7f2",
+                    "on-surface": "#191b23",
+                    "tertiary-fixed": "#ffdcc6",
+                    "secondary-container": "#6063ee",
+                    "secondary": "#4648d4",
+                    "surface-variant": "#e1e2ec",
+                    "on-surface-variant": "#424754",
+                    "on-background": "#191b23",
+                    "on-tertiary-fixed-variant": "#723600",
+                    "on-secondary-fixed": "#07006c",
+                    "on-error": "#ffffff",
+                    "on-tertiary": "#ffffff",
+                    "surface-bright": "#f9f9ff",
+                    "inverse-surface": "#2e3038",
+                    "on-tertiary-fixed": "#311400",
+                    "secondary-fixed-dim": "#c0c1ff",
+                    "on-primary-fixed-variant": "#004395",
+                    "primary-fixed-dim": "#adc6ff",
+                    "primary-fixed": "#d8e2ff",
+                    "on-tertiary-container": "#fffbff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "margin-desktop": "auto",
+                    "gutter": "16px",
+                    "margin-mobile": "20px",
+                    "max-width": "1200px",
+                    "sm": "8px",
+                    "md": "16px",
+                    "xs": "4px",
+                    "unit": "4px",
+                    "xxl": "64px",
+                    "xl": "40px",
+                    "lg": "24px"
+            },
+            "fontFamily": {
+                    "headline-xl": [
+                            "Outfit"
+                    ],
+                    "headline-lg": [
+                            "Outfit"
+                    ],
+                    "headline-md": [
+                            "Outfit"
+                    ],
+                    "body-md": [
+                            "Inter"
+                    ],
+                    "body-lg": [
+                            "Inter"
+                    ],
+                    "label-caps": [
+                            "Inter"
+                    ],
+                    "body-sm": [
+                            "Inter"
+                    ],
+                    "label-md": [
+                            "Inter"
+                    ],
+                    "headline-lg-mobile": [
+                            "Outfit"
+                    ]
+            },
+            "fontSize": {
+                    "headline-xl": [
+                            "48px",
+                            {
+                                    "lineHeight": "56px",
+                                    "letterSpacing": "-0.02em",
+                                    "fontWeight": "700"
+                            }
+                    ],
+                    "headline-lg": [
+                            "32px",
+                            {
+                                    "lineHeight": "40px",
+                                    "letterSpacing": "-0.01em",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "headline-md": [
+                            "24px",
+                            {
+                                    "lineHeight": "32px",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "body-md": [
+                            "16px",
+                            {
+                                    "lineHeight": "24px",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "body-lg": [
+                            "18px",
+                            {
+                                    "lineHeight": "28px",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "label-caps": [
+                            "12px",
+                            {
+                                    "lineHeight": "16px",
+                                    "letterSpacing": "0.05em",
+                                    "fontWeight": "700"
+                            }
+                    ],
+                    "body-sm": [
+                            "14px",
+                            {
+                                    "lineHeight": "20px",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "label-md": [
+                            "14px",
+                            {
+                                    "lineHeight": "16px",
+                                    "letterSpacing": "0.01em",
+                                    "fontWeight": "500"
+                            }
+                    ],
+                    "headline-lg-mobile": [
+                            "28px",
+                            {
+                                    "lineHeight": "36px",
+                                    "fontWeight": "600"
+                            }
+                    ]
+            }
+    },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined[data-weight="fill"] {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md min-h-screen flex flex-col antialiased">
+<!-- TopNavBar (Mobile App Shell Logic applied) -->
+<header class="bg-surface/80 backdrop-blur-md font-body-md text-body-md docked full-width top-0 sticky z-50">
+<div class="flex justify-between items-center px-margin-mobile mx-auto h-16 w-full shadow-sm shadow-surface-dim/20">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-2xl" data-weight="fill">electric_car</span>
+<span class="text-headline-md font-headline-md font-bold text-primary">Ride It</span>
+</div>
+<button class="md:hidden p-2 rounded-full hover:bg-surface-container-low transition-all text-on-surface-variant">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<!-- Desktop Nav hidden on mobile -->
+<nav class="hidden md:flex gap-6">
+<a class="text-on-surface-variant hover:text-primary transition-colors py-4" href="#">Home</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors py-4" href="#">Vehicles</a>
+<a class="text-primary font-bold border-b-2 border-primary py-4" href="#">How It Works</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors py-4" href="#">List Your Vehicle</a>
+</nav>
+<div class="hidden md:block">
+<button class="bg-primary text-on-primary px-4 py-2 rounded-lg font-label-md hover:bg-primary-container transition-colors scale-98 active:scale-95">Join the Waitlist</button>
+</div>
+</div>
+</header>
+<main class="flex-grow flex flex-col pt-lg">
+<!-- Hero Section -->
+<section class="px-margin-mobile py-xl text-center flex flex-col items-center">
+<div class="inline-flex items-center gap-2 bg-surface-container-low px-3 py-1 rounded-full mb-6 border border-outline-variant/50">
+<span class="material-symbols-outlined text-primary text-sm" data-weight="fill">bolt</span>
+<span class="font-label-md text-label-md text-primary">Effortless Mobility</span>
+</div>
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface mb-4">Simple by design.</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-md mx-auto mb-8">
+                Whether you need a quick ride across town or want to earn by sharing your idle vehicle, we've streamlined the entire process.
+            </p>
+</section>
+<!-- Section 1: Need a ride? -->
+<section class="px-margin-mobile py-xl bg-surface-container-lowest relative overflow-hidden">
+<!-- Abstract Decorative Blob -->
+<div class="absolute top-0 right-0 w-64 h-64 bg-primary-container/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/4 pointer-events-none"></div>
+<div class="mb-10 text-center relative z-10">
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface mb-2">Need a ride?</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Get moving in four simple steps.</p>
+</div>
+<div class="flex flex-col gap-8 relative z-10">
+<!-- Vertical Progress Line -->
+<div class="absolute left-[23px] top-4 bottom-4 w-[2px] bg-outline-variant/30 hidden sm:block"></div>
+<!-- Step 1 -->
+<div class="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
+<div class="w-12 h-12 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-headline-md shrink-0 shadow-[0px_4px_20px_rgba(31,41,55,0.08)] relative z-10 border-2 border-surface-container-lowest">
+                        1
+                    </div>
+<div class="bg-surface p-4 rounded-xl border border-outline-variant/30 flex-grow shadow-sm w-full">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-primary">search</span>
+<h3 class="font-label-md text-label-md font-bold text-on-surface">Find</h3>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Locate available vehicles near you using our intuitive map interface. Filter by type, range, or price.</p>
+</div>
+</div>
+<!-- Step 2 -->
+<div class="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
+<div class="w-12 h-12 rounded-full bg-surface-container-high text-on-surface-variant flex items-center justify-center font-headline-md shrink-0 border-2 border-surface-container-lowest relative z-10">
+                        2
+                    </div>
+<div class="bg-surface p-4 rounded-xl border border-outline-variant/30 flex-grow shadow-sm w-full">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-primary">event_available</span>
+<h3 class="font-label-md text-label-md font-bold text-on-surface">Book</h3>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Reserve your ride instantly. No long waiting periods or complicated paperwork required.</p>
+</div>
+</div>
+<!-- Step 3 -->
+<div class="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
+<div class="w-12 h-12 rounded-full bg-surface-container-high text-on-surface-variant flex items-center justify-center font-headline-md shrink-0 border-2 border-surface-container-lowest relative z-10">
+                        3
+                    </div>
+<div class="bg-surface p-4 rounded-xl border border-outline-variant/30 flex-grow shadow-sm w-full">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-primary">key</span>
+<h3 class="font-label-md text-label-md font-bold text-on-surface">Unlock</h3>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Use your phone as a digital key to unlock the vehicle and start your journey seamlessly.</p>
+</div>
+</div>
+<!-- Step 4 -->
+<div class="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
+<div class="w-12 h-12 rounded-full bg-surface-container-high text-on-surface-variant flex items-center justify-center font-headline-md shrink-0 border-2 border-surface-container-lowest relative z-10">
+                        4
+                    </div>
+<div class="bg-surface p-4 rounded-xl border border-outline-variant/30 flex-grow shadow-sm w-full">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-primary">flag</span>
+<h3 class="font-label-md text-label-md font-bold text-on-surface">Return</h3>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Drop off the vehicle at a designated zone, end your trip in the app, and you're good to go.</p>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar (Mobile Only) - Suppressed because this is an informative page, not a primary destination -->
+<!-- Removed to prioritize content canvas as per Semantic Shell Mandate -->
+<!-- Footer -->
+<footer class="bg-surface-container-lowest py-xl px-margin-mobile border-t border-outline-variant flex flex-col gap-lg items-center text-center mt-auto">
+<div class="flex flex-col items-center gap-4">
+<span class="text-headline-md font-headline-md font-bold text-primary">Ride It</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant">© 2024 Ride It. All rights reserved.</p>
+</div>
+<div class="flex flex-wrap justify-center gap-4 font-body-sm text-body-sm">
+<a class="text-on-surface-variant hover:text-primary transition-colors" href="#">Privacy Policy</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors" href="#">Terms of Service</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors" href="#">Contact Us</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors" href="#">About Shivpuri Launch</a>
+</div>
+</footer>
+</body></html>
