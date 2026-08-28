@@ -28,6 +28,7 @@ export default function Navbar() {
     { label: 'Home', path: '/' },
     { label: 'Vehicles', path: '/vehicles' },
     { label: 'Check Requirements', path: '/request' },
+    { label: 'List Your Vehicle', path: '/list-your-vehicle' },
     { label: 'How It Works', path: '/how-it-works' },
     { label: 'About', path: '/about' },
   ];
@@ -192,15 +193,17 @@ export default function Navbar() {
           </div>
           Requirements
         </Link>
+
         <Link
-          to="/admin"
+          to="/list-your-vehicle"
           className={`flex flex-col items-center gap-0.5 text-[11px] font-medium ${
-            location.pathname === '/admin' ? 'text-primary font-bold' : 'text-on-surface-variant'
+            location.pathname === '/list-your-vehicle' ? 'text-primary font-bold' : 'text-on-surface-variant'
           }`}
         >
-          <span className="material-symbols-outlined text-xl">admin_panel_settings</span>
-          Admin
+          <span className="material-symbols-outlined text-xl">key</span>
+          Host Vehicle
         </Link>
+
         <Link
           to="/waitlist"
           className={`flex flex-col items-center gap-0.5 text-[11px] font-medium ${

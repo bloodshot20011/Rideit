@@ -36,7 +36,7 @@ export default function ImagePlaceholder({
   if (src && !imageError) {
     return (
       <div className={`relative overflow-hidden bg-surface-low rounded-t-xl ${aspectRatio} ${className}`}>
-        {/* Shimmer loading background */}
+        {/* Shimmer loading indicator */}
         {!imageLoaded && (
           <div className="absolute inset-0 bg-gradient-to-r from-surface-low via-surface-container to-surface-low animate-pulse" />
         )}
@@ -45,9 +45,7 @@ export default function ImagePlaceholder({
           alt={alt}
           onLoad={() => setImageLoaded(true)}
           onError={() => setImageError(true)}
-          className={`w-full h-full object-cover transition-transform duration-500 group-hover:scale-105 ${
-            imageLoaded ? 'opacity-100' : 'opacity-0'
-          }`}
+          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
           loading="lazy"
         />
       </div>
@@ -56,7 +54,6 @@ export default function ImagePlaceholder({
 
   return (
     <div className={`relative overflow-hidden bg-gradient-to-br from-surface-low via-surface-container to-surface-high rounded-t-xl flex flex-col items-center justify-center p-6 border-b border-outline-variant/30 text-on-surface-variant group ${aspectRatio} ${className}`}>
-      {/* Abstract geometric background patterns */}
       <div className="absolute -right-8 -top-8 w-32 h-32 bg-primary/5 rounded-full blur-2xl pointer-events-none" />
       <div className="absolute -left-8 -bottom-8 w-32 h-32 bg-secondary/5 rounded-full blur-2xl pointer-events-none" />
       
@@ -68,7 +65,7 @@ export default function ImagePlaceholder({
         {title}
       </span>
       <span className="font-body text-xs text-on-surface-variant/70 mt-1 uppercase tracking-wider font-medium">
-        Ride It Visual
+        ApniRide Fleet
       </span>
     </div>
   );

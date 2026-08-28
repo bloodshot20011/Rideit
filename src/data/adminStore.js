@@ -1,6 +1,6 @@
 import { VEHICLES_DATA } from './vehicles';
 
-const VEHICLES_KEY = 'apniride_vehicles_v1';
+const VEHICLES_KEY = 'apniride_vehicles_v2';
 const REQUIREMENTS_KEY = 'apniride_requirements_v1';
 const WAITLIST_KEY = 'apniride_waitlist_v1';
 
@@ -35,21 +35,6 @@ const INITIAL_REQUIREMENTS = [
     notes: 'Prefer Hyundai Creta or Tata Punch for family trip to Madhav National Park',
     status: 'Contacted',
     createdAt: '2026-08-28T16:15:00Z'
-  },
-  {
-    id: 'req-103',
-    fullName: 'Ankit Gupta',
-    whatsapp: '9123456789',
-    email: 'ankit.g@example.com',
-    purpose: 'Outstation Tour',
-    vehicleCategory: 'bike',
-    subType: 'premium',
-    pickupDate: '2026-09-10',
-    returnDate: '2026-09-12',
-    location: 'Collectorate Area',
-    notes: 'Royal Enfield Classic 350 preference',
-    status: 'Confirmed',
-    createdAt: '2026-08-29T00:10:00Z'
   }
 ];
 
@@ -65,17 +50,6 @@ const INITIAL_WAITLIST = [
     preferenceText: 'Honda Activa & Maruti Swift',
     status: 'New',
     createdAt: '2026-08-27T10:00:00Z'
-  },
-  {
-    id: 'wait-202',
-    fullName: 'Neha Jain',
-    whatsapp: '9811223344',
-    email: 'neha.j@example.com',
-    interest: 'bike',
-    timing: 'this_week',
-    preferenceText: 'Scooter for daily commute',
-    status: 'Contacted',
-    createdAt: '2026-08-28T11:20:00Z'
   }
 ];
 
@@ -99,7 +73,20 @@ class AdminStore {
   getVehicles() {
     try {
       const stored = localStorage.getItem(VEHICLES_KEY);
-      if (stored) return JSON.parse(stored);
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          // Merge images from default data if missing
+          const verified = parsed.map(v => {
+            const defaultMatch = VEHICLES_DATA.find(d => d.id === v.id || d.name === v.name);
+            return {
+              ...v,
+              image: v.image || (defaultMatch ? defaultMatch.image : 'https://images.unsplash.com/photo-1558981403-c5f9899a28bc?auto=format&fit=crop&w=800&q=80')
+            };
+          });
+          return verified;
+        }
+      }
     } catch (e) {
       console.error('Error reading vehicles from localStorage:', e);
     }

@@ -8,6 +8,7 @@ import WhatsAppButton from './components/WhatsAppButton';
 import HomePage from './pages/HomePage';
 import VehiclesPage from './pages/VehiclesPage';
 import RequestPage from './pages/RequestPage';
+import ListVehiclePage from './pages/ListVehiclePage';
 import HowItWorksPage from './pages/HowItWorksPage';
 import AboutPage from './pages/AboutPage';
 import WaitlistPage from './pages/WaitlistPage';
@@ -34,6 +35,7 @@ export default function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/vehicles" element={<VehiclesPage />} />
           <Route path="/request" element={<RequestPage />} />
+          <Route path="/list-your-vehicle" element={<ListVehiclePage />} />
           <Route path="/how-it-works" element={<HowItWorksPage />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/waitlist" element={<WaitlistPage />} />

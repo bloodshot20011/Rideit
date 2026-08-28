@@ -49,10 +49,13 @@ export default function Footer() {
               <h4 className="font-headline font-semibold text-on-surface mb-3">Get Involved</h4>
               <ul className="space-y-2">
                 <li>
-                  <Link to="/waitlist" className="text-on-surface-variant hover:text-primary transition-colors">Join Waitlist</Link>
+                  <Link to="/request" className="text-on-surface-variant hover:text-primary transition-colors">Check Requirements</Link>
                 </li>
                 <li>
-                  <Link to="/request" className="text-on-surface-variant hover:text-primary transition-colors">Check Requirements</Link>
+                  <Link to="/list-your-vehicle" className="text-on-surface-variant hover:text-primary transition-colors">List Your Vehicle</Link>
+                </li>
+                <li>
+                  <Link to="/waitlist" className="text-on-surface-variant hover:text-primary transition-colors">Join Waitlist</Link>
                 </li>
                 <li>
                   <Link to="/admin" className="text-primary font-medium hover:underline">⚙️ Admin Studio</Link>

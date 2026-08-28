@@ -5,6 +5,8 @@ import FormField from '../components/FormField';
 import SelectableOption from '../components/SelectableOption';
 import Button from '../components/Button';
 import SuccessState from '../components/SuccessState';
+import ImagePlaceholder from '../components/ImagePlaceholder';
+import { IMAGES } from '../data/images';
 import { adminStore } from '../data/adminStore';
 
 export default function RequestPage() {
@@ -135,7 +137,7 @@ export default function RequestPage() {
   }
 
   return (
-    <div className="py-10 px-4 sm:px-6 max-w-2xl mx-auto space-y-8">
+    <div className="py-10 px-4 sm:px-6 max-w-content mx-auto space-y-10">
       <SectionHeading
         pillTag="User Requirement Checker"
         pillIcon="checklist"
@@ -143,193 +145,274 @@ export default function RequestPage() {
         subtitle="Tell us your travel plan and vehicle preferences. ApniRide checks local availability in Shivpuri to fulfill your request."
       />
 
-      <form onSubmit={handleSubmit} className="bg-surface rounded-2xl border border-outline-variant/40 p-6 sm:p-8 shadow-sm space-y-6">
-        {/* 1. Travel Purpose */}
-        <div className="space-y-3">
-          <label className="block font-body text-xs font-semibold uppercase tracking-wider text-on-surface-variant">
-            1. What is the main purpose of your trip? <span className="text-red-500">*</span>
-          </label>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-            {[
-              { id: 'Daily Commute', label: 'Daily Commute', icon: 'directions_bus' },
-              { id: 'Weekend Trip', label: 'Weekend Trip', icon: 'landscape' },
-              { id: 'Outstation Tour', label: 'Outstation Tour', icon: 'map' },
-              { id: 'Quick Errand', label: 'Quick Errand', icon: 'shopping_bag' }
-            ].map((item) => (
-              <button
-                key={item.id}
-                type="button"
-                onClick={() => setPurpose(item.id)}
-                className={`p-3 rounded-xl border text-center text-xs font-semibold transition-all flex flex-col items-center gap-1 cursor-pointer ${
-                  purpose === item.id
-                    ? 'bg-surface-low border-primary text-primary shadow-xs'
-                    : 'bg-surface border-outline-variant/40 text-on-surface-variant hover:border-outline'
-                }`}
+      {/* 2-Column Responsive Layout */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        {/* Left Column: Visual Showcase & Feature Cards */}
+        <div className="lg:col-span-5 space-y-6">
+          {/* Main Visual Image Card */}
+          <div className="relative rounded-2xl overflow-hidden border border-outline-variant/40 shadow-sm group">
+            <ImagePlaceholder
+              src={IMAGES.shivpuriLandscape}
+              alt="Shivpuri Mountain Highway Travel"
+              type="map"
+              title="Shivpuri Travel Showcase"
+              aspectRatio="aspect-[16/10]"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-on-surface/80 via-on-surface/30 to-transparent pointer-events-none" />
+            <div className="absolute bottom-4 left-4 right-4 text-white space-y-1">
+              <span className="bg-primary/80 backdrop-blur-xs text-white text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider">
+                SHIVPURI NETWORK
+              </span>
+              <h3 className="font-headline font-bold text-lg text-white">
+                Tailored Mobility Solutions
+              </h3>
+              <p className="text-xs text-white/80">
+                Scooters, bikes, and cars onboarded for local commuters & travelers.
+              </p>
+            </div>
+          </div>
+
+          {/* Feature Highlights Grid */}
+          <div className="bg-surface rounded-2xl border border-outline-variant/40 p-6 shadow-xs space-y-4">
+            <h4 className="font-headline font-bold text-base text-on-surface flex items-center gap-2">
+              <span className="material-symbols-outlined text-primary text-xl">auto_awesome</span>
+              Why Submit Your Requirements?
+            </h4>
+
+            <div className="space-y-3 text-sm">
+              <div className="flex items-start gap-3">
+                <div className="w-8 h-8 rounded-lg bg-primary/10 text-primary flex items-center justify-center shrink-0 mt-0.5">
+                  <span className="material-symbols-outlined text-lg">bolt</span>
+                </div>
+                <div>
+                  <div className="font-headline font-semibold text-on-surface">Instant Availability Match</div>
+                  <div className="font-body text-xs text-on-surface-variant">We match your request with verified vehicles in Shivpuri within minutes.</div>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-3">
+                <div className="w-8 h-8 rounded-lg bg-primary/10 text-primary flex items-center justify-center shrink-0 mt-0.5">
+                  <span className="material-symbols-outlined text-lg">sell</span>
+                </div>
+                <div>
+                  <div className="font-headline font-semibold text-on-surface">Zero Hidden Charges</div>
+                  <div className="font-body text-xs text-on-surface-variant">Transparent pricing terms agreed upfront before any confirmation.</div>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-3">
+                <div className="w-8 h-8 rounded-lg bg-[#25D366]/10 text-[#25D366] flex items-center justify-center shrink-0 mt-0.5">
+                  <span className="material-symbols-outlined text-lg">chat</span>
+                </div>
+                <div>
+                  <div className="font-headline font-semibold text-on-surface">WhatsApp Updates (+91 8370092226)</div>
+                  <div className="font-body text-xs text-on-surface-variant">Get vehicle confirmation directly on your mobile.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Pre-launch Trust Badge */}
+          <div className="bg-surface-low rounded-xl border border-primary/20 p-4 text-center space-y-1">
+            <span className="material-symbols-outlined text-primary text-2xl">verified</span>
+            <div className="font-headline font-bold text-sm text-on-surface">100% Free & Zero Obligation</div>
+            <p className="font-body text-xs text-on-surface-variant">
+              Submitting requirements during our pre-launch phase is completely free.
+            </p>
+          </div>
+        </div>
+
+        {/* Right Column: Requirements Checker Form */}
+        <div className="lg:col-span-7">
+          <form onSubmit={handleSubmit} className="bg-surface rounded-2xl border border-outline-variant/40 p-6 sm:p-8 shadow-sm space-y-6">
+            {/* 1. Travel Purpose */}
+            <div className="space-y-3">
+              <label className="block font-body text-xs font-semibold uppercase tracking-wider text-on-surface-variant">
+                1. What is the main purpose of your trip? <span className="text-red-500">*</span>
+              </label>
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                {[
+                  { id: 'Daily Commute', label: 'Daily Commute', icon: 'directions_bus' },
+                  { id: 'Weekend Trip', label: 'Weekend Trip', icon: 'landscape' },
+                  { id: 'Outstation Tour', label: 'Outstation Tour', icon: 'map' },
+                  { id: 'Quick Errand', label: 'Quick Errand', icon: 'shopping_bag' }
+                ].map((item) => (
+                  <button
+                    key={item.id}
+                    type="button"
+                    onClick={() => setPurpose(item.id)}
+                    className={`p-3 rounded-xl border text-center text-xs font-semibold transition-all flex flex-col items-center gap-1 cursor-pointer ${
+                      purpose === item.id
+                        ? 'bg-surface-low border-primary text-primary shadow-xs'
+                        : 'bg-surface border-outline-variant/40 text-on-surface-variant hover:border-outline'
+                    }`}
+                  >
+                    <span className="material-symbols-outlined text-lg">{item.icon}</span>
+                    {item.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* 2. Vehicle Selection (2 Clean Options) */}
+            <div className="space-y-3 pt-2">
+              <label className="block font-body text-xs font-semibold uppercase tracking-wider text-on-surface-variant">
+                2. Select Vehicle Category <span className="text-red-500">*</span>
+              </label>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <SelectableOption
+                  icon="two_wheeler"
+                  title="Bike / Scooter"
+                  subtitle="Quick 2-wheeler"
+                  selected={vehicleCategory === 'bike'}
+                  onClick={() => {
+                    setVehicleCategory('bike');
+                    setSubType('scooter');
+                  }}
+                />
+                <SelectableOption
+                  icon="directions_car"
+                  title="Car / SUV"
+                  subtitle="4-wheeler travel"
+                  selected={vehicleCategory === 'car'}
+                  onClick={() => {
+                    setVehicleCategory('car');
+                    setSubType('hatchback');
+                  }}
+                />
+              </div>
+            </div>
+
+            {/* 3. Subtype Dropdown */}
+            <FormField
+              label="Specific Vehicle Style / Model"
+              id="vehicle-subtype"
+              type="select"
+              value={subType}
+              onChange={(e) => setSubType(e.target.value)}
+              options={getSubtypeOptions()}
+              helperText="Select your preferred model or style."
+            />
+
+            {/* 4. Dates Selection */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <FormField
+                label="Pickup Date"
+                id="pickup-date"
+                type="date"
+                value={pickupDate}
+                onChange={(e) => setPickupDate(e.target.value)}
+                required
+                error={errors.pickupDate}
+              />
+              <FormField
+                label="Return Date"
+                id="return-date"
+                type="date"
+                value={returnDate}
+                onChange={(e) => setReturnDate(e.target.value)}
+                required
+                error={errors.returnDate}
+              />
+            </div>
+
+            {/* 5. Location in Shivpuri */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <FormField
+                label="Preferred Location in Shivpuri"
+                id="location"
+                type="select"
+                value={location}
+                onChange={(e) => setLocation(e.target.value)}
+                options={[
+                  'Madhav Chowk',
+                  'Jhansi Road',
+                  'AB Road',
+                  'Physical Road',
+                  'Collectorate Area',
+                  'Shivpuri Bus Stand Area',
+                  'Other Locality'
+                ]}
+              />
+              {location === 'Other Locality' && (
+                <FormField
+                  label="Specify Locality"
+                  id="specific-location"
+                  placeholder="e.g. Circular Road, Shivpuri"
+                  value={specificLocation}
+                  onChange={(e) => setSpecificLocation(e.target.value)}
+                />
+              )}
+            </div>
+
+            {/* 6. Customer Contact Info */}
+            <div className="border-t border-outline-variant/30 pt-6 space-y-4">
+              <h4 className="font-headline font-semibold text-sm text-on-surface uppercase tracking-wider">
+                Your Contact Information
+              </h4>
+
+              <FormField
+                label="Full Name"
+                id="full-name"
+                placeholder="e.g. Rahul Sharma"
+                value={fullName}
+                onChange={(e) => setFullName(e.target.value)}
+                required
+                error={errors.fullName}
+              />
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <FormField
+                  label="WhatsApp Number"
+                  id="whatsapp"
+                  type="tel"
+                  placeholder="e.g. 9876543210"
+                  value={whatsapp}
+                  onChange={(e) => setWhatsapp(e.target.value)}
+                  required
+                  error={errors.whatsapp}
+                  helperText="We'll send availability updates to your WhatsApp."
+                />
+                <FormField
+                  label="Email Address (Optional)"
+                  id="email"
+                  type="email"
+                  placeholder="name@example.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+              </div>
+
+              <FormField
+                label="Additional Notes / Budget Preferences (Optional)"
+                id="notes"
+                type="textarea"
+                placeholder="Any specific requests, time preferences, or budget range..."
+                value={notes}
+                onChange={(e) => setNotes(e.target.value)}
+                rows={2}
+              />
+            </div>
+
+            <div className="pt-2">
+              <Button
+                type="submit"
+                variant="primary"
+                size="lg"
+                fullWidth
+                disabled={loading}
+                icon={loading ? 'sync' : 'send'}
               >
-                <span className="material-symbols-outlined text-lg">{item.icon}</span>
-                {item.label}
-              </button>
-            ))}
-          </div>
+                {loading ? 'Submitting...' : 'Submit Requirements'}
+              </Button>
+            </div>
+
+            <p className="text-xs text-center text-on-surface-variant/80">
+              🔒 Zero spam policy. ApniRide only contacts you regarding your Shivpuri rental request (+91 8370092226).
+            </p>
+          </form>
         </div>
-
-        {/* 2. Vehicle Selection (2 Clean Options) */}
-        <div className="space-y-3 pt-2">
-          <label className="block font-body text-xs font-semibold uppercase tracking-wider text-on-surface-variant">
-            2. Select Vehicle Category <span className="text-red-500">*</span>
-          </label>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <SelectableOption
-              icon="two_wheeler"
-              title="Bike / Scooter"
-              subtitle="Quick 2-wheeler"
-              selected={vehicleCategory === 'bike'}
-              onClick={() => {
-                setVehicleCategory('bike');
-                setSubType('scooter');
-              }}
-            />
-            <SelectableOption
-              icon="directions_car"
-              title="Car / SUV"
-              subtitle="4-wheeler travel"
-              selected={vehicleCategory === 'car'}
-              onClick={() => {
-                setVehicleCategory('car');
-                setSubType('hatchback');
-              }}
-            />
-          </div>
-        </div>
-
-        {/* 3. Subtype Dropdown */}
-        <FormField
-          label="Specific Vehicle Style / Model"
-          id="vehicle-subtype"
-          type="select"
-          value={subType}
-          onChange={(e) => setSubType(e.target.value)}
-          options={getSubtypeOptions()}
-          helperText="Select your preferred model or style."
-        />
-
-        {/* 4. Dates Selection */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <FormField
-            label="Pickup Date"
-            id="pickup-date"
-            type="date"
-            value={pickupDate}
-            onChange={(e) => setPickupDate(e.target.value)}
-            required
-            error={errors.pickupDate}
-          />
-          <FormField
-            label="Return Date"
-            id="return-date"
-            type="date"
-            value={returnDate}
-            onChange={(e) => setReturnDate(e.target.value)}
-            required
-            error={errors.returnDate}
-          />
-        </div>
-
-        {/* 5. Location in Shivpuri */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <FormField
-            label="Preferred Location in Shivpuri"
-            id="location"
-            type="select"
-            value={location}
-            onChange={(e) => setLocation(e.target.value)}
-            options={[
-              'Madhav Chowk',
-              'Jhansi Road',
-              'AB Road',
-              'Physical Road',
-              'Collectorate Area',
-              'Shivpuri Bus Stand Area',
-              'Other Locality'
-            ]}
-          />
-          {location === 'Other Locality' && (
-            <FormField
-              label="Specify Locality"
-              id="specific-location"
-              placeholder="e.g. Circular Road, Shivpuri"
-              value={specificLocation}
-              onChange={(e) => setSpecificLocation(e.target.value)}
-            />
-          )}
-        </div>
-
-        {/* 6. Customer Contact Info */}
-        <div className="border-t border-outline-variant/30 pt-6 space-y-4">
-          <h4 className="font-headline font-semibold text-sm text-on-surface uppercase tracking-wider">
-            Your Contact Information
-          </h4>
-
-          <FormField
-            label="Full Name"
-            id="full-name"
-            placeholder="e.g. Rahul Sharma"
-            value={fullName}
-            onChange={(e) => setFullName(e.target.value)}
-            required
-            error={errors.fullName}
-          />
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <FormField
-              label="WhatsApp Number"
-              id="whatsapp"
-              type="tel"
-              placeholder="e.g. 9876543210"
-              value={whatsapp}
-              onChange={(e) => setWhatsapp(e.target.value)}
-              required
-              error={errors.whatsapp}
-              helperText="We'll send availability updates to your WhatsApp."
-            />
-            <FormField
-              label="Email Address (Optional)"
-              id="email"
-              type="email"
-              placeholder="name@example.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </div>
-
-          <FormField
-            label="Additional Notes / Budget Preferences (Optional)"
-            id="notes"
-            type="textarea"
-            placeholder="Any specific requests, time preferences, or budget range..."
-            value={notes}
-            onChange={(e) => setNotes(e.target.value)}
-            rows={2}
-          />
-        </div>
-
-        <div className="pt-2">
-          <Button
-            type="submit"
-            variant="primary"
-            size="lg"
-            fullWidth
-            disabled={loading}
-            icon={loading ? 'sync' : 'send'}
-          >
-            {loading ? 'Submitting...' : 'Submit Requirements'}
-          </Button>
-        </div>
-
-        <p className="text-xs text-center text-on-surface-variant/80">
-          🔒 Zero spam policy. ApniRide only contacts you regarding your Shivpuri rental request (+91 8370092226).
-        </p>
-      </form>
+      </div>
     </div>
   );
 }
