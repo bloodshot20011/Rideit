@@ -3,6 +3,7 @@ import SectionHeading from '../components/SectionHeading';
 import CTASection from '../components/CTASection';
 import Button from '../components/Button';
 import ImagePlaceholder from '../components/ImagePlaceholder';
+import TyreMarksDivider from '../components/TyreMarksDivider';
 
 export default function AboutPage() {
   return (
@@ -16,6 +17,9 @@ export default function AboutPage() {
           subtitle="ApniRide is a pre-launch mobility platform built specifically to make bike and car rentals simple, accessible, and requirement-focused in Shivpuri, India."
         />
       </section>
+
+      {/* 🛣️ TYRE MARKS DIVIDER */}
+      <TyreMarksDivider variant="dark" />
 
       {/* Mission & Story Grid */}
       <section className="bg-surface rounded-2xl border border-outline-variant/40 p-8 sm:p-12 shadow-sm grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
@@ -123,6 +127,9 @@ export default function AboutPage() {
           </Button>
         </div>
       </section>
+
+      {/* 🛣️ TYRE MARKS DIVIDER */}
+      <TyreMarksDivider variant="subtle" />
 
       {/* Final Waitlist CTA */}
       <CTASection

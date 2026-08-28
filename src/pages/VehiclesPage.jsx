@@ -4,6 +4,7 @@ import CategorySelector from '../components/CategorySelector';
 import VehicleGrid from '../components/VehicleGrid';
 import CTASection from '../components/CTASection';
 import ScrollReveal from '../components/ScrollReveal';
+import TyreMarksDivider from '../components/TyreMarksDivider';
 import { BIKE_SUBCATEGORIES, CAR_SUBCATEGORIES } from '../data/vehicles';
 import { adminStore } from '../data/adminStore';
 
@@ -61,6 +62,9 @@ export default function VehiclesPage() {
 
       {/* Vehicle Grid */}
       <VehicleGrid vehicles={filteredVehicles} />
+
+      {/* 🛣️ TYRE MARKS DIVIDER */}
+      <TyreMarksDivider variant="dark" />
 
       {/* Final Waitlist CTA */}
       <ScrollReveal>

@@ -4,6 +4,7 @@ import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion
 import Button from '../components/Button';
 import ImagePlaceholder from '../components/ImagePlaceholder';
 import ScrollReveal from '../components/ScrollReveal';
+import TyreMarksDivider from '../components/TyreMarksDivider';
 import { IMAGES } from '../data/images';
 
 export default function HomePage() {
@@ -92,46 +93,8 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 🛣️ CINEMATIC TIRE MARKS SECTION DIVIDER (BELOW HERO) */}
-      <div className="relative w-full -mt-16 sm:-mt-20 z-20 overflow-hidden pointer-events-none">
-        <div className="max-w-6xl mx-auto px-4 flex flex-col items-center">
-          {/* Subtle Road Tire Track Overlay Graphic */}
-          <svg
-            className="w-full h-12 sm:h-16 text-primary/30 opacity-75"
-            viewBox="0 0 1200 60"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            preserveAspectRatio="none"
-          >
-            {/* Left Tire Track Pattern */}
-            <path
-              d="M 50,30 Q 200,10 350,30 T 650,30 T 950,30 T 1150,30"
-              stroke="currentColor"
-              strokeWidth="4"
-              strokeDasharray="16 12 8 12"
-              strokeLinecap="round"
-            />
-            <path
-              d="M 50,38 Q 200,18 350,38 T 650,38 T 950,38 T 1150,38"
-              stroke="currentColor"
-              strokeWidth="4"
-              strokeDasharray="16 12 8 12"
-              strokeLinecap="round"
-            />
-
-            {/* Diagonal Tire Tread Ribs */}
-            {[100, 180, 260, 340, 420, 500, 580, 660, 740, 820, 900, 980, 1060].map((x, i) => (
-              <g key={i}>
-                <line x1={x} y1="22" x2={x + 15} y2="44" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
-                <line x1={x + 25} y1="44" x2={x + 40} y2="22" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
-              </g>
-            ))}
-          </svg>
-
-          {/* Central Road Speed Line */}
-          <div className="w-full max-w-xs h-[2px] bg-gradient-to-r from-transparent via-primary/60 to-transparent -mt-2" />
-        </div>
-      </div>
+      {/* 🛣️ BLACK TYRE MARKS DIVIDER (BELOW HERO) */}
+      <TyreMarksDivider variant="dark" className="-mt-20 z-20" />
 
       {/* 2. CHOOSE YOUR FREEDOM SECTION */}
       <section className="px-4 sm:px-6 max-w-content mx-auto">
@@ -253,6 +216,9 @@ export default function HomePage() {
           </ScrollReveal>
         </div>
       </section>
+
+      {/* 🛣️ TYRE MARKS DIVIDER */}
+      <TyreMarksDivider variant="subtle" />
 
       {/* 3. CHECK YOUR REQUIREMENTS (SUBMITS BOTH FIELDS) */}
       <section className="px-4 sm:px-6 max-w-content mx-auto">
@@ -383,6 +349,9 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* 🛣️ TYRE MARKS DIVIDER */}
+      <TyreMarksDivider variant="dark" />
+
       {/* 5. BUILT FOR A BETTER RENTAL EXPERIENCE */}
       <section className="px-4 sm:px-6 max-w-content mx-auto text-center space-y-12">
         <ScrollReveal>
@@ -511,6 +480,9 @@ export default function HomePage() {
           </ScrollReveal>
         </div>
       </section>
+
+      {/* 🛣️ FINAL TYRE MARKS DIVIDER BEFORE FOOTER CTA */}
+      <TyreMarksDivider variant="subtle" />
 
       {/* 8. FINAL CTA: BE AMONG THE FIRST TO APNIRIDE */}
       <section className="px-4 sm:px-6 max-w-content mx-auto">

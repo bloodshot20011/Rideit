@@ -4,6 +4,7 @@ import SectionHeading from '../components/SectionHeading';
 import FAQAccordion from '../components/FAQAccordion';
 import CTASection from '../components/CTASection';
 import Button from '../components/Button';
+import TyreMarksDivider from '../components/TyreMarksDivider';
 import { FAQS_DATA } from '../data/faqs';
 
 export default function HowItWorksPage() {
@@ -40,7 +41,7 @@ export default function HowItWorksPage() {
 
   return (
     <div className="space-y-16 py-8">
-      {/* Hero Section matching Stitch screenshot */}
+      {/* Hero Section */}
       <section className="px-4 sm:px-6 max-w-content mx-auto pt-6 text-center flex flex-col items-center">
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
@@ -64,6 +65,9 @@ export default function HowItWorksPage() {
         </p>
       </section>
 
+      {/* 🛣️ TYRE MARKS DIVIDER */}
+      <TyreMarksDivider variant="dark" />
+
       {/* Main Flow Section with Vertical Step Progression */}
       <section className="px-4 sm:px-6 max-w-3xl mx-auto">
         <div className="text-center mb-10">
@@ -84,7 +88,6 @@ export default function HowItWorksPage() {
               transition={{ duration: 0.3, delay: index * 0.08 }}
               className="flex flex-col sm:flex-row gap-4 items-start"
             >
-              {/* Circle Badge Number */}
               <div
                 className={`w-12 h-12 rounded-full flex items-center justify-center font-headline font-bold text-lg shrink-0 border-2 border-surface shadow-xs z-10 ${
                   index === 0
@@ -95,7 +98,6 @@ export default function HowItWorksPage() {
                 {index + 1}
               </div>
 
-              {/* Card Content */}
               <div className="bg-surface p-5 sm:p-6 rounded-xl border border-outline-variant/40 shadow-xs flex-grow w-full space-y-2 hover:border-primary/40 transition-colors">
                 <div className="flex items-center gap-2 text-primary font-headline font-bold text-base">
                   <span className="material-symbols-outlined text-xl">{stepItem.icon}</span>
@@ -174,6 +176,9 @@ export default function HowItWorksPage() {
 
         <FAQAccordion faqs={FAQS_DATA} />
       </section>
+
+      {/* 🛣️ TYRE MARKS DIVIDER */}
+      <TyreMarksDivider variant="subtle" />
 
       {/* Final CTA */}
       <section className="px-4 sm:px-6 max-w-content mx-auto">
