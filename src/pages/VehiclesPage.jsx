@@ -3,7 +3,6 @@ import SectionHeading from '../components/SectionHeading';
 import CategorySelector from '../components/CategorySelector';
 import VehicleGrid from '../components/VehicleGrid';
 import CTASection from '../components/CTASection';
-import Button from '../components/Button';
 import ScrollReveal from '../components/ScrollReveal';
 import { VEHICLES_DATA, BIKE_SUBCATEGORIES, CAR_SUBCATEGORIES } from '../data/vehicles';
 
@@ -52,35 +51,15 @@ export default function VehiclesPage() {
       {/* Vehicle Grid */}
       <VehicleGrid vehicles={filteredVehicles} />
 
-      {/* Request Custom Vehicle Banner */}
-      <ScrollReveal>
-        <section className="bg-surface rounded-2xl border border-outline-variant/40 p-8 text-center max-w-3xl mx-auto shadow-xs space-y-4">
-          <div className="w-12 h-12 rounded-full bg-primary-light text-primary flex items-center justify-center mx-auto">
-            <span className="material-symbols-outlined text-2xl">commute</span>
-          </div>
-          <h3 className="font-headline font-bold text-xl sm:text-2xl text-on-surface">
-            Don't see the specific bike or car model you need?
-          </h3>
-          <p className="font-body text-sm sm:text-base text-on-surface-variant max-w-xl mx-auto">
-            Tell us what vehicle model, budget, or dates you require in Shivpuri. Your request helps us prioritize what we add to our fleet.
-          </p>
-          <div className="pt-2">
-            <Button to="/request" variant="primary" size="md" icon="edit">
-              Request a Specific Vehicle
-            </Button>
-          </div>
-        </section>
-      </ScrollReveal>
-
       {/* Final Waitlist CTA */}
       <ScrollReveal>
         <CTASection
           title="Be first to ride when we launch in Shivpuri"
-          description="Join the Ride It waitlist to get early notification as soon as matching bikes or cars become available."
+          description="Join the ApniRide waitlist to get early notification as soon as matching bikes or cars become available."
           primaryCtaText="Join the Waitlist"
           primaryCtaTo="/waitlist"
-          secondaryCtaText="Request a Ride"
-          secondaryCtaTo="/request"
+          secondaryCtaText=""
+          secondaryCtaTo=""
         />
       </ScrollReveal>
     </div>

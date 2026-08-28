@@ -2,8 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 
 export default function WhatsAppButton() {
-  // Pre-filled WhatsApp message URL (placeholder WhatsApp number, e.g., 919876543210 or general wa.me link)
-  const whatsappNumber = "919876543210"; 
+  const whatsappNumber = "918370092226"; 
   const defaultText = encodeURIComponent("Hi ApniRide! I want to check vehicle availability and rental details in Shivpuri.");
   const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${defaultText}`;
 
@@ -18,8 +17,8 @@ export default function WhatsAppButton() {
       whileTap={{ scale: 0.9 }}
       transition={{ type: 'spring', stiffness: 400, damping: 20 }}
       className="fixed bottom-20 right-5 md:bottom-6 md:right-6 z-50 bg-[#25D366] text-white p-3.5 sm:p-4 rounded-full shadow-lg hover:shadow-xl flex items-center justify-center group cursor-pointer border-2 border-white"
-      aria-label="Chat with ApniRide on WhatsApp"
-      title="Chat with ApniRide on WhatsApp"
+      aria-label="Chat with ApniRide on WhatsApp (+91 8370092226)"
+      title="Chat with ApniRide on WhatsApp (+91 8370092226)"
     >
       {/* Subtle pulse ring animation behind button */}
       <span className="absolute inset-0 rounded-full bg-[#25D366] animate-ping opacity-30 pointer-events-none" />
@@ -35,7 +34,7 @@ export default function WhatsAppButton() {
 
       {/* Floating Tooltip Desktop */}
       <span className="hidden md:block absolute right-full mr-3 bg-on-surface text-white text-xs font-semibold px-3 py-1.5 rounded-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity shadow-md pointer-events-none">
-        Need help? Chat on WhatsApp
+        WhatsApp Us: +91 8370092226
       </span>
     </motion.a>
   );

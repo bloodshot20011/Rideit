@@ -89,7 +89,7 @@ export default function AboutPage() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-left pt-2">
           <a
-            href="https://wa.me/919876543210?text=Hi%20ApniRide,%20I%20have%20a%20query."
+            href="https://wa.me/918370092226?text=Hi%20ApniRide,%20I%20have%20a%20query."
             target="_blank"
             rel="noopener noreferrer"
             className="bg-surface p-4 rounded-xl border border-outline-variant/30 flex items-center gap-3 hover:border-primary/50 transition-colors"
@@ -99,7 +99,7 @@ export default function AboutPage() {
             </div>
             <div>
               <div className="font-headline font-semibold text-sm text-on-surface">WhatsApp Support</div>
-              <div className="font-body text-xs text-on-surface-variant">+91 98765 43210 (Click to Chat)</div>
+              <div className="font-body text-xs text-on-surface-variant">+91 8370092226 (Click to Chat)</div>
             </div>
           </a>
 
@@ -119,7 +119,7 @@ export default function AboutPage() {
             Join the Waitlist
           </Button>
           <Button to="/request" variant="outline" size="md">
-            Check Requirements
+            Submit Requirements
           </Button>
         </div>
       </section>
@@ -130,7 +130,7 @@ export default function AboutPage() {
         description="Join our Shivpuri pre-launch waitlist to get early notification as soon as matching rentals go live."
         primaryCtaText="Join the Waitlist"
         primaryCtaTo="/waitlist"
-        secondaryCtaText="Check Requirements"
+        secondaryCtaText="Submit Requirements"
         secondaryCtaTo="/request"
       />
     </div>

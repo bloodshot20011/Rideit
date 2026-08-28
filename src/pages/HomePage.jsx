@@ -13,7 +13,6 @@ export default function HomePage() {
   // Widget state for requirements checker
   const [widgetVehicleCategory, setWidgetVehicleCategory] = useState('bikes');
   const [widgetPurpose, setWidgetPurpose] = useState('Daily Commute');
-  const [widgetDuration, setWidgetDuration] = useState('Daily');
 
   // Parallax scroll effect for Shivpuri section
   const { scrollYProgress } = useScroll();
@@ -21,7 +20,8 @@ export default function HomePage() {
 
   const handleWidgetSubmit = (e) => {
     e.preventDefault();
-    navigate(`/request?category=${encodeURIComponent(widgetVehicleCategory)}&purpose=${encodeURIComponent(widgetPurpose)}&duration=${encodeURIComponent(widgetDuration)}`);
+    // Submits both fields directly to the requirements page
+    navigate(`/request?category=${encodeURIComponent(widgetVehicleCategory)}&purpose=${encodeURIComponent(widgetPurpose)}&autoSubmit=true`);
   };
 
   return (
@@ -214,7 +214,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 3. INTERACTIVE USER REQUIREMENT CHECKER WIDGET */}
+      {/* 3. CHECK YOUR REQUIREMENTS (SUBMITS BOTH FIELDS) */}
       <section className="px-4 sm:px-6 max-w-content mx-auto">
         <ScrollReveal>
           <div className="bg-surface-low rounded-2xl border border-primary/30 p-6 sm:p-8 shadow-sm">
@@ -228,7 +228,7 @@ export default function HomePage() {
                   Check your requirements
                 </h3>
                 <p className="font-body text-sm text-on-surface-variant">
-                  Tell us your travel plan and get instant vehicle recommendations.
+                  Tell us your travel plan and submit both fields to match available vehicles.
                 </p>
               </div>
 
@@ -242,7 +242,6 @@ export default function HomePage() {
                   >
                     <option value="bikes">Bike / Scooter</option>
                     <option value="cars">Car / SUV</option>
-                    <option value="any">Open to Recommendation</option>
                   </select>
                 </div>
 
@@ -261,8 +260,8 @@ export default function HomePage() {
                 </div>
 
                 <div>
-                  <Button type="submit" variant="primary" size="md" fullWidth icon="checklist">
-                    Check Match
+                  <Button type="submit" variant="primary" size="md" fullWidth icon="send">
+                    Submit Requirements
                   </Button>
                 </div>
               </div>
@@ -271,7 +270,7 @@ export default function HomePage() {
         </ScrollReveal>
       </section>
 
-      {/* 4. SIMPLE. FAST. YOURS. (4-STEP PROCESS) */}
+      {/* 4. SIMPLE. FAST. YOURS. */}
       <section className="px-4 sm:px-6 max-w-content mx-auto text-center space-y-12">
         <ScrollReveal>
           <div>
@@ -345,7 +344,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 5. BUILT FOR A BETTER RENTAL EXPERIENCE (TRUST BENEFITS) */}
+      {/* 5. BUILT FOR A BETTER RENTAL EXPERIENCE */}
       <section className="px-4 sm:px-6 max-w-content mx-auto text-center space-y-12">
         <ScrollReveal>
           <div>
@@ -425,7 +424,7 @@ export default function HomePage() {
               </p>
               <div className="pt-2">
                 <Button to="/request" variant="primary" size="md" icon="checklist">
-                  Check Your Requirements
+                  Submit Your Requirements
                 </Button>
               </div>
             </div>
@@ -466,8 +465,8 @@ export default function HomePage() {
               ApniRide is launching our premier rental service right here in Shivpuri. Experience the beauty of the region or manage your daily commute with vehicles you can trust.
             </p>
             <div className="pt-2">
-              <Button to="/request" variant="outline" size="md">
-                Check Requirements
+              <Button to="/waitlist" variant="primary" size="md">
+                Join the Waitlist
               </Button>
             </div>
           </ScrollReveal>

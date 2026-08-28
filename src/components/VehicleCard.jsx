@@ -94,10 +94,9 @@ export default function VehicleCard({ vehicle }) {
             to={`/request?vehicle=${encodeURIComponent(name)}`}
             variant="outline"
             size="sm"
-            icon="arrow_forward"
-            iconPosition="right"
+            icon="checklist"
           >
-            I'm Interested
+            Check Requirements
           </Button>
         </div>
       </div>
