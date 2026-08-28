@@ -4,6 +4,7 @@ import FormField from '../components/FormField';
 import SelectableOption from '../components/SelectableOption';
 import Button from '../components/Button';
 import SuccessState from '../components/SuccessState';
+import { adminStore } from '../data/adminStore';
 
 export default function WaitlistPage() {
   const [submitted, setSubmitted] = useState(false);
@@ -38,6 +39,15 @@ export default function WaitlistPage() {
 
     setErrors({});
     setLoading(true);
+
+    adminStore.addWaitlist({
+      fullName: fullName.trim(),
+      whatsapp: whatsapp.trim(),
+      email: email.trim(),
+      interest,
+      timing,
+      preferenceText: preferenceText.trim()
+    });
 
     setTimeout(() => {
       setLoading(false);

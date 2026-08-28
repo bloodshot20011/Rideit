@@ -54,6 +54,9 @@ export default function Footer() {
                 <li>
                   <Link to="/request" className="text-on-surface-variant hover:text-primary transition-colors">Check Requirements</Link>
                 </li>
+                <li>
+                  <Link to="/admin" className="text-primary font-medium hover:underline">⚙️ Admin Studio</Link>
+                </li>
               </ul>
             </div>
 
@@ -77,7 +80,7 @@ export default function Footer() {
         <div className="border-t border-outline-variant/30 mt-10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-on-surface-variant">
           <p>© {new Date().getFullYear()} ApniRide. All rights reserved.</p>
           <p className="text-center sm:text-right">
-            Pre-launch Prototype • Designed for Shivpuri, MP
+            Pre-launch Prototype • Designed for Shivpuri, MP • <Link to="/admin" className="hover:underline text-primary">Admin Studio</Link>
           </p>
         </div>
       </div>

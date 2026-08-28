@@ -87,6 +87,13 @@ export default function Navbar() {
 
           {/* Desktop Action */}
           <div className="hidden md:flex items-center gap-3">
+            <Link
+              to="/admin"
+              className="text-xs font-medium text-on-surface-variant hover:text-primary px-2 py-1 rounded border border-outline-variant/40 hover:bg-surface-low transition-colors"
+              title="ApniRide Admin Studio"
+            >
+              ⚙️ Admin
+            </Link>
             <Button to="/waitlist" variant="primary" size="sm">
               Join the Waitlist
             </Button>
@@ -133,6 +140,13 @@ export default function Navbar() {
                     </NavLink>
                   );
                 })}
+                <NavLink
+                  to="/admin"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="block px-4 py-2 text-sm font-semibold text-primary rounded-lg bg-primary/10"
+                >
+                  ⚙️ Admin Studio
+                </NavLink>
                 <div className="pt-3 border-t border-outline-variant/30 space-y-2">
                   <Button to="/waitlist" variant="primary" fullWidth onClick={() => setMobileMenuOpen(false)}>
                     Join the Waitlist
@@ -179,13 +193,13 @@ export default function Navbar() {
           Requirements
         </Link>
         <Link
-          to="/how-it-works"
+          to="/admin"
           className={`flex flex-col items-center gap-0.5 text-[11px] font-medium ${
-            location.pathname === '/how-it-works' ? 'text-primary' : 'text-on-surface-variant'
+            location.pathname === '/admin' ? 'text-primary font-bold' : 'text-on-surface-variant'
           }`}
         >
-          <span className="material-symbols-outlined text-xl">route</span>
-          Process
+          <span className="material-symbols-outlined text-xl">admin_panel_settings</span>
+          Admin
         </Link>
         <Link
           to="/waitlist"

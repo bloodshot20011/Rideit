@@ -11,6 +11,7 @@ import RequestPage from './pages/RequestPage';
 import HowItWorksPage from './pages/HowItWorksPage';
 import AboutPage from './pages/AboutPage';
 import WaitlistPage from './pages/WaitlistPage';
+import AdminPage from './pages/AdminPage';
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -36,6 +37,7 @@ export default function App() {
           <Route path="/how-it-works" element={<HowItWorksPage />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/waitlist" element={<WaitlistPage />} />
+          <Route path="/admin" element={<AdminPage />} />
           <Route path="*" element={<HomePage />} />
         </Routes>
       </main>

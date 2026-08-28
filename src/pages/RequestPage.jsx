@@ -5,6 +5,7 @@ import FormField from '../components/FormField';
 import SelectableOption from '../components/SelectableOption';
 import Button from '../components/Button';
 import SuccessState from '../components/SuccessState';
+import { adminStore } from '../data/adminStore';
 
 export default function RequestPage() {
   const [searchParams] = useSearchParams();
@@ -61,6 +62,19 @@ export default function RequestPage() {
 
     setErrors({});
     setLoading(true);
+
+    adminStore.addRequirement({
+      fullName: fullName.trim() || 'Website Visitor',
+      whatsapp: whatsapp.trim() || 'Not Provided',
+      email: email.trim(),
+      purpose,
+      vehicleCategory,
+      subType,
+      pickupDate,
+      returnDate,
+      location: location === 'Other Locality' ? specificLocation || 'Other' : location,
+      notes
+    });
 
     setTimeout(() => {
       setLoading(false);

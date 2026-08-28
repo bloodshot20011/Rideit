@@ -1,16 +1,27 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import SectionHeading from '../components/SectionHeading';
 import CategorySelector from '../components/CategorySelector';
 import VehicleGrid from '../components/VehicleGrid';
 import CTASection from '../components/CTASection';
 import ScrollReveal from '../components/ScrollReveal';
-import { VEHICLES_DATA, BIKE_SUBCATEGORIES, CAR_SUBCATEGORIES } from '../data/vehicles';
+import { BIKE_SUBCATEGORIES, CAR_SUBCATEGORIES } from '../data/vehicles';
+import { adminStore } from '../data/adminStore';
 
 export default function VehiclesPage() {
+  const [vehicles, setVehicles] = useState([]);
   const [activeCategory, setActiveCategory] = useState('all');
   const [activeSubcategory, setActiveSubcategory] = useState('all');
 
-  const filteredVehicles = VEHICLES_DATA.filter((v) => {
+  useEffect(() => {
+    const syncVehicles = () => {
+      setVehicles(adminStore.getVehicles());
+    };
+    syncVehicles();
+    const unsubscribe = adminStore.subscribe(syncVehicles);
+    return () => unsubscribe();
+  }, []);
+
+  const filteredVehicles = vehicles.filter((v) => {
     if (activeCategory !== 'all' && v.category !== activeCategory) return false;
     if (activeSubcategory !== 'all' && v.subcategory !== activeSubcategory) return false;
     return true;
