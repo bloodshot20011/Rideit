@@ -9,7 +9,6 @@ export default function ImagePlaceholder({
   aspectRatio = 'aspect-[16/10]'
 }) {
   const [imageError, setImageError] = useState(false);
-  const [imageLoaded, setImageLoaded] = useState(false);
 
   const getIcon = () => {
     switch (type.toLowerCase()) {
@@ -36,16 +35,11 @@ export default function ImagePlaceholder({
   if (src && !imageError) {
     return (
       <div className={`relative overflow-hidden bg-surface-low rounded-t-xl ${aspectRatio} ${className}`}>
-        {/* Shimmer loading indicator */}
-        {!imageLoaded && (
-          <div className="absolute inset-0 bg-gradient-to-r from-surface-low via-surface-container to-surface-low animate-pulse" />
-        )}
         <img
           src={src}
           alt={alt}
-          onLoad={() => setImageLoaded(true)}
           onError={() => setImageError(true)}
-          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105 opacity-100"
           loading="lazy"
         />
       </div>

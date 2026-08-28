@@ -20,16 +20,12 @@ export default function VehicleCard({ vehicle }) {
 
   return (
     <motion.div
-      layout
-      initial={{ opacity: 0, scale: 0.95 }}
-      animate={{ opacity: 1, scale: 1 }}
-      exit={{ opacity: 0, scale: 0.95 }}
-      transition={{ duration: 0.3, ease: 'easeOut' }}
       whileHover={{ y: -6 }}
-      className="bg-surface rounded-2xl border border-outline-variant/40 shadow-xs hover:shadow-md hover:border-primary/40 transition-all duration-300 flex flex-col overflow-hidden group"
+      transition={{ duration: 0.2 }}
+      className="bg-white rounded-2xl border border-outline-variant/40 shadow-sm hover:shadow-md hover:border-primary/40 transition-all duration-300 flex flex-col overflow-hidden group opacity-100"
     >
       {/* Vehicle Image Container */}
-      <div className="relative overflow-hidden">
+      <div className="relative overflow-hidden bg-surface-low">
         <ImagePlaceholder
           src={image}
           alt={name}
@@ -39,7 +35,7 @@ export default function VehicleCard({ vehicle }) {
         />
         
         {/* Status Badge */}
-        <div className="absolute top-3 left-3 bg-surface/90 backdrop-blur-md px-2.5 py-1 rounded-full text-xs font-semibold text-primary border border-outline-variant/40 flex items-center gap-1.5 shadow-xs">
+        <div className="absolute top-3 left-3 bg-white/95 backdrop-blur-md px-2.5 py-1 rounded-full text-xs font-semibold text-primary border border-outline-variant/40 flex items-center gap-1.5 shadow-xs">
           <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
           {status}
         </div>
@@ -51,14 +47,14 @@ export default function VehicleCard({ vehicle }) {
 
         {/* Feature/Badge Tag */}
         {badge && (
-          <div className="absolute bottom-3 right-3 bg-on-surface/80 backdrop-blur-md text-white text-[11px] font-medium px-2.5 py-0.5 rounded-md">
+          <div className="absolute bottom-3 right-3 bg-on-surface/85 backdrop-blur-md text-white text-[11px] font-medium px-2.5 py-0.5 rounded-md">
             {badge}
           </div>
         )}
       </div>
 
       {/* Card Content */}
-      <div className="p-5 flex flex-col flex-grow justify-between space-y-4">
+      <div className="p-5 flex flex-col flex-grow justify-between space-y-4 bg-white text-on-surface">
         <div>
           <div className="flex items-start justify-between gap-2 mb-1">
             <h3 className="font-headline font-bold text-lg text-on-surface group-hover:text-primary transition-colors">

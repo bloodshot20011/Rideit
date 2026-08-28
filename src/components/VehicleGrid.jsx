@@ -1,5 +1,4 @@
 import React from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 import VehicleCard from './VehicleCard';
 
 export default function VehicleGrid({ vehicles = [], loading = false }) {
@@ -22,25 +21,19 @@ export default function VehicleGrid({ vehicles = [], loading = false }) {
 
   if (vehicles.length === 0) {
     return (
-      <motion.div
-        initial={{ opacity: 0, scale: 0.95 }}
-        animate={{ opacity: 1, scale: 1 }}
-        className="bg-surface rounded-xl border border-outline-variant/30 p-12 text-center max-w-md mx-auto my-8 space-y-2"
-      >
+      <div className="bg-surface rounded-xl border border-outline-variant/30 p-12 text-center max-w-md mx-auto my-8 space-y-2">
         <span className="material-symbols-outlined text-4xl text-on-surface-variant mb-2">no_sim</span>
         <h3 className="font-headline font-semibold text-lg text-on-surface">No vehicles match this filter</h3>
         <p className="font-body text-sm text-on-surface-variant">Try selecting a different category or vehicle type above.</p>
-      </motion.div>
+      </div>
     );
   }
 
   return (
-    <motion.div layout className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-      <AnimatePresence mode="popLayout">
-        {vehicles.map((vehicle) => (
-          <VehicleCard key={vehicle.id} vehicle={vehicle} />
-        ))}
-      </AnimatePresence>
-    </motion.div>
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+      {vehicles.map((vehicle) => (
+        <VehicleCard key={vehicle.id} vehicle={vehicle} />
+      ))}
+    </div>
   );
 }
