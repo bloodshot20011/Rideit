@@ -6,11 +6,12 @@ import FormField from '../components/FormField';
 import ImagePlaceholder from '../components/ImagePlaceholder';
 
 export default function AdminPage() {
-  const [activeTab, setActiveTab] = useState('overview'); // overview, vehicles, requirements, waitlist
+  const [activeTab, setActiveTab] = useState('overview'); // overview, vehicles, requirements, hosts, waitlist
 
   // Store data states
   const [vehicles, setVehicles] = useState([]);
   const [requirements, setRequirements] = useState([]);
+  const [hostVehicles, setHostVehicles] = useState([]);
   const [waitlist, setWaitlist] = useState([]);
 
   // Search & Filter States
@@ -41,6 +42,7 @@ export default function AdminPage() {
     const syncData = () => {
       setVehicles(adminStore.getVehicles());
       setRequirements(adminStore.getRequirements());
+      setHostVehicles(adminStore.getHostVehicles());
       setWaitlist(adminStore.getWaitlist());
     };
 
@@ -128,11 +130,19 @@ export default function AdminPage() {
     }
   };
 
+  // Delete Host Vehicle
+  const handleDeleteHostVehicle = (id, model) => {
+    if (window.confirm(`Delete host registration for ${model}?`)) {
+      adminStore.deleteHostVehicle(id);
+    }
+  };
+
   // Export JSON/CSV
   const handleExportData = () => {
     const exportObj = {
       vehicles,
       requirements,
+      hostVehicles,
       waitlist,
       exportedAt: new Date().toISOString()
     };
@@ -166,6 +176,12 @@ export default function AdminPage() {
     return matchesSearch && matchesStatus;
   });
 
+  const filteredHostVehiclesList = hostVehicles.filter(h => {
+    const matchesSearch = h.fullName.toLowerCase().includes(searchQuery.toLowerCase()) || h.modelName.toLowerCase().includes(searchQuery.toLowerCase()) || h.whatsapp.includes(searchQuery);
+    const matchesStatus = statusFilter === 'all' || h.status === statusFilter;
+    return matchesSearch && matchesStatus;
+  });
+
   const filteredWaitlistList = waitlist.filter(w => {
     const matchesSearch = w.fullName.toLowerCase().includes(searchQuery.toLowerCase()) || w.whatsapp.includes(searchQuery);
     const matchesStatus = statusFilter === 'all' || w.status === statusFilter;
@@ -185,7 +201,7 @@ export default function AdminPage() {
             ApniRide Control Panel
           </h1>
           <p className="font-body text-sm text-on-surface-variant">
-            Manage Shivpuri vehicle fleet, customer travel requirements, and waitlist signups.
+            Manage Shivpuri vehicle fleet, customer travel requirements, host vehicle listings, and waitlist signups.
           </p>
         </div>
 
@@ -205,6 +221,7 @@ export default function AdminPage() {
           { id: 'overview', label: 'Dashboard Overview', icon: 'dashboard', count: null },
           { id: 'vehicles', label: 'Vehicle Catalog', icon: 'two_wheeler', count: vehicles.length },
           { id: 'requirements', label: 'Requirements Survey', icon: 'checklist', count: requirements.length },
+          { id: 'hosts', label: 'Host Vehicles List', icon: 'key', count: hostVehicles.length },
           { id: 'waitlist', label: 'Waitlist Signups', icon: 'star', count: waitlist.length }
         ].map(tab => (
           <button
@@ -267,23 +284,23 @@ export default function AdminPage() {
 
             <div className="bg-surface p-5 rounded-2xl border border-outline-variant/40 shadow-xs flex items-center justify-between">
               <div>
+                <p className="text-xs font-semibold uppercase text-on-surface-variant">Host Vehicle Listings</p>
+                <h3 className="font-headline font-bold text-3xl text-on-surface mt-1">{hostVehicles.length}</h3>
+                <p className="text-xs text-blue-600 font-medium mt-1">Owner Registrations</p>
+              </div>
+              <div className="w-12 h-12 rounded-xl bg-blue-500/10 text-blue-600 flex items-center justify-center">
+                <span className="material-symbols-outlined text-2xl">key</span>
+              </div>
+            </div>
+
+            <div className="bg-surface p-5 rounded-2xl border border-outline-variant/40 shadow-xs flex items-center justify-between">
+              <div>
                 <p className="text-xs font-semibold uppercase text-on-surface-variant">Waitlist Signups</p>
                 <h3 className="font-headline font-bold text-3xl text-on-surface mt-1">{waitlist.length}</h3>
                 <p className="text-xs text-emerald-600 font-medium mt-1">Early Access Members</p>
               </div>
               <div className="w-12 h-12 rounded-xl bg-emerald-500/10 text-emerald-600 flex items-center justify-center">
                 <span className="material-symbols-outlined text-2xl">star</span>
-              </div>
-            </div>
-
-            <div className="bg-surface p-5 rounded-2xl border border-outline-variant/40 shadow-xs flex items-center justify-between">
-              <div>
-                <p className="text-xs font-semibold uppercase text-on-surface-variant">Shivpuri Locations</p>
-                <h3 className="font-headline font-bold text-3xl text-on-surface mt-1">7</h3>
-                <p className="text-xs text-purple-600 font-medium mt-1">Madhav Chowk, Jhansi Rd, AB Rd...</p>
-              </div>
-              <div className="w-12 h-12 rounded-xl bg-purple-500/10 text-purple-600 flex items-center justify-center">
-                <span className="material-symbols-outlined text-2xl">location_on</span>
               </div>
             </div>
           </div>
@@ -360,7 +377,6 @@ export default function AdminPage() {
       {/* TAB 2: VEHICLE CATALOG (CRUD) */}
       {activeTab === 'vehicles' && (
         <div className="space-y-6">
-          {/* Controls Bar */}
           <div className="bg-surface p-4 rounded-2xl border border-outline-variant/40 shadow-xs flex flex-col sm:flex-row gap-4 items-center justify-between">
             <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto flex-1">
               <input
@@ -397,7 +413,6 @@ export default function AdminPage() {
             </Button>
           </div>
 
-          {/* Vehicle Grid Table */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredVehiclesList.map(v => (
               <div key={v.id} className="bg-surface rounded-2xl border border-outline-variant/40 shadow-xs overflow-hidden flex flex-col justify-between">
@@ -405,7 +420,6 @@ export default function AdminPage() {
                   <div className="relative">
                     <ImagePlaceholder src={v.image} alt={v.name} type={v.type} title={v.name} aspectRatio="aspect-[16/10]" />
                     
-                    {/* Status badge toggle */}
                     <button
                       onClick={() => adminStore.toggleVehicleStatus(v.id)}
                       className={`absolute top-3 left-3 px-3 py-1 rounded-full text-xs font-semibold border backdrop-blur-md shadow-xs transition-colors cursor-pointer ${
@@ -580,7 +594,103 @@ export default function AdminPage() {
         </div>
       )}
 
-      {/* TAB 4: WAITLIST SIGNUPS */}
+      {/* TAB 4: HOST VEHICLES LIST */}
+      {activeTab === 'hosts' && (
+        <div className="space-y-6">
+          <div className="bg-surface p-4 rounded-2xl border border-outline-variant/40 shadow-xs flex justify-between items-center">
+            <h3 className="font-headline font-bold text-lg text-on-surface">Registered Host Vehicles (Owner Listings)</h3>
+            <span className="text-xs font-semibold text-primary">{filteredHostVehiclesList.length} Vehicle Submissions</span>
+          </div>
+
+          <div className="bg-surface rounded-2xl border border-outline-variant/40 p-6 shadow-xs">
+            <div className="overflow-x-auto">
+              <table className="w-full text-left border-collapse text-sm">
+                <thead>
+                  <tr className="border-b border-outline-variant/40 text-xs uppercase text-on-surface-variant bg-surface-low">
+                    <th className="p-3">Owner Details</th>
+                    <th className="p-3">Vehicle Model & Year</th>
+                    <th className="p-3">Category & Locality</th>
+                    <th className="p-3">Photos</th>
+                    <th className="p-3">Condition / Notes</th>
+                    <th className="p-3">Status</th>
+                    <th className="p-3 text-right">Actions</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-outline-variant/20">
+                  {filteredHostVehiclesList.map(h => (
+                    <tr key={h.id} className="hover:bg-surface-low/50 transition-colors">
+                      <td className="p-3 font-bold text-on-surface">
+                        <div>{h.fullName}</div>
+                        <div className="text-xs text-primary font-mono">{h.whatsapp}</div>
+                        {h.email && <div className="text-[11px] text-on-surface-variant">{h.email}</div>}
+                      </td>
+                      <td className="p-3">
+                        <div className="font-semibold text-on-surface">{h.modelName}</div>
+                        <div className="text-xs text-on-surface-variant">Year: {h.year}</div>
+                      </td>
+                      <td className="p-3 text-xs">
+                        <span className="font-semibold uppercase text-primary">{h.vehicleCategory}</span>
+                        <div>📍 {h.location}</div>
+                      </td>
+                      <td className="p-3">
+                        {h.photos && h.photos.length > 0 ? (
+                          <div className="flex gap-1">
+                            {h.photos.map((pUrl, i) => (
+                              <img key={i} src={pUrl} alt="Host photo" className="w-9 h-9 rounded object-cover border border-outline-variant/40" />
+                            ))}
+                          </div>
+                        ) : (
+                          <span className="text-xs text-on-surface-variant/60">No photos</span>
+                        )}
+                      </td>
+                      <td className="p-3 text-xs text-on-surface-variant max-w-xs truncate">
+                        {h.notes || 'Clean condition'}
+                      </td>
+                      <td className="p-3">
+                        <select
+                          value={h.status}
+                          onChange={e => adminStore.updateHostVehicleStatus(h.id, e.target.value)}
+                          className={`px-2.5 py-1 rounded-full text-xs font-semibold border focus:outline-none cursor-pointer ${
+                            h.status === 'New' ? 'bg-yellow-100 text-yellow-800 border-yellow-300' :
+                            h.status === 'Inspected' ? 'bg-blue-100 text-blue-800 border-blue-300' :
+                            h.status === 'Approved' ? 'bg-emerald-100 text-emerald-800 border-emerald-300' :
+                            'bg-red-100 text-red-800 border-red-300'
+                          }`}
+                        >
+                          <option value="New">New</option>
+                          <option value="Inspected">Inspected</option>
+                          <option value="Approved">Approved</option>
+                          <option value="Rejected">Rejected</option>
+                        </select>
+                      </td>
+                      <td className="p-3 text-right space-x-2">
+                        <a
+                          href={getWhatsAppLink(h.whatsapp, `Hi ${h.fullName}! This is ApniRide team regarding your ${h.modelName} host registration in Shivpuri.`)}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1 bg-[#25D366] text-white px-2.5 py-1 rounded text-xs font-semibold hover:bg-[#20ba59]"
+                        >
+                          <span className="material-symbols-outlined text-sm">chat</span>
+                          WhatsApp
+                        </a>
+
+                        <button
+                          onClick={() => handleDeleteHostVehicle(h.id, h.modelName)}
+                          className="text-xs text-red-600 hover:underline p-1 cursor-pointer"
+                        >
+                          Delete
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* TAB 5: WAITLIST SIGNUPS */}
       {activeTab === 'waitlist' && (
         <div className="space-y-6">
           <div className="bg-surface p-4 rounded-2xl border border-outline-variant/40 shadow-xs flex justify-between items-center">

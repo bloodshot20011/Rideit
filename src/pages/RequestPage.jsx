@@ -20,7 +20,7 @@ export default function RequestPage() {
   const [loading, setLoading] = useState(false);
 
   // Form State for User Requirements
-  const [purpose, setPurpose] = useState(prefilledPurpose);
+  const [purpose, setPurpose] = useState(prefilledPurpose === 'Quick Errand' ? 'Daily Commute' : prefilledPurpose);
   const [vehicleCategory, setVehicleCategory] = useState(prefilledCategory === 'cars' ? 'car' : 'bike');
   const [subType, setSubType] = useState('');
   const [pickupDate, setPickupDate] = useState('');
@@ -230,12 +230,11 @@ export default function RequestPage() {
               <label className="block font-body text-xs font-semibold uppercase tracking-wider text-on-surface-variant">
                 1. What is the main purpose of your trip? <span className="text-red-500">*</span>
               </label>
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
                 {[
                   { id: 'Daily Commute', label: 'Daily Commute', icon: 'directions_bus' },
                   { id: 'Weekend Trip', label: 'Weekend Trip', icon: 'landscape' },
-                  { id: 'Outstation Tour', label: 'Outstation Tour', icon: 'map' },
-                  { id: 'Quick Errand', label: 'Quick Errand', icon: 'shopping_bag' }
+                  { id: 'Outstation Tour', label: 'Outstation Tour', icon: 'map' }
                 ].map((item) => (
                   <button
                     key={item.id}

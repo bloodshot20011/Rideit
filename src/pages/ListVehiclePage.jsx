@@ -4,6 +4,7 @@ import FormField from '../components/FormField';
 import SelectableOption from '../components/SelectableOption';
 import Button from '../components/Button';
 import SuccessState from '../components/SuccessState';
+import { adminStore } from '../data/adminStore';
 
 export default function ListVehiclePage() {
   const [submitted, setSubmitted] = useState(false);
@@ -55,6 +56,18 @@ export default function ListVehiclePage() {
 
     setErrors({});
     setLoading(true);
+
+    adminStore.addHostVehicle({
+      fullName: fullName.trim(),
+      whatsapp: whatsapp.trim(),
+      email: email.trim(),
+      vehicleCategory,
+      modelName: modelName.trim(),
+      year,
+      location: location === 'Other Locality' ? specificLocation || 'Other' : location,
+      photos,
+      notes: notes.trim()
+    });
 
     setTimeout(() => {
       setLoading(false);

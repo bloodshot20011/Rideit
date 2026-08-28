@@ -3,8 +3,9 @@ import { VEHICLES_DATA } from './vehicles';
 const VEHICLES_KEY = 'apniride_vehicles_v2';
 const REQUIREMENTS_KEY = 'apniride_requirements_v1';
 const WAITLIST_KEY = 'apniride_waitlist_v1';
+const HOST_VEHICLES_KEY = 'apniride_host_vehicles_v1';
 
-// Initial sample requirement submissions for pre-launch testing
+// Initial sample requirement submissions
 const INITIAL_REQUIREMENTS = [
   {
     id: 'req-101',
@@ -53,6 +54,38 @@ const INITIAL_WAITLIST = [
   }
 ];
 
+// Initial sample host vehicle listings
+const INITIAL_HOST_VEHICLES = [
+  {
+    id: 'host-301',
+    fullName: 'Suresh Kumar',
+    whatsapp: '9876512345',
+    email: 'suresh.k@example.com',
+    vehicleCategory: 'bike',
+    modelName: 'TVS Jupiter 125',
+    year: '2023',
+    location: 'Madhav Chowk',
+    photos: ['https://images.unsplash.com/photo-1558981403-c5f9899a28bc?auto=format&fit=crop&w=400&q=80'],
+    notes: 'Single owner, clean condition, valid comprehensive insurance till 2027.',
+    status: 'New',
+    createdAt: '2026-08-28T18:00:00Z'
+  },
+  {
+    id: 'host-302',
+    fullName: 'Ramesh Sen',
+    whatsapp: '8370092226',
+    email: 'ramesh.sen@example.com',
+    vehicleCategory: 'car',
+    modelName: 'Maruti Suzuki Swift VXi',
+    year: '2022',
+    location: 'Jhansi Road',
+    photos: ['https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?auto=format&fit=crop&w=400&q=80'],
+    notes: 'Well maintained hatchback, regular servicing done at authorized service center.',
+    status: 'Inspected',
+    createdAt: '2026-08-28T20:30:00Z'
+  }
+];
+
 class AdminStore {
   constructor() {
     this.listeners = [];
@@ -76,7 +109,6 @@ class AdminStore {
       if (stored) {
         const parsed = JSON.parse(stored);
         if (Array.isArray(parsed) && parsed.length > 0) {
-          // Merge images from default data if missing
           const verified = parsed.map(v => {
             const defaultMatch = VEHICLES_DATA.find(d => d.id === v.id || d.name === v.name);
             return {
@@ -90,7 +122,6 @@ class AdminStore {
     } catch (e) {
       console.error('Error reading vehicles from localStorage:', e);
     }
-    // Fallback to default mock data
     localStorage.setItem(VEHICLES_KEY, JSON.stringify(VEHICLES_DATA));
     return VEHICLES_DATA;
   }
@@ -183,6 +214,52 @@ class AdminStore {
     const reqs = this.getRequirements();
     const updated = reqs.filter(r => r.id !== id);
     this.saveRequirements(updated);
+  }
+
+  // --- HOST VEHICLE SUBMISSIONS CRUD ---
+  getHostVehicles() {
+    try {
+      const stored = localStorage.getItem(HOST_VEHICLES_KEY);
+      if (stored) return JSON.parse(stored);
+    } catch (e) {
+      console.error('Error reading host vehicles from localStorage:', e);
+    }
+    localStorage.setItem(HOST_VEHICLES_KEY, JSON.stringify(INITIAL_HOST_VEHICLES));
+    return INITIAL_HOST_VEHICLES;
+  }
+
+  saveHostVehicles(hosts) {
+    try {
+      localStorage.setItem(HOST_VEHICLES_KEY, JSON.stringify(hosts));
+      this.notify();
+    } catch (e) {
+      console.error('Error saving host vehicles to localStorage:', e);
+    }
+  }
+
+  addHostVehicle(data) {
+    const hosts = this.getHostVehicles();
+    const newEntry = {
+      ...data,
+      id: `host-${Date.now()}`,
+      status: 'New',
+      createdAt: new Date().toISOString()
+    };
+    const updated = [newEntry, ...hosts];
+    this.saveHostVehicles(updated);
+    return newEntry;
+  }
+
+  updateHostVehicleStatus(id, status) {
+    const hosts = this.getHostVehicles();
+    const updated = hosts.map(h => h.id === id ? { ...h, status } : h);
+    this.saveHostVehicles(updated);
+  }
+
+  deleteHostVehicle(id) {
+    const hosts = this.getHostVehicles();
+    const updated = hosts.filter(h => h.id !== id);
+    this.saveHostVehicles(updated);
   }
 
   // --- WAITLIST REGISTRATIONS CRUD ---

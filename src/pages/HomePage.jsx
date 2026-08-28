@@ -20,7 +20,6 @@ export default function HomePage() {
 
   const handleWidgetSubmit = (e) => {
     e.preventDefault();
-    // Submits both fields directly to the requirements page
     navigate(`/request?category=${encodeURIComponent(widgetVehicleCategory)}&purpose=${encodeURIComponent(widgetPurpose)}&autoSubmit=true`);
   };
 
@@ -92,6 +91,47 @@ export default function HomePage() {
           </motion.div>
         </div>
       </section>
+
+      {/* 🛣️ CINEMATIC TIRE MARKS SECTION DIVIDER (BELOW HERO) */}
+      <div className="relative w-full -mt-16 sm:-mt-20 z-20 overflow-hidden pointer-events-none">
+        <div className="max-w-6xl mx-auto px-4 flex flex-col items-center">
+          {/* Subtle Road Tire Track Overlay Graphic */}
+          <svg
+            className="w-full h-12 sm:h-16 text-primary/30 opacity-75"
+            viewBox="0 0 1200 60"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            preserveAspectRatio="none"
+          >
+            {/* Left Tire Track Pattern */}
+            <path
+              d="M 50,30 Q 200,10 350,30 T 650,30 T 950,30 T 1150,30"
+              stroke="currentColor"
+              strokeWidth="4"
+              strokeDasharray="16 12 8 12"
+              strokeLinecap="round"
+            />
+            <path
+              d="M 50,38 Q 200,18 350,38 T 650,38 T 950,38 T 1150,38"
+              stroke="currentColor"
+              strokeWidth="4"
+              strokeDasharray="16 12 8 12"
+              strokeLinecap="round"
+            />
+
+            {/* Diagonal Tire Tread Ribs */}
+            {[100, 180, 260, 340, 420, 500, 580, 660, 740, 820, 900, 980, 1060].map((x, i) => (
+              <g key={i}>
+                <line x1={x} y1="22" x2={x + 15} y2="44" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
+                <line x1={x + 25} y1="44" x2={x + 40} y2="22" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
+              </g>
+            ))}
+          </svg>
+
+          {/* Central Road Speed Line */}
+          <div className="w-full max-w-xs h-[2px] bg-gradient-to-r from-transparent via-primary/60 to-transparent -mt-2" />
+        </div>
+      </div>
 
       {/* 2. CHOOSE YOUR FREEDOM SECTION */}
       <section className="px-4 sm:px-6 max-w-content mx-auto">
@@ -255,7 +295,6 @@ export default function HomePage() {
                     <option value="Daily Commute">Daily City Commute</option>
                     <option value="Weekend Trip">Weekend Road Trip</option>
                     <option value="Outstation Tour">Outstation Tour</option>
-                    <option value="Quick Errand">Quick Local Errand</option>
                   </select>
                 </div>
 
