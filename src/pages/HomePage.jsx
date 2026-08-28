@@ -10,8 +10,9 @@ export default function HomePage() {
   const navigate = useNavigate();
   const shouldReduceMotion = useReducedMotion();
 
-  // Widget state
-  const [widgetVehicleType, setWidgetVehicleType] = useState('Bikes & Scooters');
+  // Widget state for requirements checker
+  const [widgetVehicleCategory, setWidgetVehicleCategory] = useState('bikes');
+  const [widgetPurpose, setWidgetPurpose] = useState('Daily Commute');
   const [widgetDuration, setWidgetDuration] = useState('Daily');
 
   // Parallax scroll effect for Shivpuri section
@@ -20,14 +21,14 @@ export default function HomePage() {
 
   const handleWidgetSubmit = (e) => {
     e.preventDefault();
-    navigate(`/request?type=${encodeURIComponent(widgetVehicleType)}&duration=${encodeURIComponent(widgetDuration)}`);
+    navigate(`/request?category=${encodeURIComponent(widgetVehicleCategory)}&purpose=${encodeURIComponent(widgetPurpose)}&duration=${encodeURIComponent(widgetDuration)}`);
   };
 
   return (
     <div className="space-y-16 sm:space-y-24 pb-12">
       {/* 1. CINEMATIC EDGE-TO-EDGE HERO SECTION */}
       <section className="relative w-full min-h-[85vh] flex items-center justify-center overflow-hidden bg-on-surface text-white -mt-16 pt-20 pb-16">
-        {/* Slow Ken Burns Background Image Zoom (100% -> 104% over 18s) */}
+        {/* Slow Ken Burns Background Image Zoom */}
         <motion.div
           animate={shouldReduceMotion ? {} : { scale: [1, 1.04] }}
           transition={{ duration: 18, repeat: Infinity, repeatType: "reverse", ease: "easeInOut" }}
@@ -36,11 +37,11 @@ export default function HomePage() {
         />
 
         {/* Subtle Light Overlay for Bright Landscape & High Text Readability */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-black/20 to-black/10 pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/25 to-black/10 pointer-events-none" />
 
         {/* Content Container */}
         <div className="relative z-10 max-w-content mx-auto px-4 sm:px-6 w-full text-center py-12 flex flex-col items-center">
-          {/* Eyebrow Label (Fades in first) */}
+          {/* Eyebrow Label */}
           <motion.div
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
@@ -55,7 +56,7 @@ export default function HomePage() {
             </span>
           </motion.div>
 
-          {/* Main Headline (Moves upward slightly) */}
+          {/* Main Headline */}
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -65,17 +66,17 @@ export default function HomePage() {
             Your ride. <span className="text-primary-fixed">Your way.</span>
           </motion.h1>
 
-          {/* Supporting Text (Follows headline) */}
+          {/* Supporting Text */}
           <motion.p
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.4 }}
             className="font-body text-base sm:text-xl text-white/90 max-w-2xl mx-auto mb-8 leading-relaxed drop-shadow-xs"
           >
-            Convenient, reliable mobility whenever you need a bike for quick city runs or a car for weekend getaways. Premium rental is coming to your city.
+            ApniRide brings convenient, reliable mobility whenever you need a bike for quick city runs or a car for weekend getaways in Shivpuri.
           </motion.p>
 
-          {/* CTA Buttons (Appear last) */}
+          {/* CTA Buttons */}
           <motion.div
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
@@ -85,8 +86,8 @@ export default function HomePage() {
             <Button to="/waitlist" variant="primary" size="lg" className="shadow-md">
               Join the Waitlist
             </Button>
-            <Button to="/list-your-vehicle" variant="outline" size="lg" className="bg-white/10 text-white border-white/30 hover:bg-white/20 backdrop-blur-sm">
-              List Your Vehicle
+            <Button to="/request" variant="outline" size="lg" className="bg-white/10 text-white border-white/30 hover:bg-white/20 backdrop-blur-sm" icon="checklist">
+              Check Your Requirements
             </Button>
           </motion.div>
         </div>
@@ -100,7 +101,7 @@ export default function HomePage() {
               Choose your freedom
             </h2>
             <p className="font-body text-base text-on-surface-variant">
-              Find the perfect vehicle for any journey
+              Find the perfect vehicle for any journey in Shivpuri
             </p>
           </div>
         </ScrollReveal>
@@ -213,50 +214,55 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 3. "WHAT WOULD YOU RIDE?" INTERACTIVE WIDGET CARD */}
+      {/* 3. INTERACTIVE USER REQUIREMENT CHECKER WIDGET */}
       <section className="px-4 sm:px-6 max-w-content mx-auto">
         <ScrollReveal>
-          <div className="bg-surface-low rounded-2xl border border-outline-variant/40 p-6 sm:p-8 shadow-sm">
+          <div className="bg-surface-low rounded-2xl border border-primary/30 p-6 sm:p-8 shadow-sm">
             <form onSubmit={handleWidgetSubmit} className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
-              <div className="lg:col-span-5 space-y-1 text-center lg:text-left">
+              <div className="lg:col-span-4 space-y-1.5 text-center lg:text-left">
+                <div className="inline-flex items-center gap-1.5 bg-primary/10 text-primary px-2.5 py-0.5 rounded-full text-xs font-semibold">
+                  <span className="material-symbols-outlined text-xs">tune</span>
+                  Requirement Matcher
+                </div>
                 <h3 className="font-headline font-bold text-xl sm:text-2xl text-on-surface">
-                  What would you ride?
+                  Check your requirements
                 </h3>
                 <p className="font-body text-sm text-on-surface-variant">
-                  Help us shape our launch fleet by telling us what you need most.
+                  Tell us your travel plan and get instant vehicle recommendations.
                 </p>
               </div>
 
-              <div className="lg:col-span-7 flex flex-col sm:flex-row gap-3 items-center">
-                <div className="w-full sm:flex-1">
-                  <label className="block text-[11px] font-semibold uppercase text-on-surface-variant mb-1">Vehicle Type</label>
+              <div className="lg:col-span-8 grid grid-cols-1 sm:grid-cols-3 gap-3 items-end">
+                <div>
+                  <label className="block text-[11px] font-semibold uppercase text-on-surface-variant mb-1">Vehicle Category</label>
                   <select
-                    value={widgetVehicleType}
-                    onChange={(e) => setWidgetVehicleType(e.target.value)}
+                    value={widgetVehicleCategory}
+                    onChange={(e) => setWidgetVehicleCategory(e.target.value)}
                     className="w-full px-3.5 py-2.5 rounded-xl border border-outline-variant/50 bg-surface text-on-surface font-body text-sm focus:outline-none focus:ring-2 focus:ring-primary/20"
                   >
-                    <option value="Bikes & Scooters">Bikes & Scooters</option>
-                    <option value="Cars & SUVs">Cars & SUVs</option>
-                    <option value="Any Vehicle">Any Vehicle</option>
+                    <option value="bikes">Bike / Scooter</option>
+                    <option value="cars">Car / SUV</option>
+                    <option value="any">Open to Recommendation</option>
                   </select>
                 </div>
 
-                <div className="w-full sm:flex-1">
-                  <label className="block text-[11px] font-semibold uppercase text-on-surface-variant mb-1">Duration</label>
+                <div>
+                  <label className="block text-[11px] font-semibold uppercase text-on-surface-variant mb-1">Travel Purpose</label>
                   <select
-                    value={widgetDuration}
-                    onChange={(e) => setWidgetDuration(e.target.value)}
+                    value={widgetPurpose}
+                    onChange={(e) => setWidgetPurpose(e.target.value)}
                     className="w-full px-3.5 py-2.5 rounded-xl border border-outline-variant/50 bg-surface text-on-surface font-body text-sm focus:outline-none focus:ring-2 focus:ring-primary/20"
                   >
-                    <option value="Hours">A few hours</option>
-                    <option value="Daily">Daily rental</option>
-                    <option value="Weekly">Weekly / Long term</option>
+                    <option value="Daily Commute">Daily City Commute</option>
+                    <option value="Weekend Trip">Weekend Road Trip</option>
+                    <option value="Outstation Tour">Outstation Tour</option>
+                    <option value="Quick Errand">Quick Local Errand</option>
                   </select>
                 </div>
 
-                <div className="w-full sm:w-auto pt-5">
-                  <Button type="submit" variant="primary" size="md" fullWidth>
-                    Tell us what you need
+                <div>
+                  <Button type="submit" variant="primary" size="md" fullWidth icon="checklist">
+                    Check Match
                   </Button>
                 </div>
               </div>
@@ -265,7 +271,7 @@ export default function HomePage() {
         </ScrollReveal>
       </section>
 
-      {/* 4. SIMPLE. FAST. YOURS. (WITH PROGRESSIVE CONNECTING LINE) */}
+      {/* 4. SIMPLE. FAST. YOURS. (4-STEP PROCESS) */}
       <section className="px-4 sm:px-6 max-w-content mx-auto text-center space-y-12">
         <ScrollReveal>
           <div>
@@ -279,7 +285,6 @@ export default function HomePage() {
         </ScrollReveal>
 
         <div className="relative grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {/* Subtle Visual Connecting Line for Desktop */}
           <div className="hidden lg:block absolute top-[44px] left-[12%] right-[12%] h-[2px] bg-gradient-to-r from-primary/20 via-primary/40 to-primary/20 z-0 pointer-events-none" />
 
           <ScrollReveal delay={0.1} className="relative z-10">
@@ -288,9 +293,9 @@ export default function HomePage() {
                 01
               </div>
               <div>
-                <h3 className="font-headline font-bold text-lg text-on-surface mb-1">Choose</h3>
+                <h3 className="font-headline font-bold text-lg text-on-surface mb-1">State Need</h3>
                 <p className="font-body text-sm text-on-surface-variant leading-relaxed">
-                  Tell us what vehicle suits your trip.
+                  Share your trip purpose, dates and vehicle choice.
                 </p>
               </div>
             </div>
@@ -302,9 +307,9 @@ export default function HomePage() {
                 02
               </div>
               <div>
-                <h3 className="font-headline font-bold text-lg text-on-surface mb-1">Request</h3>
+                <h3 className="font-headline font-bold text-lg text-on-surface mb-1">Get Match</h3>
                 <p className="font-body text-sm text-on-surface-variant leading-relaxed">
-                  Share your dates and pickup location.
+                  ApniRide suggests verified matching vehicles.
                 </p>
               </div>
             </div>
@@ -318,7 +323,7 @@ export default function HomePage() {
               <div>
                 <h3 className="font-headline font-bold text-lg text-on-surface mb-1">Confirm</h3>
                 <p className="font-body text-sm text-on-surface-variant leading-relaxed">
-                  We match and confirm your reservation.
+                  We verify availability and confirm booking.
                 </p>
               </div>
             </div>
@@ -332,7 +337,7 @@ export default function HomePage() {
               <div>
                 <h3 className="font-headline font-bold text-lg text-on-surface mb-1">Ride</h3>
                 <p className="font-body text-sm text-on-surface-variant leading-relaxed">
-                  Pick up key and enjoy your trip.
+                  Pick up key and enjoy your trip in Shivpuri.
                 </p>
               </div>
             </div>
@@ -401,40 +406,40 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 6. CINEMATIC DARK OWNER BANNER */}
+      {/* 6. USER REQUIREMENT HIGHLIGHT BANNER */}
       <section className="px-4 sm:px-6 max-w-content mx-auto">
         <ScrollReveal>
           <div className="relative bg-[#1e2330] text-white rounded-2xl p-8 sm:p-12 shadow-lg overflow-hidden grid grid-cols-1 lg:grid-cols-12 gap-8 items-center border border-white/10">
-            {/* Background Texture Overlay */}
             <div
               className="absolute inset-0 bg-cover bg-center opacity-15 mix-blend-overlay pointer-events-none"
               style={{ backgroundImage: `url(${IMAGES.ownerBanner})` }}
             />
 
             <div className="lg:col-span-8 space-y-4 relative z-10">
+              <span className="text-xs font-semibold text-primary-fixed uppercase tracking-wider">Custom Mobility Demand</span>
               <h2 className="font-headline font-bold text-2xl sm:text-3xl text-white tracking-tight">
-                Have a vehicle sitting idle?
+                Need a vehicle tailored to your exact journey?
               </h2>
               <p className="font-body text-sm sm:text-base text-white/80 leading-relaxed max-w-xl">
-                Turn your bike or car into an earning asset. Join our host network in Shivpuri and start earning money safely and easily.
+                Tell us your travel plan, dates, and preferred bike or car. ApniRide checks local availability and matches you with verified options in Shivpuri.
               </p>
               <div className="pt-2">
-                <Button to="/list-your-vehicle" variant="primary" size="md">
-                  List Your Vehicle
+                <Button to="/request" variant="primary" size="md" icon="checklist">
+                  Check Your Requirements
                 </Button>
               </div>
             </div>
 
             <div className="lg:col-span-4 hidden lg:flex justify-end relative z-10">
               <div className="w-32 h-32 rounded-2xl bg-white/10 border border-white/20 flex items-center justify-center text-white/80 backdrop-blur-xs">
-                <span className="material-symbols-outlined text-5xl">key</span>
+                <span className="material-symbols-outlined text-5xl">tune</span>
               </div>
             </div>
           </div>
         </ScrollReveal>
       </section>
 
-      {/* 7. STARTING IN SHIVPURI. GOING FURTHER (WITH PARALLAX IMAGE) */}
+      {/* 7. STARTING IN SHIVPURI. GOING FURTHER */}
       <section className="px-4 sm:px-6 max-w-content mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
           <ScrollReveal className="lg:col-span-6">
@@ -458,22 +463,21 @@ export default function HomePage() {
               <span className="text-primary">Going further.</span>
             </h2>
             <p className="font-body text-base text-on-surface-variant leading-relaxed">
-              We are launching our premier rental service right here in Shivpuri. Experience the beauty of the region or manage your daily commute with vehicles you can trust.
+              ApniRide is launching our premier rental service right here in Shivpuri. Experience the beauty of the region or manage your daily commute with vehicles you can trust.
             </p>
             <div className="pt-2">
               <Button to="/request" variant="outline" size="md">
-                Request a Ride
+                Check Requirements
               </Button>
             </div>
           </ScrollReveal>
         </div>
       </section>
 
-      {/* 8. FINAL CTA WITH SUBTLE BACKGROUND MOVEMENT */}
+      {/* 8. FINAL CTA: BE AMONG THE FIRST TO APNIRIDE */}
       <section className="px-4 sm:px-6 max-w-content mx-auto">
         <ScrollReveal>
           <div className="relative rounded-2xl overflow-hidden bg-surface-low border border-outline-variant/40 p-10 sm:p-16 text-center space-y-6">
-            {/* Subtle background image texture */}
             <div
               className="absolute inset-0 bg-cover bg-center opacity-5 pointer-events-none"
               style={{ backgroundImage: `url(${IMAGES.finalCtaBackground})` }}
@@ -481,7 +485,7 @@ export default function HomePage() {
 
             <div className="relative z-10 max-w-xl mx-auto space-y-6">
               <h2 className="font-headline font-bold text-3xl sm:text-4xl text-on-surface tracking-tight">
-                Be among the first to Ride It.
+                Be among the first to ApniRide.
               </h2>
               <p className="font-body text-sm sm:text-base text-on-surface-variant">
                 Join our pre-launch waitlist today to receive priority access when matching rentals go live in Shivpuri.

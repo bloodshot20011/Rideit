@@ -1,19 +1,19 @@
 export const FAQS_DATA = [
   {
-    question: "When is Ride It officially launching in Shivpuri?",
-    answer: "Ride It is currently in the pre-launch validation stage. We are onboarding early waitlist members and local vehicle owners in Shivpuri to prepare for our operational launch soon."
+    question: "When is ApniRide officially launching in Shivpuri?",
+    answer: "ApniRide is currently in the pre-launch validation stage. We are onboarding early waitlist members and checking local customer requirements in Shivpuri to prepare for our operational launch soon."
   },
   {
     question: "How will vehicle rentals work for customers?",
-    answer: "Once launched, you will be able to browse verified bikes and cars, submit a quick rental request with your dates, pick up the vehicle at a designated local spot in Shivpuri, and return it hassle-free."
+    answer: "Once launched, you can tell us your travel requirements (such as daily commute, weekend trip, or tour). We match you with verified bikes or cars, arrange quick pickup in Shivpuri, and provide transparent terms."
   },
   {
-    question: "How can I register my vehicle to earn with Ride It?",
-    answer: "If you own a bike or car in Shivpuri that sits idle during the day or week, you can register it through our 'List Your Vehicle' page. Our team verifies your vehicle details and connects you with verified renters when demand matches."
+    question: "How does the requirement checker work?",
+    answer: "Our interactive requirement checker lets you specify your vehicle preference, rental duration, purpose, and Shivpuri locality. We instantly suggest recommended vehicles tailored to your exact needs."
   },
   {
-    question: "Is there any cost to join the waitlist or register a vehicle?",
-    answer: "No, joining the waitlist as a customer or registering your vehicle as an owner during our pre-launch phase is 100% free and carries zero obligation."
+    question: "Is there any cost to join the waitlist or check requirements?",
+    answer: "No, joining the waitlist as a customer or submitting your rental requirements during our pre-launch phase is 100% free and carries zero obligation."
   },
   {
     question: "What documents will be required to rent a bike or car?",

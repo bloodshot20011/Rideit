@@ -13,11 +13,11 @@ export default function Footer() {
                 electric_car
               </span>
               <span className="font-headline font-bold text-xl text-primary tracking-tight">
-                Ride It
+                ApniRide
               </span>
             </Link>
             <p className="font-body text-sm text-on-surface-variant leading-relaxed">
-              Modern mobility rental platform starting in Shivpuri, Madhya Pradesh. Rent verified bikes & cars or earn with your idle vehicle.
+              Modern mobility rental platform starting in Shivpuri, Madhya Pradesh. Rent verified bikes & cars tailored to your travel requirements.
             </p>
             <div className="inline-flex items-center gap-2 bg-surface-low text-primary px-3 py-1 rounded-full text-xs font-medium border border-outline-variant/40">
               <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
@@ -52,10 +52,7 @@ export default function Footer() {
                   <Link to="/waitlist" className="text-on-surface-variant hover:text-primary transition-colors">Join Waitlist</Link>
                 </li>
                 <li>
-                  <Link to="/request" className="text-on-surface-variant hover:text-primary transition-colors">Request a Ride</Link>
-                </li>
-                <li>
-                  <Link to="/list-your-vehicle" className="text-on-surface-variant hover:text-primary transition-colors">List Your Vehicle</Link>
+                  <Link to="/request" className="text-on-surface-variant hover:text-primary transition-colors">Check Requirements</Link>
                 </li>
               </ul>
             </div>
@@ -78,7 +75,7 @@ export default function Footer() {
         </div>
 
         <div className="border-t border-outline-variant/30 mt-10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-on-surface-variant">
-          <p>© {new Date().getFullYear()} Ride It. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} ApniRide. All rights reserved.</p>
           <p className="text-center sm:text-right">
             Pre-launch Prototype • Designed for Shivpuri, MP
           </p>

@@ -10,10 +10,10 @@ export default function AboutPage() {
       {/* Page Hero */}
       <section className="text-center pt-4">
         <SectionHeading
-          pillTag="About Ride It"
+          pillTag="About ApniRide"
           pillIcon="info"
           title="Bringing Modern Mobility to Shivpuri"
-          subtitle="Ride It is a pre-launch mobility platform built specifically to make bike and car rentals simple, accessible, and community-driven in Shivpuri, India."
+          subtitle="ApniRide is a pre-launch mobility platform built specifically to make bike and car rentals simple, accessible, and requirement-focused in Shivpuri, India."
         />
       </section>
 
@@ -25,22 +25,22 @@ export default function AboutPage() {
             Solving everyday transport challenges in tier-2 cities.
           </h2>
           <p className="font-body text-base text-on-surface-variant leading-relaxed">
-            In cities like Shivpuri, mobility options are often limited to purchasing personal vehicles or relying on erratic public transit. Meanwhile, hundreds of private bikes and cars sit unused in driveways most days of the week.
+            In cities like Shivpuri, mobility options are often limited to purchasing personal vehicles or relying on erratic public transit.
           </p>
           <p className="font-body text-base text-on-surface-variant leading-relaxed">
-            Ride It bridges this gap by enabling seamless peer-to-peer and managed vehicle rentals—empowering commuters with flexible rides while allowing vehicle owners to monetize idle assets.
+            ApniRide bridges this gap by offering a transparent vehicle rental service tailored to your exact travel requirements—whether you need a scooter for daily errands or a car for outstation travel.
           </p>
         </div>
 
         <div className="relative">
-          <ImagePlaceholder type="scooter" title="Shivpuri Mobility Ecosystem" aspectRatio="aspect-[4/3]" />
+          <ImagePlaceholder type="scooter" title="ApniRide Shivpuri Network" aspectRatio="aspect-[4/3]" />
         </div>
       </section>
 
       {/* Three Pillars Section */}
       <section className="space-y-8">
         <div className="text-center max-w-xl mx-auto">
-          <h2 className="font-headline font-bold text-2xl sm:text-3xl text-on-surface mb-2">Why Ride It</h2>
+          <h2 className="font-headline font-bold text-2xl sm:text-3xl text-on-surface mb-2">Why ApniRide</h2>
           <p className="font-body text-base text-on-surface-variant">Our core values for building a trusted mobility platform in Shivpuri.</p>
         </div>
 
@@ -61,7 +61,7 @@ export default function AboutPage() {
             </div>
             <h3 className="font-headline font-bold text-lg text-on-surface">Simple Experience</h3>
             <p className="font-body text-sm text-on-surface-variant leading-relaxed">
-              No endless paperwork or complex security deposits. Request a ride or list your vehicle in just a few taps.
+              No endless paperwork or complex security deposits. Check your requirements and book your ride in just a few taps.
             </p>
           </div>
 
@@ -71,32 +71,37 @@ export default function AboutPage() {
             </div>
             <h3 className="font-headline font-bold text-lg text-on-surface">Community-Driven</h3>
             <p className="font-body text-sm text-on-surface-variant leading-relaxed">
-              We build strong relationships with verified local vehicle owners and early adopters to maintain standard quality.
+              We build strong relationships with verified local partners and early adopters to maintain standard quality.
             </p>
           </div>
         </div>
       </section>
 
-      {/* Contact Options (Clean Marked Placeholders) */}
+      {/* Contact Options */}
       <section className="bg-surface-low rounded-2xl border border-outline-variant/40 p-8 sm:p-10 text-center max-w-3xl mx-auto space-y-6">
         <div className="space-y-2">
           <span className="text-xs font-semibold text-primary uppercase tracking-wider">Get In Touch</span>
           <h3 className="font-headline font-bold text-2xl text-on-surface">Have questions or feedback?</h3>
           <p className="font-body text-sm text-on-surface-variant max-w-lg mx-auto">
-            We are actively gathering input from Shivpuri residents, students, and vehicle owners to refine Ride It before launch.
+            We are actively gathering input from Shivpuri residents, students, and commuters to refine ApniRide before launch.
           </p>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-left pt-2">
-          <div className="bg-surface p-4 rounded-xl border border-outline-variant/30 flex items-center gap-3">
-            <div className="w-10 h-10 rounded-lg bg-primary/10 text-primary flex items-center justify-center shrink-0">
+          <a
+            href="https://wa.me/919876543210?text=Hi%20ApniRide,%20I%20have%20a%20query."
+            target="_blank"
+            rel="noopener noreferrer"
+            className="bg-surface p-4 rounded-xl border border-outline-variant/30 flex items-center gap-3 hover:border-primary/50 transition-colors"
+          >
+            <div className="w-10 h-10 rounded-lg bg-[#25D366]/10 text-[#25D366] flex items-center justify-center shrink-0">
               <span className="material-symbols-outlined">chat</span>
             </div>
             <div>
               <div className="font-headline font-semibold text-sm text-on-surface">WhatsApp Support</div>
-              <div className="font-body text-xs text-on-surface-variant">[Placeholder: +91 98XXX XXXXX]</div>
+              <div className="font-body text-xs text-on-surface-variant">+91 98765 43210 (Click to Chat)</div>
             </div>
-          </div>
+          </a>
 
           <div className="bg-surface p-4 rounded-xl border border-outline-variant/30 flex items-center gap-3">
             <div className="w-10 h-10 rounded-lg bg-primary/10 text-primary flex items-center justify-center shrink-0">
@@ -104,7 +109,7 @@ export default function AboutPage() {
             </div>
             <div>
               <div className="font-headline font-semibold text-sm text-on-surface">Official Email</div>
-              <div className="font-body text-xs text-on-surface-variant">[Placeholder: hello@rideit-shivpuri.in]</div>
+              <div className="font-body text-xs text-on-surface-variant">hello@apniride.in</div>
             </div>
           </div>
         </div>
@@ -113,14 +118,21 @@ export default function AboutPage() {
           <Button to="/waitlist" variant="primary" size="md">
             Join the Waitlist
           </Button>
-          <Button to="/list-your-vehicle" variant="outline" size="md">
-            List Your Vehicle
+          <Button to="/request" variant="outline" size="md">
+            Check Requirements
           </Button>
         </div>
       </section>
 
       {/* Final Waitlist CTA */}
-      <CTASection />
+      <CTASection
+        title="Be among the first to experience ApniRide"
+        description="Join our Shivpuri pre-launch waitlist to get early notification as soon as matching rentals go live."
+        primaryCtaText="Join the Waitlist"
+        primaryCtaTo="/waitlist"
+        secondaryCtaText="Check Requirements"
+        secondaryCtaTo="/request"
+      />
     </div>
   );
 }

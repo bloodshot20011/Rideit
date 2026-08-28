@@ -9,12 +9,15 @@ import SuccessState from '../components/SuccessState';
 export default function RequestPage() {
   const [searchParams] = useSearchParams();
   const prefilledVehicle = searchParams.get('vehicle') || '';
+  const prefilledCategory = searchParams.get('category') || 'bikes';
+  const prefilledPurpose = searchParams.get('purpose') || 'Daily Commute';
 
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  // Form State
-  const [vehicleCategory, setVehicleCategory] = useState('bike'); // 'bike' | 'car' | 'notsure'
+  // Form State for User Requirements
+  const [purpose, setPurpose] = useState(prefilledPurpose);
+  const [vehicleCategory, setVehicleCategory] = useState(prefilledCategory === 'cars' ? 'car' : 'bike');
   const [subType, setSubType] = useState('');
   const [pickupDate, setPickupDate] = useState('');
   const [returnDate, setReturnDate] = useState('');
@@ -23,7 +26,7 @@ export default function RequestPage() {
   const [fullName, setFullName] = useState('');
   const [whatsapp, setWhatsapp] = useState('');
   const [email, setEmail] = useState('');
-  const [notes, setNotes] = useState(prefilledVehicle ? `Interested in: ${prefilledVehicle}` : '');
+  const [notes, setNotes] = useState(prefilledVehicle ? `Preferred model: ${prefilledVehicle}` : '');
 
   // Errors state
   const [errors, setErrors] = useState({});
@@ -38,6 +41,50 @@ export default function RequestPage() {
       }
     }
   }, [prefilledVehicle]);
+
+  // Dynamic recommendation based on requirement choices
+  const getRecommendation = () => {
+    if (vehicleCategory === 'bike') {
+      if (purpose === 'Daily Commute' || purpose === 'Quick Errand') {
+        return {
+          title: 'Honda Activa 6G / TVS Jupiter 125',
+          tag: 'Recommended for City Commutes',
+          reason: 'Automatic transmission, high mileage, and effortless parking across Shivpuri.'
+        };
+      } else if (purpose === 'Outstation Tour' || purpose === 'Weekend Trip') {
+        return {
+          title: 'Royal Enfield Classic 350 / Yamaha MT-15',
+          tag: 'Recommended for Long Rides',
+          reason: 'High comfort, superior highway stability, and cruising power.'
+        };
+      }
+      return {
+        title: 'Hero Splendor Plus / Honda Activa 6G',
+        tag: 'Versatile 2-Wheeler Match',
+        reason: 'Maximum fuel efficiency and reliable performance.'
+      };
+    } else if (vehicleCategory === 'car') {
+      if (purpose === 'Weekend Trip' || purpose === 'Outstation Tour') {
+        return {
+          title: 'Hyundai Creta / Tata Punch',
+          tag: 'Recommended for Group & Highway Travel',
+          reason: 'Spacious seating, high ground clearance, and luggage space.'
+        };
+      }
+      return {
+        title: 'Maruti Suzuki Swift / Honda City',
+        tag: 'Recommended for City Comfort',
+        reason: 'Easy handling, smooth automatic/manual options, and executive comfort.'
+      };
+    }
+    return {
+      title: 'Custom Vehicle Recommendation',
+      tag: 'Tailored Match',
+      reason: 'Our Shivpuri team will recommend the optimal vehicle upon review.'
+    };
+  };
+
+  const recommendation = getRecommendation();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -60,7 +107,6 @@ export default function RequestPage() {
     setErrors({});
     setLoading(true);
 
-    // Simulate validation & brief loading
     setTimeout(() => {
       setLoading(false);
       setSubmitted(true);
@@ -70,37 +116,54 @@ export default function RequestPage() {
   const getSubtypeOptions = () => {
     if (vehicleCategory === 'bike') {
       return [
-        { value: 'scooter', label: 'Scooter (e.g. Activa, Jupiter)' },
-        { value: 'commuter', label: 'Commuter Bike (e.g. Splendor, Shine)' },
-        { value: 'premium', label: 'Cruiser / Premium (e.g. Royal Enfield)' },
-        { value: 'street', label: 'Street / Sports (e.g. MT-15, Pulsar)' },
-        { value: 'any_bike', label: 'Any available bike' }
+        { value: 'scooter', label: 'Scooter (e.g. Activa 6G, TVS Jupiter)' },
+        { value: 'commuter', label: 'Commuter Bike (e.g. Hero Splendor+)' },
+        { value: 'premium', label: 'Cruiser / Premium (e.g. Royal Enfield Classic 350)' },
+        { value: 'street', label: 'Street Bike (e.g. Yamaha MT-15)' },
+        { value: 'any_bike', label: 'Any available bike / scooter' }
       ];
     } else if (vehicleCategory === 'car') {
       return [
-        { value: 'hatchback', label: 'Hatchback (e.g. Swift, i20)' },
-        { value: 'compact_suv', label: 'Compact SUV (e.g. Punch, Brezza)' },
-        { value: 'sedan', label: 'Sedan (e.g. City, Verna)' },
-        { value: 'suv', label: 'Full SUV (e.g. Creta, Thar)' },
+        { value: 'hatchback', label: 'Hatchback (e.g. Maruti Suzuki Swift)' },
+        { value: 'compact_suv', label: 'Compact SUV (e.g. Tata Punch)' },
+        { value: 'sedan', label: 'Sedan (e.g. Honda City)' },
+        { value: 'suv', label: 'Mid-size SUV (e.g. Hyundai Creta)' },
         { value: 'any_car', label: 'Any available car' }
       ];
     }
     return [
-      { value: 'open', label: 'Open to recommendation based on availability' }
+      { value: 'open', label: 'Open to recommendation based on trip requirements' }
     ];
   };
 
   if (submitted) {
+    const whatsappMsg = encodeURIComponent(
+      `Hi ApniRide! I registered my travel requirements for ${recommendation.title} in Shivpuri (Dates: ${pickupDate} to ${returnDate}).`
+    );
+    const whatsappLink = `https://wa.me/919876543210?text=${whatsappMsg}`;
+
     return (
       <div className="py-12 px-4 sm:px-6 max-w-content mx-auto">
         <SuccessState
-          title="You're on the list."
-          message="Thanks for helping us build Ride It. We'll get in touch when a matching rental becomes available in Shivpuri."
+          title="Requirements Registered."
+          message="Thanks for sharing your travel requirements with ApniRide. Our Shivpuri team will match your request and contact you on WhatsApp."
           primaryActionTo="/"
           primaryActionText="Back to Home"
           secondaryActionTo="/vehicles"
           secondaryActionText="Explore Vehicles"
         />
+
+        <div className="text-center mt-6">
+          <a
+            href={whatsappLink}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 bg-[#25D366] text-white px-5 py-2.5 rounded-xl font-headline font-semibold text-sm shadow-md hover:bg-[#20ba59] transition-colors"
+          >
+            <span className="material-symbols-outlined text-lg">chat</span>
+            Connect Directly on WhatsApp
+          </a>
+        </div>
       </div>
     );
   }
@@ -108,25 +171,46 @@ export default function RequestPage() {
   return (
     <div className="py-10 px-4 sm:px-6 max-w-2xl mx-auto space-y-8">
       <SectionHeading
-        pillTag="Demand Request"
-        pillIcon="edit_note"
-        title="Request a Ride"
-        subtitle="Tell us what vehicle you need and when. We'll match you with available options in Shivpuri."
+        pillTag="User Requirement Checker"
+        pillIcon="checklist"
+        title="Check Your Vehicle Requirements"
+        subtitle="Tell us your travel plan and preferences. ApniRide checks local availability in Shivpuri to provide the ideal vehicle match."
       />
 
       <form onSubmit={handleSubmit} className="bg-surface rounded-2xl border border-outline-variant/40 p-6 sm:p-8 shadow-sm space-y-6">
-        {/* Prefilled indicator if coming from vehicle card */}
-        {prefilledVehicle && (
-          <div className="p-3 bg-surface-low rounded-xl border border-primary/30 flex items-center gap-2 text-xs text-primary font-medium">
-            <span className="material-symbols-outlined text-sm">info</span>
-            Requesting interest for: <strong>{prefilledVehicle}</strong>
-          </div>
-        )}
-
-        {/* 1. Vehicle Selection */}
+        {/* 1. Travel Purpose */}
         <div className="space-y-3">
           <label className="block font-body text-xs font-semibold uppercase tracking-wider text-on-surface-variant">
-            1. What kind of vehicle do you need? <span className="text-red-500">*</span>
+            1. What is the main purpose of your trip? <span className="text-red-500">*</span>
+          </label>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+            {[
+              { id: 'Daily Commute', label: 'Daily Commute', icon: 'directions_bus' },
+              { id: 'Weekend Trip', label: 'Weekend Trip', icon: 'landscape' },
+              { id: 'Outstation Tour', label: 'Outstation Tour', icon: 'map' },
+              { id: 'Quick Errand', label: 'Quick Errand', icon: 'shopping_bag' }
+            ].map((item) => (
+              <button
+                key={item.id}
+                type="button"
+                onClick={() => setPurpose(item.id)}
+                className={`p-3 rounded-xl border text-center text-xs font-semibold transition-all flex flex-col items-center gap-1 cursor-pointer ${
+                  purpose === item.id
+                    ? 'bg-surface-low border-primary text-primary shadow-xs'
+                    : 'bg-surface border-outline-variant/40 text-on-surface-variant hover:border-outline'
+                }`}
+              >
+                <span className="material-symbols-outlined text-lg">{item.icon}</span>
+                {item.label}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* 2. Vehicle Selection */}
+        <div className="space-y-3 pt-2">
+          <label className="block font-body text-xs font-semibold uppercase tracking-wider text-on-surface-variant">
+            2. Preferred Vehicle Category <span className="text-red-500">*</span>
           </label>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             <SelectableOption
@@ -141,7 +225,7 @@ export default function RequestPage() {
             />
             <SelectableOption
               icon="directions_car"
-              title="Car"
+              title="Car / SUV"
               subtitle="4-wheeler travel"
               selected={vehicleCategory === 'car'}
               onClick={() => {
@@ -151,8 +235,8 @@ export default function RequestPage() {
             />
             <SelectableOption
               icon="help_outline"
-              title="Not Sure"
-              subtitle="Open options"
+              title="Open / Advice"
+              subtitle="Need recommendation"
               selected={vehicleCategory === 'notsure'}
               onClick={() => {
                 setVehicleCategory('notsure');
@@ -162,18 +246,32 @@ export default function RequestPage() {
           </div>
         </div>
 
-        {/* 2. Vehicle Subtype */}
+        {/* 3. Live Recommendation Match Box */}
+        <div className="bg-primary/5 rounded-xl border border-primary/20 p-4 space-y-1">
+          <div className="flex items-center gap-2 text-xs font-semibold text-primary">
+            <span className="material-symbols-outlined text-sm">auto_awesome</span>
+            <span>{recommendation.tag}</span>
+          </div>
+          <p className="font-headline font-bold text-base text-on-surface">
+            {recommendation.title}
+          </p>
+          <p className="font-body text-xs text-on-surface-variant">
+            {recommendation.reason}
+          </p>
+        </div>
+
+        {/* 4. Subtype Dropdown */}
         <FormField
-          label="Vehicle Type / Preference"
+          label="Specific Vehicle Style / Model"
           id="vehicle-subtype"
           type="select"
           value={subType}
           onChange={(e) => setSubType(e.target.value)}
           options={getSubtypeOptions()}
-          helperText="Select your preferred style or body type."
+          helperText="Select your preferred model or style."
         />
 
-        {/* 3. Dates Selection */}
+        {/* 5. Dates Selection */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <FormField
             label="Pickup Date"
@@ -195,7 +293,7 @@ export default function RequestPage() {
           />
         </div>
 
-        {/* 4. Location in Shivpuri */}
+        {/* 6. Location in Shivpuri */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <FormField
             label="Preferred Location in Shivpuri"
@@ -224,7 +322,7 @@ export default function RequestPage() {
           )}
         </div>
 
-        {/* 5. Customer Contact Info */}
+        {/* 7. Customer Contact Info */}
         <div className="border-t border-outline-variant/30 pt-6 space-y-4">
           <h4 className="font-headline font-semibold text-sm text-on-surface uppercase tracking-wider">
             Your Contact Information
@@ -250,7 +348,7 @@ export default function RequestPage() {
               onChange={(e) => setWhatsapp(e.target.value)}
               required
               error={errors.whatsapp}
-              helperText="We'll contact you on WhatsApp when a matching ride is ready."
+              helperText="We'll send matched vehicle details to your WhatsApp."
             />
             <FormField
               label="Email Address (Optional)"
@@ -263,7 +361,7 @@ export default function RequestPage() {
           </div>
 
           <FormField
-            label="Additional Notes (Optional)"
+            label="Additional Notes / Budget Preferences (Optional)"
             id="notes"
             type="textarea"
             placeholder="Any specific requests, time preferences, or budget range..."
@@ -280,14 +378,14 @@ export default function RequestPage() {
             size="lg"
             fullWidth
             disabled={loading}
-            icon={loading ? 'sync' : 'send'}
+            icon={loading ? 'sync' : 'checklist'}
           >
-            {loading ? 'Submitting Request...' : 'Request a Ride'}
+            {loading ? 'Checking Availability...' : 'Submit Requirements'}
           </Button>
         </div>
 
         <p className="text-xs text-center text-on-surface-variant/80">
-          🔒 Zero spam policy. We only contact you regarding your Shivpuri rental request.
+          🔒 Zero spam policy. ApniRide only contacts you regarding your Shivpuri rental request.
         </p>
       </form>
     </div>

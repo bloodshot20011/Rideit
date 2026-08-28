@@ -27,8 +27,8 @@ export default function Navbar() {
   const navItems = [
     { label: 'Home', path: '/' },
     { label: 'Vehicles', path: '/vehicles' },
+    { label: 'Check Requirements', path: '/request' },
     { label: 'How It Works', path: '/how-it-works' },
-    { label: 'List Your Vehicle', path: '/list-your-vehicle' },
     { label: 'About', path: '/about' },
   ];
 
@@ -53,7 +53,7 @@ export default function Navbar() {
               electric_car
             </motion.span>
             <span className="font-headline font-bold text-xl text-primary tracking-tight">
-              Ride It
+              ApniRide
             </span>
             <span className="bg-surface-low text-primary text-[10px] font-semibold px-2 py-0.5 rounded-full border border-outline-variant/40 hidden sm:inline-block">
               Shivpuri Pre-launch
@@ -138,7 +138,7 @@ export default function Navbar() {
                     Join the Waitlist
                   </Button>
                   <Button to="/request" variant="outline" fullWidth onClick={() => setMobileMenuOpen(false)}>
-                    Request a Ride
+                    Check Requirements
                   </Button>
                 </div>
               </div>
@@ -174,18 +174,18 @@ export default function Navbar() {
           }`}
         >
           <div className="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center -mt-4 shadow-md">
-            <span className="material-symbols-outlined text-lg">add</span>
+            <span className="material-symbols-outlined text-lg">checklist</span>
           </div>
-          Request
+          Requirements
         </Link>
         <Link
-          to="/list-your-vehicle"
+          to="/how-it-works"
           className={`flex flex-col items-center gap-0.5 text-[11px] font-medium ${
-            location.pathname === '/list-your-vehicle' ? 'text-primary' : 'text-on-surface-variant'
+            location.pathname === '/how-it-works' ? 'text-primary' : 'text-on-surface-variant'
           }`}
         >
-          <span className="material-symbols-outlined text-xl">key</span>
-          List Owner
+          <span className="material-symbols-outlined text-xl">route</span>
+          Process
         </Link>
         <Link
           to="/waitlist"

@@ -10,7 +10,7 @@ export default function WaitlistPage() {
   const [loading, setLoading] = useState(false);
 
   // Form State
-  const [interest, setInterest] = useState('both'); // 'bike' | 'car' | 'both'
+  const [interest, setInterest] = useState('both');
   const [timing, setTiming] = useState('this_month');
   const [preferenceText, setPreferenceText] = useState('');
   const [fullName, setFullName] = useState('');
@@ -50,7 +50,7 @@ export default function WaitlistPage() {
       <div className="py-12 px-4 sm:px-6 max-w-content mx-auto">
         <SuccessState
           title="You're in."
-          message="Thanks for joining the Ride It waitlist. Your response helps us understand what Shivpuri needs."
+          message="Thanks for joining the ApniRide waitlist. Your response helps us understand what Shivpuri needs."
           primaryActionTo="/"
           primaryActionText="Return to Home"
           secondaryActionTo="/vehicles"
@@ -65,7 +65,7 @@ export default function WaitlistPage() {
       <SectionHeading
         pillTag="Early Access Waitlist"
         pillIcon="star"
-        title="Get Early Access to Ride It"
+        title="Get Early Access to ApniRide"
         subtitle="Be among the first residents in Shivpuri to get notified when our bike and car rentals go live."
       />
 
@@ -119,7 +119,7 @@ export default function WaitlistPage() {
         <FormField
           label="Specific vehicle models you prefer (Optional)"
           id="preference-text"
-          placeholder="e.g. Activa, Royal Enfield, Swift, Thar..."
+          placeholder="e.g. Activa, Royal Enfield, Swift, Creta..."
           value={preferenceText}
           onChange={(e) => setPreferenceText(e.target.value)}
         />
