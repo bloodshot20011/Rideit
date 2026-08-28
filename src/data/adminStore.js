@@ -1,6 +1,6 @@
 import { VEHICLES_DATA } from './vehicles';
 
-const VEHICLES_KEY = 'apniride_vehicles_v2';
+const VEHICLES_KEY = 'apniride_vehicles_v3';
 const REQUIREMENTS_KEY = 'apniride_requirements_v1';
 const WAITLIST_KEY = 'apniride_waitlist_v1';
 const HOST_VEHICLES_KEY = 'apniride_host_vehicles_v1';
@@ -69,20 +69,6 @@ const INITIAL_HOST_VEHICLES = [
     notes: 'Single owner, clean condition, valid comprehensive insurance till 2027.',
     status: 'New',
     createdAt: '2026-08-28T18:00:00Z'
-  },
-  {
-    id: 'host-302',
-    fullName: 'Ramesh Sen',
-    whatsapp: '8370092226',
-    email: 'ramesh.sen@example.com',
-    vehicleCategory: 'car',
-    modelName: 'Maruti Suzuki Swift VXi',
-    year: '2022',
-    location: 'Jhansi Road',
-    photos: ['https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?auto=format&fit=crop&w=400&q=80'],
-    notes: 'Well maintained hatchback, regular servicing done at authorized service center.',
-    status: 'Inspected',
-    createdAt: '2026-08-28T20:30:00Z'
   }
 ];
 
@@ -113,6 +99,7 @@ class AdminStore {
             const defaultMatch = VEHICLES_DATA.find(d => d.id === v.id || d.name === v.name);
             return {
               ...v,
+              pricePerDay: v.pricePerDay || (defaultMatch ? defaultMatch.pricePerDay : '₹399/day'),
               image: v.image || (defaultMatch ? defaultMatch.image : 'https://images.unsplash.com/photo-1558981403-c5f9899a28bc?auto=format&fit=crop&w=800&q=80')
             };
           });

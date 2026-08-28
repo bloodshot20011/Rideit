@@ -7,6 +7,7 @@ export default function VehicleCard({ vehicle }) {
   const {
     name,
     type,
+    pricePerDay = '₹399/day',
     fuel,
     transmission,
     capacity,
@@ -24,10 +25,10 @@ export default function VehicleCard({ vehicle }) {
       animate={{ opacity: 1, scale: 1 }}
       exit={{ opacity: 0, scale: 0.95 }}
       transition={{ duration: 0.3, ease: 'easeOut' }}
-      whileHover={{ y: -4 }}
-      className="bg-surface rounded-xl border border-outline-variant/40 shadow-xs hover:shadow-md hover:border-primary/40 transition-all duration-300 flex flex-col overflow-hidden group"
+      whileHover={{ y: -6 }}
+      className="bg-surface rounded-2xl border border-outline-variant/40 shadow-xs hover:shadow-md hover:border-primary/40 transition-all duration-300 flex flex-col overflow-hidden group"
     >
-      {/* Vehicle Image */}
+      {/* Vehicle Image Container */}
       <div className="relative overflow-hidden">
         <ImagePlaceholder
           src={image}
@@ -37,10 +38,15 @@ export default function VehicleCard({ vehicle }) {
           aspectRatio="aspect-[16/10]"
         />
         
-        {/* Status Badge with subtle pulse */}
+        {/* Status Badge */}
         <div className="absolute top-3 left-3 bg-surface/90 backdrop-blur-md px-2.5 py-1 rounded-full text-xs font-semibold text-primary border border-outline-variant/40 flex items-center gap-1.5 shadow-xs">
           <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
           {status}
+        </div>
+
+        {/* Prominent Price Tag Badge */}
+        <div className="absolute top-3 right-3 bg-on-surface/90 backdrop-blur-md text-white font-headline font-extrabold text-xs px-3 py-1 rounded-full border border-white/20 shadow-sm flex items-center gap-1">
+          <span className="text-primary-fixed">{pricePerDay}</span>
         </div>
 
         {/* Feature/Badge Tag */}
@@ -58,7 +64,7 @@ export default function VehicleCard({ vehicle }) {
             <h3 className="font-headline font-bold text-lg text-on-surface group-hover:text-primary transition-colors">
               {name}
             </h3>
-            <span className="text-xs font-medium text-on-surface-variant bg-surface-low px-2 py-0.5 rounded border border-outline-variant/30 shrink-0">
+            <span className="text-xs font-semibold text-on-surface-variant bg-surface-low px-2 py-0.5 rounded border border-outline-variant/30 shrink-0">
               {type}
             </span>
           </div>

@@ -28,6 +28,7 @@ export default function AdminPage() {
   const [vCategory, setVCategory] = useState('bikes');
   const [vSubcategory, setVSubcategory] = useState('scooter');
   const [vType, setVType] = useState('Scooter');
+  const [vPrice, setVPrice] = useState('399');
   const [vFuel, setVFuel] = useState('Petrol');
   const [vTransmission, setVTransmission] = useState('Automatic');
   const [vCapacity, setVCapacity] = useState('2 Passengers');
@@ -51,6 +52,20 @@ export default function AdminPage() {
     return () => unsubscribe();
   }, []);
 
+  // Smart price auto-formatter
+  const formatPriceString = (input) => {
+    if (!input) return '₹399/day';
+    const str = String(input).trim();
+    if (str.includes('/day') || str.includes('₹')) return str;
+    
+    // Replace X99 or raw digits
+    const num = parseInt(str.replace(/[^0-9]/g, ''), 10);
+    if (!isNaN(num)) {
+      return `₹${num.toLocaleString('en-IN')}/day`;
+    }
+    return `₹${str}/day`;
+  };
+
   // Open modal for Adding New Vehicle
   const handleOpenAddModal = () => {
     setEditingVehicle(null);
@@ -58,6 +73,7 @@ export default function AdminPage() {
     setVCategory('bikes');
     setVSubcategory('scooter');
     setVType('Scooter');
+    setVPrice('399');
     setVFuel('Petrol');
     setVTransmission('Automatic');
     setVCapacity('2 Passengers');
@@ -76,6 +92,7 @@ export default function AdminPage() {
     setVCategory(v.category || 'bikes');
     setVSubcategory(v.subcategory || 'scooter');
     setVType(v.type || 'Scooter');
+    setVPrice(v.pricePerDay ? v.pricePerDay.replace(/[^0-9]/g, '') || v.pricePerDay : '399');
     setVFuel(v.fuel || 'Petrol');
     setVTransmission(v.transmission || 'Automatic');
     setVCapacity(v.capacity || '2 Passengers');
@@ -97,6 +114,7 @@ export default function AdminPage() {
       category: vCategory,
       subcategory: vSubcategory,
       type: vType,
+      pricePerDay: formatPriceString(vPrice),
       fuel: vFuel,
       transmission: vTransmission,
       capacity: vCapacity,
@@ -201,7 +219,7 @@ export default function AdminPage() {
             ApniRide Control Panel
           </h1>
           <p className="font-body text-sm text-on-surface-variant">
-            Manage Shivpuri vehicle fleet, customer travel requirements, host vehicle listings, and waitlist signups.
+            Manage Shivpuri vehicle fleet, pricing rates, customer travel requirements, host vehicle listings, and waitlist signups.
           </p>
         </div>
 
@@ -219,7 +237,7 @@ export default function AdminPage() {
       <div className="flex border-b border-outline-variant/30 overflow-x-auto gap-2 text-sm font-medium">
         {[
           { id: 'overview', label: 'Dashboard Overview', icon: 'dashboard', count: null },
-          { id: 'vehicles', label: 'Vehicle Catalog', icon: 'two_wheeler', count: vehicles.length },
+          { id: 'vehicles', label: 'Vehicle Catalog & Prices', icon: 'two_wheeler', count: vehicles.length },
           { id: 'requirements', label: 'Requirements Survey', icon: 'checklist', count: requirements.length },
           { id: 'hosts', label: 'Host Vehicles List', icon: 'key', count: hostVehicles.length },
           { id: 'waitlist', label: 'Waitlist Signups', icon: 'star', count: waitlist.length }
@@ -374,7 +392,7 @@ export default function AdminPage() {
         </div>
       )}
 
-      {/* TAB 2: VEHICLE CATALOG (CRUD) */}
+      {/* TAB 2: VEHICLE CATALOG (CRUD & PRICES) */}
       {activeTab === 'vehicles' && (
         <div className="space-y-6">
           <div className="bg-surface p-4 rounded-2xl border border-outline-variant/40 shadow-xs flex flex-col sm:flex-row gap-4 items-center justify-between">
@@ -432,6 +450,10 @@ export default function AdminPage() {
                       {v.status === 'Available' ? '✓ Available' : '⌛ Coming Soon'}
                     </button>
 
+                    <div className="absolute top-3 right-3 bg-on-surface/90 backdrop-blur-md text-white font-headline font-extrabold text-xs px-3 py-1 rounded-full border border-white/20 shadow-sm">
+                      <span className="text-primary-fixed">{v.pricePerDay || '₹399/day'}</span>
+                    </div>
+
                     {v.badge && (
                       <span className="absolute bottom-3 right-3 bg-on-surface/80 text-white text-[11px] font-medium px-2 py-0.5 rounded">
                         {v.badge}
@@ -455,9 +477,12 @@ export default function AdminPage() {
                       <span className="bg-surface-low px-2 py-0.5 rounded border border-outline-variant/20">{v.capacity}</span>
                     </div>
 
-                    <div className="text-xs text-on-surface-variant flex items-center gap-1 pt-1">
-                      <span className="material-symbols-outlined text-sm text-primary">location_on</span>
-                      <span>{v.location}</span>
+                    <div className="text-xs text-on-surface-variant flex items-center justify-between pt-1">
+                      <span className="flex items-center gap-1">
+                        <span className="material-symbols-outlined text-sm text-primary">location_on</span>
+                        <span>{v.location}</span>
+                      </span>
+                      <span className="font-headline font-extrabold text-primary">{v.pricePerDay || '₹399/day'}</span>
                     </div>
                   </div>
                 </div>
@@ -468,7 +493,7 @@ export default function AdminPage() {
                     className="text-xs font-semibold text-primary hover:underline flex items-center gap-1 cursor-pointer"
                   >
                     <span className="material-symbols-outlined text-sm">edit</span>
-                    Edit Specs
+                    Edit Specs & Price
                   </button>
 
                   <button
@@ -789,7 +814,17 @@ export default function AdminPage() {
                   />
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <FormField
+                    label="Rental Price per Day (e.g. 399 or ₹399/day)"
+                    id="v-price"
+                    value={vPrice}
+                    onChange={e => setVPrice(e.target.value)}
+                    placeholder="e.g. 399, 499, 1499"
+                    helperText="Auto-formats to ₹X/day (e.g. 399 → ₹399/day)"
+                    required
+                  />
+
                   <FormField
                     label="Type Tag"
                     id="v-type"
@@ -797,7 +832,9 @@ export default function AdminPage() {
                     onChange={e => setVType(e.target.value)}
                     placeholder="e.g. Scooter / SUV"
                   />
+                </div>
 
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <FormField
                     label="Fuel Type"
                     id="v-fuel"
