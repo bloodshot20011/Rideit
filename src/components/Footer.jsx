@@ -37,9 +37,6 @@ export default function Footer() {
                   <Link to="/vehicles" className="text-on-surface-variant hover:text-primary transition-colors">Vehicles</Link>
                 </li>
                 <li>
-                  <Link to="/how-it-works" className="text-on-surface-variant hover:text-primary transition-colors">How It Works</Link>
-                </li>
-                <li>
                   <Link to="/about" className="text-on-surface-variant hover:text-primary transition-colors">About Us</Link>
                 </li>
               </ul>

@@ -29,7 +29,6 @@ export default function Navbar() {
     { label: 'Vehicles', path: '/vehicles' },
     { label: 'Check Requirements', path: '/request' },
     { label: 'List Your Vehicle', path: '/list-your-vehicle' },
-    { label: 'How It Works', path: '/how-it-works' },
     { label: 'About', path: '/about' },
   ];
 
