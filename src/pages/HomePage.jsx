@@ -5,6 +5,7 @@ import Button from '../components/Button';
 import ImagePlaceholder from '../components/ImagePlaceholder';
 import ScrollReveal from '../components/ScrollReveal';
 import TyreMarksDivider from '../components/TyreMarksDivider';
+import Showroom3DSection from '../components/Showroom3DSection';
 import { IMAGES } from '../data/images';
 
 export default function HomePage() {
@@ -219,6 +220,14 @@ export default function HomePage() {
 
       {/* TYRE MARKS DIVIDER */}
       <TyreMarksDivider variant="subtle" />
+
+      {/* 🏎️ REALTIME 3D THREE.JS CAR SHOWROOM SECTION */}
+      <ScrollReveal>
+        <Showroom3DSection />
+      </ScrollReveal>
+
+      {/* TYRE MARKS DIVIDER */}
+      <TyreMarksDivider variant="dark" />
 
       {/* 3. CHECK YOUR REQUIREMENTS (SUBMITS BOTH FIELDS) */}
       <section className="px-4 sm:px-6 max-w-content mx-auto">
