@@ -83,14 +83,6 @@ export default function Navbar() {
         {/* Right Action: Amber Pill Button with Arrow Icon */}
         <div className="hidden md:flex items-center gap-3">
           <Link
-            to="/admin"
-            className="font-mono text-xs text-[#7C776E] hover:text-[#E64A19] px-2 py-1 transition-colors"
-            title="ApniRide Admin Studio"
-          >
-            [Admin]
-          </Link>
-
-          <Link
             to="/waitlist"
             className="inline-flex items-center gap-2 bg-[#E64A19] hover:bg-[#D84315] text-white font-mono text-xs font-semibold px-4 py-2 rounded-full shadow-xs transition-all hover:shadow-sm"
           >
@@ -142,13 +134,6 @@ export default function Navbar() {
                   </NavLink>
                 );
               })}
-              <NavLink
-                to="/admin"
-                onClick={() => setMobileMenuOpen(false)}
-                className="block px-4 py-2.5 font-mono text-xs font-semibold text-[#E64A19] rounded-lg bg-[#E64A19]/10"
-              >
-                ⚙️ Admin Control Panel
-              </NavLink>
               <div className="pt-3 border-t border-[#1E1B18]/15 space-y-2">
                 <Link
                   to="/waitlist"

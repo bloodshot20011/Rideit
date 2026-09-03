@@ -1,4 +1,13 @@
 import { VEHICLES_DATA } from './vehicles';
+import {
+  supabase,
+  isSupabaseConfigured,
+  syncVehiclesFromSupabase,
+  upsertVehicleToSupabase,
+  saveRequirementToSupabase,
+  saveHostVehicleToSupabase,
+  saveWaitlistToSupabase
+} from '../lib/supabase';
 
 const VEHICLES_KEY = 'apniride_vehicles_v3';
 const REQUIREMENTS_KEY = 'apniride_requirements_v1';
@@ -58,25 +67,27 @@ const INITIAL_WAITLIST = [
 const INITIAL_HOST_VEHICLES = [
   {
     id: 'host-301',
-    fullName: 'Suresh Kumar',
-    whatsapp: '9876512345',
-    email: 'suresh.k@example.com',
+    fullName: 'Rameshwar Dayal',
+    whatsapp: '9826012345',
+    email: 'rameshwar@example.com',
     vehicleCategory: 'bike',
-    modelName: 'TVS Jupiter 125',
+    modelName: 'Royal Enfield Classic 350',
     year: '2023',
-    location: 'Madhav Chowk',
-    photos: ['https://images.unsplash.com/photo-1558981403-c5f9899a28bc?auto=format&fit=crop&w=400&q=80'],
-    notes: 'Single owner, clean condition, valid comprehensive insurance till 2027.',
-    status: 'New',
-    createdAt: '2026-08-28T18:00:00Z'
+    location: 'Circular Road, Shivpuri',
+    photos: [],
+    notes: 'Mint condition, serviced last week.',
+    status: 'Approved',
+    createdAt: '2026-08-26T12:00:00Z'
   }
 ];
 
 class AdminStore {
   constructor() {
     this.listeners = [];
+    this.initSupabaseSync();
   }
 
+  // Subscribe to changes
   subscribe(listener) {
     this.listeners.push(listener);
     return () => {
@@ -88,24 +99,20 @@ class AdminStore {
     this.listeners.forEach(l => l());
   }
 
-  // --- VEHICLES CRUD ---
+  async initSupabaseSync() {
+    if (isSupabaseConfigured) {
+      const cloudVehicles = await syncVehiclesFromSupabase();
+      if (cloudVehicles && cloudVehicles.length > 0) {
+        this.saveVehicles(cloudVehicles, false);
+      }
+    }
+  }
+
+  // --- VEHICLE CATALOG CRUD ---
   getVehicles() {
     try {
       const stored = localStorage.getItem(VEHICLES_KEY);
-      if (stored) {
-        const parsed = JSON.parse(stored);
-        if (Array.isArray(parsed) && parsed.length > 0) {
-          const verified = parsed.map(v => {
-            const defaultMatch = VEHICLES_DATA.find(d => d.id === v.id || d.name === v.name);
-            return {
-              ...v,
-              pricePerDay: v.pricePerDay || (defaultMatch ? defaultMatch.pricePerDay : '₹399/day'),
-              image: v.image || (defaultMatch ? defaultMatch.image : 'https://images.unsplash.com/photo-1558981403-c5f9899a28bc?auto=format&fit=crop&w=800&q=80')
-            };
-          });
-          return verified;
-        }
-      }
+      if (stored) return JSON.parse(stored);
     } catch (e) {
       console.error('Error reading vehicles from localStorage:', e);
     }
@@ -113,7 +120,7 @@ class AdminStore {
     return VEHICLES_DATA;
   }
 
-  saveVehicles(vehicles) {
+  saveVehicles(vehicles, syncCloud = true) {
     try {
       localStorage.setItem(VEHICLES_KEY, JSON.stringify(vehicles));
       this.notify();
@@ -130,31 +137,59 @@ class AdminStore {
     };
     const updated = [vehicleWithId, ...vehicles];
     this.saveVehicles(updated);
+
+    // Sync to Supabase
+    if (isSupabaseConfigured) {
+      upsertVehicleToSupabase(vehicleWithId);
+    }
+
     return vehicleWithId;
   }
 
   updateVehicle(id, updatedFields) {
     const vehicles = this.getVehicles();
-    const updated = vehicles.map(v => v.id === id ? { ...v, ...updatedFields } : v);
-    this.saveVehicles(updated);
-  }
-
-  toggleVehicleStatus(id) {
-    const vehicles = this.getVehicles();
+    let updatedVehicle = null;
     const updated = vehicles.map(v => {
       if (v.id === id) {
-        const newStatus = v.status === 'Available' ? 'Coming Soon' : 'Available';
-        return { ...v, status: newStatus };
+        updatedVehicle = { ...v, ...updatedFields };
+        return updatedVehicle;
       }
       return v;
     });
     this.saveVehicles(updated);
+
+    // Sync to Supabase
+    if (isSupabaseConfigured && updatedVehicle) {
+      upsertVehicleToSupabase(updatedVehicle);
+    }
+  }
+
+  toggleVehicleStatus(id) {
+    const vehicles = this.getVehicles();
+    let target = null;
+    const updated = vehicles.map(v => {
+      if (v.id === id) {
+        const newStatus = v.status === 'Available' ? 'Coming Soon' : 'Available';
+        target = { ...v, status: newStatus };
+        return target;
+      }
+      return v;
+    });
+    this.saveVehicles(updated);
+
+    if (isSupabaseConfigured && target) {
+      upsertVehicleToSupabase(target);
+    }
   }
 
   deleteVehicle(id) {
     const vehicles = this.getVehicles();
     const updated = vehicles.filter(v => v.id !== id);
     this.saveVehicles(updated);
+
+    if (isSupabaseConfigured && supabase) {
+      supabase.from('vehicles').delete().eq('id', id).then(() => {});
+    }
   }
 
   // --- REQUIREMENT SUBMISSIONS CRUD ---
@@ -188,6 +223,12 @@ class AdminStore {
     };
     const updated = [newEntry, ...reqs];
     this.saveRequirements(updated);
+
+    // Sync to Supabase
+    if (isSupabaseConfigured) {
+      saveRequirementToSupabase(newEntry);
+    }
+
     return newEntry;
   }
 
@@ -195,12 +236,20 @@ class AdminStore {
     const reqs = this.getRequirements();
     const updated = reqs.map(r => r.id === id ? { ...r, status } : r);
     this.saveRequirements(updated);
+
+    if (isSupabaseConfigured && supabase) {
+      supabase.from('requirements').update({ status }).eq('id', id).then(() => {});
+    }
   }
 
   deleteRequirement(id) {
     const reqs = this.getRequirements();
     const updated = reqs.filter(r => r.id !== id);
     this.saveRequirements(updated);
+
+    if (isSupabaseConfigured && supabase) {
+      supabase.from('requirements').delete().eq('id', id).then(() => {});
+    }
   }
 
   // --- HOST VEHICLE SUBMISSIONS CRUD ---
@@ -234,6 +283,12 @@ class AdminStore {
     };
     const updated = [newEntry, ...hosts];
     this.saveHostVehicles(updated);
+
+    // Sync to Supabase
+    if (isSupabaseConfigured) {
+      saveHostVehicleToSupabase(newEntry);
+    }
+
     return newEntry;
   }
 
@@ -241,15 +296,23 @@ class AdminStore {
     const hosts = this.getHostVehicles();
     const updated = hosts.map(h => h.id === id ? { ...h, status } : h);
     this.saveHostVehicles(updated);
+
+    if (isSupabaseConfigured && supabase) {
+      supabase.from('host_vehicles').update({ status }).eq('id', id).then(() => {});
+    }
   }
 
   deleteHostVehicle(id) {
     const hosts = this.getHostVehicles();
     const updated = hosts.filter(h => h.id !== id);
     this.saveHostVehicles(updated);
+
+    if (isSupabaseConfigured && supabase) {
+      supabase.from('host_vehicles').delete().eq('id', id).then(() => {});
+    }
   }
 
-  // --- WAITLIST REGISTRATIONS CRUD ---
+  // --- WAITLIST CRUD ---
   getWaitlist() {
     try {
       const stored = localStorage.getItem(WAITLIST_KEY);
@@ -261,9 +324,9 @@ class AdminStore {
     return INITIAL_WAITLIST;
   }
 
-  saveWaitlist(entries) {
+  saveWaitlist(list) {
     try {
-      localStorage.setItem(WAITLIST_KEY, JSON.stringify(entries));
+      localStorage.setItem(WAITLIST_KEY, JSON.stringify(list));
       this.notify();
     } catch (e) {
       console.error('Error saving waitlist to localStorage:', e);
@@ -271,28 +334,32 @@ class AdminStore {
   }
 
   addWaitlist(data) {
-    const entries = this.getWaitlist();
+    const list = this.getWaitlist();
     const newEntry = {
       ...data,
       id: `wait-${Date.now()}`,
       status: 'New',
       createdAt: new Date().toISOString()
     };
-    const updated = [newEntry, ...entries];
+    const updated = [newEntry, ...list];
     this.saveWaitlist(updated);
+
+    // Sync to Supabase
+    if (isSupabaseConfigured) {
+      saveWaitlistToSupabase(newEntry);
+    }
+
     return newEntry;
   }
 
-  updateWaitlistStatus(id, status) {
-    const entries = this.getWaitlist();
-    const updated = entries.map(w => w.id === id ? { ...w, status } : w);
-    this.saveWaitlist(updated);
-  }
-
   deleteWaitlist(id) {
-    const entries = this.getWaitlist();
-    const updated = entries.filter(w => w.id !== id);
+    const list = this.getWaitlist();
+    const updated = list.filter(w => w.id !== id);
     this.saveWaitlist(updated);
+
+    if (isSupabaseConfigured && supabase) {
+      supabase.from('waitlist').delete().eq('id', id).then(() => {});
+    }
   }
 }
 
