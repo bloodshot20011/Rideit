@@ -13,24 +13,24 @@ export default function SectionHeading({
   return (
     <div className={`flex flex-col max-w-2xl mx-auto mb-10 ${alignClasses} ${className}`}>
       {pillTag && (
-        <div className="inline-flex items-center gap-1.5 bg-surface-low text-primary px-3 py-1 rounded-full mb-4 border border-outline-variant/40 shadow-xs">
-          <span className="material-symbols-outlined text-sm leading-none text-primary" data-weight="fill">
+        <div className="inline-flex items-center gap-1.5 bg-[#0B132B] text-[#C89D3C] px-3 py-1 rounded-md mb-4 border border-[#C89D3C]/40 shadow-xs">
+          <span className="material-symbols-outlined text-xs leading-none text-[#E64A19]" data-weight="fill">
             {pillIcon}
           </span>
-          <span className="font-body text-xs font-semibold tracking-wide uppercase">
+          <span className="font-mono text-[11px] font-semibold tracking-wider uppercase">
             {pillTag}
           </span>
         </div>
       )}
       
       {title && (
-        <h2 className="font-headline font-bold text-2xl sm:text-3xl lg:text-4xl text-on-surface tracking-tight mb-3">
+        <h2 className="font-display font-bold text-2xl sm:text-3xl lg:text-4xl text-[#1E1B18] tracking-tight mb-3 uppercase">
           {title}
         </h2>
       )}
 
       {subtitle && (
-        <p className="font-body text-base sm:text-lg text-on-surface-variant leading-relaxed">
+        <p className="font-body text-base sm:text-lg text-[#45413B] leading-relaxed">
           {subtitle}
         </p>
       )}

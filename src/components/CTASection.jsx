@@ -13,24 +13,24 @@ export default function CTASection({
   const isPrimary = variant === 'primary';
 
   return (
-    <section className={`py-14 px-4 sm:px-6 rounded-2xl relative overflow-hidden my-12 border ${
+    <section className={`py-14 px-4 sm:px-6 rounded-2xl relative overflow-hidden my-12 border-2 ${
       isPrimary
-        ? 'bg-gradient-to-br from-primary-container via-primary to-secondary text-white border-primary/20 shadow-md'
-        : 'bg-surface-low text-on-surface border-outline-variant/40 shadow-xs'
+        ? 'bg-[#0B132B] text-[#F5F2EB] border-[#C89D3C]/40 shadow-lg'
+        : 'bg-[#EFECE4] text-[#1E1B18] border-[#1E1B18]/15 shadow-xs'
     }`}>
-      {/* Abstract decorative shapes */}
-      <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/4 pointer-events-none" />
-      <div className="absolute bottom-0 left-0 w-64 h-64 bg-black/10 rounded-full blur-3xl translate-y-1/2 -translate-x-1/4 pointer-events-none" />
+      {/* Neo-Mirai atmospheric glow */}
+      <div className="absolute top-0 right-0 w-64 h-64 bg-[#E64A19]/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/4 pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-64 h-64 bg-[#C89D3C]/10 rounded-full blur-3xl translate-y-1/2 -translate-x-1/4 pointer-events-none" />
 
       <div className="max-w-2xl mx-auto text-center relative z-10 space-y-6">
-        <h2 className={`font-headline font-bold text-2xl sm:text-3xl lg:text-4xl tracking-tight ${
-          isPrimary ? 'text-white' : 'text-on-surface'
+        <h2 className={`font-display font-bold text-2xl sm:text-3xl lg:text-4xl tracking-tight uppercase ${
+          isPrimary ? 'text-[#F5F2EB]' : 'text-[#1E1B18]'
         }`}>
           {title}
         </h2>
 
         <p className={`font-body text-base sm:text-lg leading-relaxed ${
-          isPrimary ? 'text-white/90' : 'text-on-surface-variant'
+          isPrimary ? 'text-[#F5F2EB]/80' : 'text-[#45413B]'
         }`}>
           {description}
         </p>
@@ -39,9 +39,9 @@ export default function CTASection({
           {primaryCtaText && (
             <Button
               to={primaryCtaTo}
-              variant={isPrimary ? 'outline' : 'primary'}
+              variant="primary"
               size="lg"
-              className={isPrimary ? 'bg-white text-primary border-white hover:bg-white/90 hover:border-white shadow-sm' : ''}
+              className="bg-[#E64A19] hover:bg-[#D84315] text-white shadow-sm"
             >
               {primaryCtaText}
             </Button>
@@ -50,9 +50,9 @@ export default function CTASection({
           {secondaryCtaText && (
             <Button
               to={secondaryCtaTo}
-              variant={isPrimary ? 'ghost' : 'outline'}
+              variant="outline"
               size="lg"
-              className={isPrimary ? 'text-white hover:bg-white/10' : ''}
+              className={isPrimary ? 'text-[#F5F2EB] border-[#C89D3C]/50 hover:bg-[#131E29]' : 'border-[#1E1B18]/20'}
             >
               {secondaryCtaText}
             </Button>

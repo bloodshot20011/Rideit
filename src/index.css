@@ -5,26 +5,35 @@
 @layer base {
   html {
     scroll-behavior: smooth;
-    caret-color: #0058be;
+    caret-color: #E64A19;
+    background-color: #F5F2EB;
   }
 
   ::selection {
-    background-color: #0058be;
+    background-color: #E64A19;
     color: #ffffff;
   }
 
   body {
-    @apply bg-background text-on-surface font-body;
+    background-color: #F5F2EB;
+    /* Neo-Mirai Blueprint Grid Background */
+    background-image: 
+      linear-gradient(90deg, rgba(30, 27, 24, 0.035) 1px, transparent 1px),
+      linear-gradient(0deg, rgba(30, 27, 24, 0.035) 1px, transparent 1px);
+    background-size: 112px 112px, 112px 112px;
+    color: #1E1B18;
+    font-family: 'Inter', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    @apply font-headline tracking-tight;
+    font-family: 'Chakra Petch', 'Outfit', sans-serif;
+    letter-spacing: -0.02em;
   }
 
   :focus-visible {
-    outline: 2px solid #0058be;
+    outline: 2px solid #E64A19;
     outline-offset: 2px;
   }
 }
@@ -44,21 +53,21 @@
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Custom themed scrollbars */
+/* Neo-Mirai Themed Scrollbars */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 7px;
+  height: 7px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #f2f3fd;
+  background: #EFECE4;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #c2c6d6;
+  background: #C89D3C;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #727785;
+  background: #E64A19;
 }

@@ -8,13 +8,13 @@ export default function TyreMarksDivider({
   const getColorClass = () => {
     switch (variant) {
       case 'dark':
-        return 'text-on-surface/30';
+        return 'text-[#1E1B18]/30';
       case 'subtle':
-        return 'text-on-surface-variant/20';
+        return 'text-[#C89D3C]/35';
       case 'primary':
-        return 'text-primary/40';
+        return 'text-[#E64A19]/40';
       default:
-        return 'text-on-surface/30';
+        return 'text-[#1E1B18]/30';
     }
   };
 
@@ -55,7 +55,7 @@ export default function TyreMarksDivider({
         </svg>
 
         {/* Speed accent line */}
-        <div className="w-full max-w-md h-[2px] bg-gradient-to-r from-transparent via-on-surface/25 to-transparent -mt-1" />
+        <div className="w-full max-w-md h-[2px] bg-gradient-to-r from-transparent via-[#C89D3C]/40 to-transparent -mt-1" />
       </div>
     </div>
   );
