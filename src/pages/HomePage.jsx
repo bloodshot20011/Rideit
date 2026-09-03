@@ -64,7 +64,7 @@ export default function HomePage() {
                 </span>
               </div>
 
-              {/* Main Neo-Mirai Display Headline */}
+              {/* Main Neo-Mirai Display Headline - SIMPLE EVERYDAY WORDS */}
               <motion.h1
                 initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -72,8 +72,8 @@ export default function HomePage() {
                 className="font-display font-light text-3xl sm:text-5xl lg:text-7xl text-[#1E1B18] tracking-tight leading-[1.04] sm:leading-[0.98] mb-3 uppercase"
               >
                 APNIRIDE<br />
-                MOBILITY<br />
-                PLATFORM
+                BIKE & CAR<br />
+                RENTALS
               </motion.h1>
 
               {/* Subtitle in Warm Terracotta Serif */}
@@ -86,14 +86,14 @@ export default function HomePage() {
                 Shivpuri 2026
               </motion.div>
 
-              {/* Relatable, Jargon-Free Subtext for Local Visitors */}
+              {/* Clear, Jargon-Free Basic Business Info */}
               <motion.p
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.3 }}
                 className="font-body text-sm sm:text-base text-[#45413B] max-w-lg mb-6 leading-relaxed"
               >
-                Rent verified bikes, scooters, and cars in Shivpuri without buying. Transparent rates starting from ₹399/day.
+                Shivpuri's first self-drive rental service. Rent scooters from ₹399/day and cars from ₹1,499/day with zero deposit hassles.
               </motion.p>
 
               {/* CTA Group */}
@@ -137,11 +137,11 @@ export default function HomePage() {
       {/* TYRE MARKS SPEED DIVIDER */}
       <TyreMarksDivider variant="primary" />
 
-      {/* 2. WELCOMING BRIDGE & LOCAL BUSINESS EXPLANATION */}
+      {/* 2. WELCOMING BRIDGE & CONTINUOUS ADVERTISEMENT STORYTELLING */}
       <section className="px-4 sm:px-6 max-w-content mx-auto space-y-6 sm:space-y-8">
         {/* Gentle Bridge Transition Line (Requested by User) */}
         <ScrollReveal>
-          <div className="text-center max-w-2xl mx-auto space-y-2">
+          <div className="text-center max-w-2xl mx-auto space-y-3">
             <span className="font-mono text-[11px] font-semibold text-[#E64A19] uppercase tracking-wider">
               [WELCOME TO SHIVPURI MOBILITY]
             </span>
@@ -151,6 +151,12 @@ export default function HomePage() {
             <p className="font-body text-xs sm:text-sm text-[#45413B] leading-relaxed max-w-xl mx-auto">
               ApniRide is introducing convenient, verified self-drive bike and car rentals designed around everyday local routines.
             </p>
+            {/* Continuous Ad Connecting Line */}
+            <div className="pt-1">
+              <div className="inline-block bg-[#0B132B] text-[#F5F2EB] px-4 py-2 rounded-lg font-mono text-xs sm:text-sm font-medium border border-[#C89D3C]/40 shadow-xs">
+                ✨ Zero down payment, zero maintenance, 100% freedom. Shivpuri residents, get ready for affordable daily rentals.
+              </div>
+            </div>
           </div>
         </ScrollReveal>
 
@@ -162,7 +168,7 @@ export default function HomePage() {
                 EASY & TRANSPARENT RENTALS
               </span>
               <h3 className="font-display font-bold text-xl sm:text-2xl text-[#1E1B18] tracking-tight uppercase">
-                Gadi Kharidne ki Zaroorat Nahi. <br className="hidden sm:block" />
+                Gaadi Kharidne ki Zaroorat Nahi. <br className="hidden sm:block" />
                 <span className="text-[#D84315] font-serif normal-case text-base sm:text-xl font-normal block sm:inline">
                   Rent verified bikes and cars whenever you need.
                 </span>
