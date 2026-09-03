@@ -36,7 +36,7 @@ export default function HomePage() {
           style={{ backgroundImage: `url(${IMAGES.heroBackground})` }}
         />
 
-        {/* Subtle Light Overlay for Bright Landscape & High Text Readability */}
+        {/* Subtle Light Overlay for Bright Landscape and High Text Readability */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/25 to-black/10 pointer-events-none" />
 
         {/* Content Container */}
@@ -93,7 +93,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 🛣️ BLACK TYRE MARKS DIVIDER (BELOW HERO) */}
+      {/* TYRE MARKS DIVIDER (BELOW HERO) */}
       <TyreMarksDivider variant="dark" className="-mt-20 z-20" />
 
       {/* 2. CHOOSE YOUR FREEDOM SECTION */}
@@ -217,7 +217,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 🛣️ TYRE MARKS DIVIDER */}
+      {/* TYRE MARKS DIVIDER */}
       <TyreMarksDivider variant="subtle" />
 
       {/* 3. CHECK YOUR REQUIREMENTS (SUBMITS BOTH FIELDS) */}
@@ -349,7 +349,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 🛣️ TYRE MARKS DIVIDER */}
+      {/* TYRE MARKS DIVIDER */}
       <TyreMarksDivider variant="dark" />
 
       {/* 5. BUILT FOR A BETTER RENTAL EXPERIENCE */}
@@ -382,7 +382,7 @@ export default function HomePage() {
               </div>
               <h3 className="font-headline font-bold text-base text-on-surface">Clear Pricing</h3>
               <p className="font-body text-xs sm:text-sm text-on-surface-variant leading-relaxed">
-                No hidden fees—what you see is what you pay.
+                No hidden fees. What you see is what you pay.
               </p>
             </div>
           </ScrollReveal>
@@ -481,7 +481,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 🛣️ FINAL TYRE MARKS DIVIDER BEFORE FOOTER CTA */}
+      {/* FINAL TYRE MARKS DIVIDER BEFORE FOOTER CTA */}
       <TyreMarksDivider variant="subtle" />
 
       {/* 8. FINAL CTA: BE AMONG THE FIRST TO APNIRIDE */}

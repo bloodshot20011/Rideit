@@ -18,7 +18,7 @@ export default function AboutPage() {
         />
       </section>
 
-      {/* 🛣️ TYRE MARKS DIVIDER */}
+      {/* TYRE MARKS DIVIDER */}
       <TyreMarksDivider variant="dark" />
 
       {/* Mission & Story Grid */}
@@ -32,7 +32,7 @@ export default function AboutPage() {
             In cities like Shivpuri, mobility options are often limited to purchasing personal vehicles or relying on erratic public transit.
           </p>
           <p className="font-body text-base text-on-surface-variant leading-relaxed">
-            ApniRide bridges this gap by offering a transparent vehicle rental service tailored to your exact travel requirements—whether you need a scooter for daily errands or a car for outstation travel.
+            ApniRide bridges this gap by offering a transparent vehicle rental service tailored to your exact travel requirements, whether you need a scooter for daily errands or a car for outstation travel.
           </p>
         </div>
 
@@ -55,7 +55,7 @@ export default function AboutPage() {
             </div>
             <h3 className="font-headline font-bold text-lg text-on-surface">Local-First Approach</h3>
             <p className="font-body text-sm text-on-surface-variant leading-relaxed">
-              We design every pickup point, pricing tier, and vehicle recommendation around Shivpuri's geography and daily routines.
+              We design every pickup point, pricing tier, and vehicle recommendation around Shivpuri geography and daily routines.
             </p>
           </div>
 
@@ -128,7 +128,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* 🛣️ TYRE MARKS DIVIDER */}
+      {/* TYRE MARKS DIVIDER */}
       <TyreMarksDivider variant="subtle" />
 
       {/* Final Waitlist CTA */}

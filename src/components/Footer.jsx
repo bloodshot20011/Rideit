@@ -17,11 +17,11 @@ export default function Footer() {
               </span>
             </Link>
             <p className="font-body text-sm text-on-surface-variant leading-relaxed">
-              Modern mobility rental platform starting in Shivpuri, Madhya Pradesh. Rent verified bikes & cars tailored to your travel requirements.
+              Modern mobility rental platform starting in Shivpuri, Madhya Pradesh. Rent verified bikes and cars tailored to your travel requirements.
             </p>
             <div className="inline-flex items-center gap-2 bg-surface-low text-primary px-3 py-1 rounded-full text-xs font-medium border border-outline-variant/40">
               <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-              Pre-launch Phase — Shivpuri, India
+              Pre-launch Phase - Shivpuri, India
             </div>
           </div>
 
@@ -55,7 +55,7 @@ export default function Footer() {
                   <Link to="/waitlist" className="text-on-surface-variant hover:text-primary transition-colors">Join Waitlist</Link>
                 </li>
                 <li>
-                  <Link to="/admin" className="text-primary font-medium hover:underline">⚙️ Admin Studio</Link>
+                  <Link to="/admin" className="text-primary font-medium hover:underline">Admin Studio</Link>
                 </li>
               </ul>
             </div>
@@ -80,7 +80,7 @@ export default function Footer() {
         <div className="border-t border-outline-variant/30 mt-10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-on-surface-variant">
           <p>© {new Date().getFullYear()} ApniRide. All rights reserved.</p>
           <p className="text-center sm:text-right">
-            Pre-launch Prototype • Designed for Shivpuri, MP • <Link to="/admin" className="hover:underline text-primary">Admin Studio</Link>
+            Pre-launch Prototype - Designed for Shivpuri, MP - <Link to="/admin" className="hover:underline text-primary">Admin Studio</Link>
           </p>
         </div>
       </div>
