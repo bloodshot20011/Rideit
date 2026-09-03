@@ -3,12 +3,29 @@
 @tailwind utilities;
 
 @layer base {
+  html {
+    scroll-behavior: smooth;
+    caret-color: #0058be;
+  }
+
+  ::selection {
+    background-color: #0058be;
+    color: #ffffff;
+  }
+
   body {
     @apply bg-background text-on-surface font-body;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
   h1, h2, h3, h4, h5, h6 {
     @apply font-headline tracking-tight;
+  }
+
+  :focus-visible {
+    outline: 2px solid #0058be;
+    outline-offset: 2px;
   }
 }
 
@@ -24,5 +41,24 @@
 
 /* Custom smooth transitions */
 .transition-smooth {
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Custom themed scrollbars */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f2f3fd;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c2c6d6;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #727785;
 }
