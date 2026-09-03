@@ -13,19 +13,19 @@ export default function WhatsAppButton() {
       rel="noopener noreferrer"
       initial={{ scale: 0, opacity: 0 }}
       animate={{ scale: 1, opacity: 1 }}
-      whileHover={{ scale: 1.1 }}
-      whileTap={{ scale: 0.9 }}
-      transition={{ type: 'spring', stiffness: 400, damping: 20 }}
-      className="fixed bottom-20 right-5 md:bottom-6 md:right-6 z-50 bg-[#25D366] text-white p-3.5 sm:p-4 rounded-full shadow-lg hover:shadow-xl flex items-center justify-center group cursor-pointer border-2 border-white"
+      whileHover={{ scale: 1.08 }}
+      whileTap={{ scale: 0.92 }}
+      transition={{ type: 'spring', stiffness: 400, damping: 22 }}
+      className="fixed bottom-5 right-5 sm:bottom-6 sm:right-6 z-40 bg-[#25D366] text-white p-3.5 sm:p-4 rounded-full shadow-lg hover:shadow-xl flex items-center justify-center group cursor-pointer border-2 border-white"
       aria-label="Chat with ApniRide on WhatsApp (+91 8370092226)"
       title="Chat with ApniRide on WhatsApp (+91 8370092226)"
     >
       {/* Subtle pulse ring animation behind button */}
-      <span className="absolute inset-0 rounded-full bg-[#25D366] animate-ping opacity-30 pointer-events-none" />
+      <span className="absolute inset-0 rounded-full bg-[#25D366] animate-ping opacity-25 pointer-events-none" />
 
       {/* WhatsApp SVG Icon */}
       <svg
-        className="w-7 h-7 sm:w-8 sm:h-8 fill-current relative z-10"
+        className="w-6 h-6 sm:w-7 sm:h-7 fill-current relative z-10"
         viewBox="0 0 24 24"
         xmlns="http://www.w3.org/2000/svg"
       >
@@ -33,8 +33,8 @@ export default function WhatsAppButton() {
       </svg>
 
       {/* Floating Tooltip Desktop */}
-      <span className="hidden md:block absolute right-full mr-3 bg-on-surface text-white text-xs font-semibold px-3 py-1.5 rounded-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity shadow-md pointer-events-none">
-        WhatsApp Us: +91 8370092226
+      <span className="hidden md:block absolute right-full mr-3 bg-[#1E1B18] text-white text-xs font-mono font-medium px-3 py-1.5 rounded-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity shadow-md pointer-events-none">
+        WhatsApp: +91 8370092226
       </span>
     </motion.a>
   );

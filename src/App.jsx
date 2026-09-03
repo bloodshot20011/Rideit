@@ -25,7 +25,7 @@ function ScrollToTop() {
 
 export default function App() {
   return (
-    <div className="flex flex-col min-h-screen bg-background text-on-surface pb-16 md:pb-0">
+    <div className="flex flex-col min-h-screen bg-background text-on-surface">
       <ScrollToTop />
       <Navbar />
 

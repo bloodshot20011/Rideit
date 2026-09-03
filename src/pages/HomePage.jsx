@@ -69,7 +69,7 @@ export default function HomePage() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.7, delay: 0.15 }}
-                className="font-display font-light text-5xl sm:text-7xl lg:text-8xl text-[#1E1B18] tracking-tight leading-[0.96] mb-4 uppercase"
+                className="font-display font-light text-4xl sm:text-6xl lg:text-8xl text-[#1E1B18] tracking-tight leading-[1.02] sm:leading-[0.96] mb-4 uppercase"
               >
                 APNIRIDE<br />
                 MOBILITY<br />
