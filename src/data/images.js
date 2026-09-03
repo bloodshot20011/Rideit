@@ -1,18 +1,19 @@
-// Centralized Image Asset Registry for Ride It
-// Replace any image URL here to update across the entire application.
+import neoMiraiHero from '../assets/neo_mirai_hero.jpg';
+import neoMiraiBikes from '../assets/neo_mirai_bikes.jpg';
+import neoMiraiCars from '../assets/neo_mirai_cars.jpg';
 
 export const IMAGES = {
-  // Hero Section Edge-to-Edge Background (Shivpuri Mountain Road)
-  heroBackground: '/images/hero_shivpuri_mountain.jpg',
+  // Hero Section Exact Neo-Mirai Golden Sunset Background
+  heroBackground: neoMiraiHero,
   
-  // Category Banners
-  bikesCategory: 'https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=800&q=80',
-  carsCategory: 'https://images.unsplash.com/photo-1502877338535-766e1452684a?auto=format&fit=crop&w=800&q=80',
+  // Category Showcase Art
+  bikesCategory: neoMiraiBikes,
+  carsCategory: neoMiraiCars,
   
   // Section Backgrounds & Visuals
-  shivpuriLandscape: '/images/hero_shivpuri_mountain.jpg',
-  ownerBanner: 'https://images.unsplash.com/photo-1558981244-50a04944d188?auto=format&fit=crop&w=1200&q=80',
-  finalCtaBackground: 'https://images.unsplash.com/photo-1485965120184-e220f721d03e?auto=format&fit=crop&w=1600&q=80',
+  shivpuriLandscape: neoMiraiCars,
+  ownerBanner: neoMiraiBikes,
+  finalCtaBackground: neoMiraiHero,
 
   // Vehicle Fleet Catalog Images
   vehicles: {

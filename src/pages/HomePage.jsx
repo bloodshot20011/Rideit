@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import Button from '../components/Button';
 import ImagePlaceholder from '../components/ImagePlaceholder';
 import ScrollReveal from '../components/ScrollReveal';
@@ -15,10 +15,6 @@ export default function HomePage() {
   const [widgetVehicleCategory, setWidgetVehicleCategory] = useState('bikes');
   const [widgetPurpose, setWidgetPurpose] = useState('Daily Commute');
 
-  // Parallax scroll effect for Shivpuri section
-  const { scrollYProgress } = useScroll();
-  const parallaxY = useTransform(scrollYProgress, [0.5, 0.9], [0, -10]);
-
   const handleWidgetSubmit = (e) => {
     e.preventDefault();
     navigate(`/request?category=${encodeURIComponent(widgetVehicleCategory)}&purpose=${encodeURIComponent(widgetPurpose)}&autoSubmit=true`);
@@ -26,73 +22,112 @@ export default function HomePage() {
 
   return (
     <div className="space-y-16 sm:space-y-24 pb-12">
-      {/* 1. CINEMATIC EDGE-TO-EDGE HERO SECTION - NEO-MIRAI CYBER-NIGHT */}
-      <section className="relative w-full min-h-[85vh] flex items-center justify-center overflow-hidden bg-[#0B132B] text-white -mt-16 pt-20 pb-16 border-b border-[#C89D3C]/30">
-        {/* Slow Ken Burns Background Image Zoom */}
-        <motion.div
-          animate={shouldReduceMotion ? {} : { scale: [1, 1.04] }}
-          transition={{ duration: 18, repeat: Infinity, repeatType: "reverse", ease: "easeInOut" }}
-          className="absolute inset-0 bg-cover bg-center pointer-events-none opacity-40 mix-blend-luminosity"
-          style={{ backgroundImage: `url(${IMAGES.heroBackground})` }}
-        />
-
-        {/* Neo-Mirai Atmospheric Gradient Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-[#0B132B] via-[#0B132B]/60 to-transparent pointer-events-none" />
+      {/* 1. EXACT NEO-MIRAI SPLIT HERO SECTION */}
+      <section className="relative w-full min-h-[90vh] flex items-center overflow-hidden bg-[#F5F2EB] text-[#1E1B18] -mt-16 pt-20 pb-16 border-b border-[#1E1B18]/10">
+        {/* Right Side Golden-Hour Illustration Artwork */}
+        <div className="absolute top-0 right-0 bottom-0 w-full lg:w-[68%] h-full overflow-hidden pointer-events-none z-0">
+          <motion.img
+            src={IMAGES.heroBackground}
+            alt="Neo-Mirai Visionary Shivpuri Mobility Art"
+            initial={{ scale: 1.05, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 1.2, ease: "easeOut" }}
+            className="w-full h-full object-cover object-right"
+          />
+          {/* Subtle Left-Edge Paper Blend Gradient */}
+          <div className="absolute inset-0 bg-gradient-to-r from-[#F5F2EB] via-[#F5F2EB]/80 to-transparent w-full lg:w-2/5 pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#F5F2EB] via-transparent to-transparent h-24 bottom-0 pointer-events-none" />
+        </div>
 
         {/* Content Container */}
-        <div className="relative z-10 max-w-content mx-auto px-4 sm:px-6 w-full text-center py-12 flex flex-col items-center">
-          {/* Technical Date / Locality Eyebrow */}
-          <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            className="inline-flex items-center gap-2 bg-[#131E29]/90 backdrop-blur-md text-[#C89D3C] px-3.5 py-1.5 rounded-md mb-6 border border-[#C89D3C]/40 shadow-sm font-mono text-xs"
-          >
-            <span className="w-2 h-2 rounded-full bg-[#E64A19] animate-ping" />
-            <span className="uppercase tracking-widest font-semibold">
-              SHIVPURI PRE-LAUNCH - MOBILITY NETWORK
-            </span>
-          </motion.div>
+        <div className="relative z-10 max-w-content mx-auto px-4 sm:px-6 w-full flex flex-col justify-between min-h-[75vh]">
+          {/* Far Right Vertical Stamp Seal Box (Desktop) */}
+          <div className="hidden xl:flex absolute top-4 right-6 flex-col items-center gap-2 p-2.5 bg-[#F5F2EB]/85 backdrop-blur-md border border-[#1E1B18]/20 rounded-md font-mono text-[10px] tracking-widest text-[#45413B] shadow-xs pointer-events-none">
+            <div className="w-5 h-5 rounded-full border border-[#E64A19] flex items-center justify-center text-[#E64A19] font-bold">
+              〇
+            </div>
+            <div className="[writing-mode:vertical-rl] py-2 font-semibold uppercase text-[#1E1B18]">
+              नई गतिशीलता • शिवपुरी
+            </div>
+          </div>
 
-          {/* Main Display Headline */}
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.25 }}
-            className="font-display font-extrabold text-4xl sm:text-6xl lg:text-7xl text-[#F5F2EB] tracking-tight leading-[1.08] max-w-4xl mb-6 drop-shadow-sm uppercase"
-          >
-            YOUR RIDE. <span className="text-[#E64A19]">YOUR WAY.</span>
-          </motion.h1>
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center pt-8">
+            {/* Left Column: Hero Text & Calligraphy */}
+            <div className="lg:col-span-8 flex flex-col items-start text-left relative">
+              {/* Vertical Hindi Calligraphy Margin Stamp */}
+              <div className="hidden sm:flex absolute -left-12 top-2 flex-col items-center gap-2 font-serif text-xs text-[#45413B]/80 pointer-events-none">
+                <span className="[writing-mode:vertical-rl] tracking-widest font-medium">
+                  आपकी अपनी सवारी, आपके रास्ते।
+                </span>
+                <span className="w-4 h-4 border border-[#E64A19] rounded-xs flex items-center justify-center text-[9px] text-[#E64A19] font-bold">
+                  印
+                </span>
+              </div>
 
-          {/* Supporting Text */}
-          <motion.p
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            className="font-body text-base sm:text-lg text-[#F5F2EB]/80 max-w-2xl mx-auto mb-8 leading-relaxed"
-          >
-            ApniRide brings precision mobility to Shivpuri. Verified scooters, commuter bikes, and cars tailored to your journey.
-          </motion.p>
+              {/* Main Neo-Mirai Display Headline */}
+              <motion.h1
+                initial={{ opacity: 0, y: 24 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.7, delay: 0.15 }}
+                className="font-display font-extrabold text-5xl sm:text-7xl lg:text-8xl text-[#1E1B18] tracking-tight leading-[0.95] mb-4 uppercase"
+              >
+                APNIRIDE<br />
+                MOBILITY<br />
+                PLATFORM
+              </motion.h1>
 
-          {/* CTA Buttons */}
-          <motion.div
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.55 }}
-            className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto justify-center"
-          >
-            <Button to="/waitlist" variant="primary" size="lg" className="shadow-md bg-[#E64A19] hover:bg-[#D84315] text-white">
-              Join the Waitlist
-            </Button>
-            <Button to="/request" variant="outline" size="lg" className="bg-[#131E29]/80 text-[#F5F2EB] border-[#C89D3C]/50 hover:bg-[#131E29] backdrop-blur-sm" icon="checklist">
-              Check Your Requirements
-            </Button>
-          </motion.div>
+              {/* Subtitle in Warm Terracotta Serif */}
+              <motion.div
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.3 }}
+                className="font-serif text-2xl sm:text-3xl lg:text-4xl text-[#D84315] font-semibold mb-2"
+              >
+                Shivpuri 2026
+              </motion.div>
+
+              {/* Supporting Subtext */}
+              <motion.p
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.4 }}
+                className="font-body text-base sm:text-lg text-[#45413B] max-w-lg mb-8 leading-relaxed"
+              >
+                Bikes, scooters, cars, seamless freedom.
+              </motion.p>
+
+              {/* CTA Group */}
+              <motion.div
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.5 }}
+                className="flex flex-col sm:flex-row gap-3.5 w-full sm:w-auto mb-10"
+              >
+                <Button to="/waitlist" variant="primary" size="lg" className="bg-[#E64A19] hover:bg-[#D84315] text-white shadow-md font-display tracking-tight">
+                  Join the Waitlist
+                </Button>
+                <Button to="/request" variant="outline" size="lg" className="bg-white/90 text-[#1E1B18] border-[#1E1B18]/25 hover:bg-[#EFECE4] backdrop-blur-sm" icon="checklist">
+                  Check Your Requirements
+                </Button>
+              </motion.div>
+
+              {/* Bottom Metadata Strip */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.6, delay: 0.6 }}
+                className="font-mono text-xs font-semibold text-[#7C776E] space-y-0.5 uppercase tracking-wider"
+              >
+                <div>LAUNCHING Q3 2026</div>
+                <div>SHIVPURI, MADHYA PRADESH</div>
+              </motion.div>
+            </div>
+          </div>
         </div>
       </section>
 
-      {/* TYRE MARKS DIVIDER (BELOW HERO) */}
-      <TyreMarksDivider variant="primary" className="-mt-20 z-20" />
+      {/* TYRE MARKS DIVIDER */}
+      <TyreMarksDivider variant="primary" />
 
       {/* 2. CHOOSE YOUR FREEDOM SECTION */}
       <section className="px-4 sm:px-6 max-w-content mx-auto">
@@ -131,7 +166,7 @@ export default function HomePage() {
 
                 <div className="p-6 space-y-3">
                   <div className="flex items-center justify-between">
-                    <h3 className="font-display font-bold text-xl text-[#1E1B18] group-hover:text-[#E64A19] transition-colors">
+                    <h3 className="font-display font-bold text-xl text-[#1E1B18] group-hover:text-[#E64A19] transition-colors uppercase">
                       Bikes & Scooters
                     </h3>
                     <span className="material-symbols-outlined text-[#E64A19] text-2xl">two_wheeler</span>
@@ -185,7 +220,7 @@ export default function HomePage() {
 
                 <div className="p-6 space-y-3">
                   <div className="flex items-center justify-between">
-                    <h3 className="font-display font-bold text-xl text-[#1E1B18] group-hover:text-[#E64A19] transition-colors">
+                    <h3 className="font-display font-bold text-xl text-[#1E1B18] group-hover:text-[#E64A19] transition-colors uppercase">
                       Cars & SUVs
                     </h3>
                     <span className="material-symbols-outlined text-[#E64A19] text-2xl">directions_car</span>
@@ -420,7 +455,7 @@ export default function HomePage() {
         <ScrollReveal>
           <div className="relative bg-[#0B132B] text-[#F5F2EB] rounded-2xl p-8 sm:p-12 shadow-lg overflow-hidden grid grid-cols-1 lg:grid-cols-12 gap-8 items-center border-2 border-[#C89D3C]/40">
             <div
-              className="absolute inset-0 bg-cover bg-center opacity-15 mix-blend-overlay pointer-events-none"
+              className="absolute inset-0 bg-cover bg-center opacity-25 mix-blend-luminosity pointer-events-none"
               style={{ backgroundImage: `url(${IMAGES.ownerBanner})` }}
             />
 
@@ -453,7 +488,8 @@ export default function HomePage() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
           <ScrollReveal className="lg:col-span-6">
             <motion.div
-              style={{ y: shouldReduceMotion ? 0 : parallaxY }}
+              whileHover={{ scale: 1.01 }}
+              transition={{ duration: 0.3 }}
               className="rounded-xl overflow-hidden border border-[#1E1B18]/15 shadow-sm"
             >
               <ImagePlaceholder
@@ -491,7 +527,7 @@ export default function HomePage() {
         <ScrollReveal>
           <div className="relative rounded-2xl overflow-hidden bg-[#EFECE4] border-2 border-[#C89D3C]/40 p-10 sm:p-16 text-center space-y-6">
             <div
-              className="absolute inset-0 bg-cover bg-center opacity-5 pointer-events-none"
+              className="absolute inset-0 bg-cover bg-center opacity-10 pointer-events-none"
               style={{ backgroundImage: `url(${IMAGES.finalCtaBackground})` }}
             />
 
