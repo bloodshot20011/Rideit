@@ -1,103 +1,105 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { NavLink, Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import Button from './Button';
 
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
 
-  const isHomePage = location.pathname === '/';
-
-  useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > 30) {
-        setScrolled(true);
-      } else {
-        setScrolled(false);
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll();
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
   const navItems = [
-    { label: 'Home', path: '/', code: '01' },
-    { label: 'Vehicles', path: '/vehicles', code: '02' },
-    { label: 'Check Requirements', path: '/request', code: '03' },
-    { label: 'List Your Vehicle', path: '/list-your-vehicle', code: '04' },
-    { label: 'About', path: '/about', code: '05' },
+    { label: 'HOME', path: '/' },
+    { label: 'VEHICLES', path: '/vehicles' },
+    { label: 'REQUIREMENTS', path: '/request' },
+    { label: 'HOST VEHICLE', path: '/list-your-vehicle' },
+    { label: 'ABOUT', path: '/about' },
   ];
 
   return (
     <>
-      <header
-        className={`sticky top-0 z-50 transition-all duration-300 ${
-          scrolled || !isHomePage
-            ? 'bg-[#F5F2EB]/95 backdrop-blur-md border-b border-[#1E1B18]/15 shadow-sm text-[#1E1B18]'
-            : 'bg-[#F5F2EB]/80 backdrop-blur-sm border-b border-[#1E1B18]/10 text-[#1E1B18]'
-        }`}
-      >
-        <div className="max-w-content mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
-          {/* Brand Logo - Neo-Mirai Style */}
-          <Link to="/" className="flex items-center gap-2.5 group cursor-pointer" onClick={() => setMobileMenuOpen(false)}>
-            <div className="w-8 h-8 rounded-lg bg-[#0B132B] text-[#E64A19] border border-[#C89D3C]/40 flex items-center justify-center shadow-xs group-hover:scale-105 transition-transform">
-              <span className="material-symbols-outlined text-xl" data-weight="fill">
-                electric_car
-              </span>
-            </div>
-            <div className="flex flex-col">
-              <div className="flex items-center gap-1.5">
-                <span className="font-display font-bold text-xl tracking-tight text-[#1E1B18]">
-                  APNIRIDE
-                </span>
-                <span className="font-mono text-[9px] font-bold bg-[#E64A19] text-white px-1.5 py-0.5 rounded uppercase tracking-wider">
-                  SHIVPURI
-                </span>
+      <header className="sticky top-0 z-50 bg-[#F5F2EB]/95 backdrop-blur-md border-b border-[#1E1B18]/10 text-[#1E1B18] transition-all">
+        <div className="max-w-content mx-auto px-4 sm:px-6 h-18 flex items-center justify-between">
+          {/* Brand Lockup: Circular Seal + APNI / RIDE (Matching Screenshot) */}
+          <Link
+            to="/"
+            className="flex items-center gap-3 group cursor-pointer"
+            onClick={() => setMobileMenuOpen(false)}
+            aria-label="ApniRide Home"
+          >
+            {/* Circular Tri-Segment Seal Icon */}
+            <div className="w-8 h-8 rounded-full border border-[#1E1B18]/30 overflow-hidden relative flex flex-col shrink-0 shadow-2xs group-hover:scale-105 transition-transform">
+              <div className="h-1/2 w-full bg-[#E64A19]" />
+              <div className="h-1/2 w-full flex">
+                <div className="w-1/2 bg-[#C89D3C]" />
+                <div className="w-1/2 bg-[#0B132B]" />
               </div>
+              <div className="absolute inset-0 rounded-full border border-black/10" />
+            </div>
+
+            {/* Stacked Wordmark */}
+            <div className="flex flex-col leading-none">
+              <span className="font-mono text-[11px] font-bold tracking-widest text-[#1E1B18]">
+                APNI
+              </span>
+              <span className="font-mono text-[11px] font-bold tracking-widest text-[#1E1B18]">
+                RIDE
+              </span>
             </div>
           </Link>
 
-          {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center gap-1 lg:gap-2">
+          {/* Center Navigation Links with Active Black Dot (Matching Screenshot) */}
+          <nav className="hidden md:flex items-center gap-6 lg:gap-8">
             {navItems.map((item) => {
               const isActive = location.pathname === item.path;
               return (
                 <NavLink
                   key={item.path}
                   to={item.path}
-                  className={`relative px-3 py-1.5 text-xs sm:text-sm font-headline font-semibold tracking-tight rounded-md transition-colors ${
-                    isActive ? 'text-[#E64A19] font-bold' : 'text-[#45413B] hover:text-[#E64A19]'
-                  }`}
+                  className="relative flex flex-col items-center py-2 group"
                 >
-                  {isActive && (
-                    <motion.div
-                      layoutId="activeNavHighlight"
-                      className="absolute inset-0 bg-[#EFECE4] rounded-md border border-[#C89D3C]/30 -z-10"
-                      transition={{ type: 'spring', stiffness: 450, damping: 32 }}
+                  <span
+                    className={`font-mono text-xs tracking-wider transition-colors ${
+                      isActive
+                        ? 'text-[#1E1B18] font-bold'
+                        : 'text-[#45413B] hover:text-[#1E1B18]'
+                    }`}
+                  >
+                    {item.label}
+                  </span>
+
+                  {/* Active Solid Dot ● Underneath Link */}
+                  {isActive ? (
+                    <motion.span
+                      layoutId="activeDot"
+                      className="w-1.5 h-1.5 rounded-full bg-[#1E1B18] mt-1"
+                      transition={{ type: 'spring', stiffness: 500, damping: 30 }}
                     />
+                  ) : (
+                    <span className="w-1.5 h-1.5 rounded-full bg-transparent mt-1 group-hover:bg-[#1E1B18]/30 transition-colors" />
                   )}
-                  {item.label}
                 </NavLink>
               );
             })}
           </nav>
 
-          {/* Desktop Action */}
+          {/* Right Action: Amber Pill Button with Arrow Icon (Matching Screenshot) */}
           <div className="hidden md:flex items-center gap-3">
             <Link
               to="/admin"
-              className="font-mono text-xs font-semibold text-[#45413B] hover:text-[#E64A19] px-2.5 py-1 rounded border border-[#1E1B18]/20 hover:bg-[#EFECE4] transition-colors"
+              className="font-mono text-xs text-[#7C776E] hover:text-[#E64A19] px-2 py-1 transition-colors"
               title="ApniRide Admin Studio"
             >
-              [Admin Studio]
+              [Admin]
             </Link>
-            <Button to="/waitlist" variant="primary" size="sm">
-              Join Waitlist
-            </Button>
+
+            <Link
+              to="/waitlist"
+              className="inline-flex items-center gap-2 bg-[#E64A19] hover:bg-[#D84315] text-white font-mono text-xs font-semibold px-4 py-2 rounded-full shadow-xs transition-all hover:shadow-sm"
+            >
+              <span>GET STARTED</span>
+              <span className="w-4 h-4 rounded-full bg-white/20 flex items-center justify-center text-[10px]">
+                →
+              </span>
+            </Link>
           </div>
 
           {/* Mobile Hamburger Button */}
@@ -131,7 +133,7 @@ export default function Navbar() {
                       key={item.path}
                       to={item.path}
                       onClick={() => setMobileMenuOpen(false)}
-                      className={`block px-4 py-2.5 text-base font-headline font-semibold rounded-lg transition-colors ${
+                      className={`block px-4 py-2.5 font-mono text-xs tracking-wider font-semibold rounded-lg transition-colors ${
                         isActive
                           ? 'text-[#E64A19] font-bold bg-[#EFECE4]'
                           : 'text-[#45413B] hover:text-[#E64A19] hover:bg-[#EFECE4]'
@@ -149,12 +151,14 @@ export default function Navbar() {
                   ⚙️ Admin Control Panel
                 </NavLink>
                 <div className="pt-3 border-t border-[#1E1B18]/15 space-y-2">
-                  <Button to="/waitlist" variant="primary" fullWidth onClick={() => setMobileMenuOpen(false)}>
-                    Join the Waitlist
-                  </Button>
-                  <Button to="/request" variant="outline" fullWidth onClick={() => setMobileMenuOpen(false)}>
-                    Check Requirements
-                  </Button>
+                  <Link
+                    to="/waitlist"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="w-full inline-flex items-center justify-center gap-2 bg-[#E64A19] text-white font-mono text-xs font-semibold px-4 py-3 rounded-full shadow-xs"
+                  >
+                    <span>JOIN WAITLIST</span>
+                    <span>→</span>
+                  </Link>
                 </div>
               </div>
             </motion.div>
@@ -193,7 +197,6 @@ export default function Navbar() {
           </div>
           Requirements
         </Link>
-
         <Link
           to="/list-your-vehicle"
           className={`flex flex-col items-center gap-0.5 text-[11px] font-medium ${
@@ -203,7 +206,6 @@ export default function Navbar() {
           <span className="material-symbols-outlined text-xl">key</span>
           Host
         </Link>
-
         <Link
           to="/waitlist"
           className={`flex flex-col items-center gap-0.5 text-[11px] font-medium ${

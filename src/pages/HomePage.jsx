@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { motion, useReducedMotion } from 'framer-motion';
 import Button from '../components/Button';
 import ImagePlaceholder from '../components/ImagePlaceholder';
@@ -22,25 +22,25 @@ export default function HomePage() {
 
   return (
     <div className="space-y-16 sm:space-y-24 pb-12">
-      {/* 1. EXACT NEO-MIRAI SPLIT HERO SECTION */}
-      <section className="relative w-full min-h-[90vh] flex items-center overflow-hidden bg-[#F5F2EB] text-[#1E1B18] -mt-16 pt-20 pb-16 border-b border-[#1E1B18]/10">
-        {/* Right Side Golden-Hour Illustration Artwork */}
+      {/* 1. EXACT NEO-MIRAI SPLIT HERO SECTION WITH THIN GEOMETRIC TYPOGRAPHY */}
+      <section className="relative w-full min-h-[88vh] flex items-center overflow-hidden bg-[#F5F2EB] text-[#1E1B18] -mt-16 pt-20 pb-16 border-b border-[#1E1B18]/10">
+        {/* Right Side Indian City Retro-Futurist Artwork */}
         <div className="absolute top-0 right-0 bottom-0 w-full lg:w-[68%] h-full overflow-hidden pointer-events-none z-0">
           <motion.img
             src={IMAGES.heroBackground}
-            alt="Neo-Mirai Visionary Shivpuri Mobility Art"
-            initial={{ scale: 1.05, opacity: 0 }}
+            alt="Neo-Mirai Indian Retro-Futuristic Shivpuri Mobility Art"
+            initial={{ scale: 1.04, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ duration: 1.2, ease: "easeOut" }}
             className="w-full h-full object-cover object-right"
           />
-          {/* Subtle Left-Edge Paper Blend Gradient */}
+          {/* Seamless Left-Edge Paper Gradient */}
           <div className="absolute inset-0 bg-gradient-to-r from-[#F5F2EB] via-[#F5F2EB]/80 to-transparent w-full lg:w-2/5 pointer-events-none" />
           <div className="absolute inset-0 bg-gradient-to-t from-[#F5F2EB] via-transparent to-transparent h-24 bottom-0 pointer-events-none" />
         </div>
 
         {/* Content Container */}
-        <div className="relative z-10 max-w-content mx-auto px-4 sm:px-6 w-full flex flex-col justify-between min-h-[75vh]">
+        <div className="relative z-10 max-w-content mx-auto px-4 sm:px-6 w-full flex flex-col justify-between min-h-[72vh]">
           {/* Far Right Vertical Stamp Seal Box (Desktop) */}
           <div className="hidden xl:flex absolute top-4 right-6 flex-col items-center gap-2 p-2.5 bg-[#F5F2EB]/85 backdrop-blur-md border border-[#1E1B18]/20 rounded-md font-mono text-[10px] tracking-widest text-[#45413B] shadow-xs pointer-events-none">
             <div className="w-5 h-5 rounded-full border border-[#E64A19] flex items-center justify-center text-[#E64A19] font-bold">
@@ -51,7 +51,7 @@ export default function HomePage() {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center pt-8">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center pt-6">
             {/* Left Column: Hero Text & Calligraphy */}
             <div className="lg:col-span-8 flex flex-col items-start text-left relative">
               {/* Vertical Hindi Calligraphy Margin Stamp */}
@@ -64,12 +64,12 @@ export default function HomePage() {
                 </span>
               </div>
 
-              {/* Main Neo-Mirai Display Headline */}
+              {/* Main Neo-Mirai Display Headline - THIN ARCHITECTURAL STROKES (Matching Reference) */}
               <motion.h1
-                initial={{ opacity: 0, y: 24 }}
+                initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.7, delay: 0.15 }}
-                className="font-display font-extrabold text-5xl sm:text-7xl lg:text-8xl text-[#1E1B18] tracking-tight leading-[0.95] mb-4 uppercase"
+                className="font-display font-light text-5xl sm:text-7xl lg:text-8xl text-[#1E1B18] tracking-tight leading-[0.96] mb-4 uppercase"
               >
                 APNIRIDE<br />
                 MOBILITY<br />
@@ -86,14 +86,14 @@ export default function HomePage() {
                 Shivpuri 2026
               </motion.div>
 
-              {/* Supporting Subtext */}
+              {/* Relatable, Jargon-Free Subtext for Local Visitors */}
               <motion.p
                 initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.4 }}
                 className="font-body text-base sm:text-lg text-[#45413B] max-w-lg mb-8 leading-relaxed"
               >
-                Bikes, scooters, cars, seamless freedom.
+                Rent verified bikes, scooters, and cars in Shivpuri without the cost of buying. Transparent per-day pricing from ₹399.
               </motion.p>
 
               {/* CTA Group */}
@@ -103,12 +103,20 @@ export default function HomePage() {
                 transition={{ duration: 0.6, delay: 0.5 }}
                 className="flex flex-col sm:flex-row gap-3.5 w-full sm:w-auto mb-10"
               >
-                <Button to="/waitlist" variant="primary" size="lg" className="bg-[#E64A19] hover:bg-[#D84315] text-white shadow-md font-display tracking-tight">
-                  Join the Waitlist
-                </Button>
-                <Button to="/request" variant="outline" size="lg" className="bg-white/90 text-[#1E1B18] border-[#1E1B18]/25 hover:bg-[#EFECE4] backdrop-blur-sm" icon="checklist">
-                  Check Your Requirements
-                </Button>
+                <Link
+                  to="/waitlist"
+                  className="inline-flex items-center justify-center gap-2 bg-[#E64A19] hover:bg-[#D84315] text-white font-mono text-xs font-semibold px-6 py-3.5 rounded-full shadow-md transition-all hover:shadow-lg tracking-wider"
+                >
+                  <span>JOIN THE WAITLIST</span>
+                  <span>→</span>
+                </Link>
+                <Link
+                  to="/request"
+                  className="inline-flex items-center justify-center gap-2 bg-white/90 text-[#1E1B18] border border-[#1E1B18]/25 hover:bg-[#EFECE4] font-mono text-xs font-semibold px-6 py-3.5 rounded-full backdrop-blur-sm transition-all shadow-xs"
+                >
+                  <span className="material-symbols-outlined text-sm">checklist</span>
+                  <span>CHECK REQUIREMENTS</span>
+                </Link>
               </motion.div>
 
               {/* Bottom Metadata Strip */}
@@ -126,10 +134,142 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* TYRE MARKS DIVIDER */}
+      {/* TYRE MARKS SPEED DIVIDER */}
       <TyreMarksDivider variant="primary" />
 
-      {/* 2. CHOOSE YOUR FREEDOM SECTION */}
+      {/* 2. LOCAL BUSINESS EXPLANATION — SIMPLE & RELATABLE (ZERO JARGON) */}
+      <section className="px-4 sm:px-6 max-w-content mx-auto">
+        <ScrollReveal>
+          <div className="bg-white rounded-2xl border border-[#1E1B18]/15 p-8 sm:p-12 shadow-sm space-y-8">
+            <div className="text-center max-w-2xl mx-auto space-y-3">
+              <span className="font-mono text-xs font-semibold text-[#E64A19] uppercase tracking-wider">
+                [SHIVPURI MOBILITY MADE SIMPLE]
+              </span>
+              <h2 className="font-display font-bold text-3xl sm:text-4xl text-[#1E1B18] tracking-tight uppercase">
+                Gadi Kharidne ki Zaroorat Nahi. <br />
+                <span className="text-[#D84315] font-serif normal-case">Rent verified bikes and cars whenever you need.</span>
+              </h2>
+              <p className="font-body text-base text-[#45413B] leading-relaxed">
+                Whether you live in Shivpuri or are visiting, ApniRide makes getting a vehicle as simple as booking in a few taps. No heavy down payments, no maintenance worries.
+              </p>
+            </div>
+
+            {/* 3 Everyday Use-Case Cards */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-4">
+              <div className="bg-[#F5F2EB] p-6 rounded-xl border border-[#1E1B18]/10 space-y-3 shadow-2xs flex flex-col justify-between">
+                <div className="space-y-3">
+                  <div className="w-10 h-10 rounded-lg bg-[#E64A19]/10 text-[#E64A19] flex items-center justify-center">
+                    <span className="material-symbols-outlined text-xl">school</span>
+                  </div>
+                  <h3 className="font-display font-bold text-lg text-[#1E1B18]">College & Daily Errands</h3>
+                  <p className="font-body text-sm text-[#45413B] leading-relaxed">
+                    Need a scooter like Activa or Jupiter for college, coaching, or daily market work? Rent affordably from ₹399/day.
+                  </p>
+                </div>
+                <div className="pt-2 font-mono text-xs font-semibold text-[#E64A19]">
+                  Rates from ₹399/day →
+                </div>
+              </div>
+
+              <div className="bg-[#F5F2EB] p-6 rounded-xl border border-[#1E1B18]/10 space-y-3 shadow-2xs flex flex-col justify-between">
+                <div className="space-y-3">
+                  <div className="w-10 h-10 rounded-lg bg-[#C89D3C]/15 text-[#C89D3C] flex items-center justify-center">
+                    <span className="material-symbols-outlined text-xl">luggage</span>
+                  </div>
+                  <h3 className="font-display font-bold text-lg text-[#1E1B18]">Gwalior, Jhansi & Outstation</h3>
+                  <p className="font-body text-sm text-[#45413B] leading-relaxed">
+                    Planning a family trip to Gwalior, Jhansi, or Madhav National Park? Rent a clean Swift or Creta with comfortable AC.
+                  </p>
+                </div>
+                <div className="pt-2 font-mono text-xs font-semibold text-[#C89D3C]">
+                  Rates from ₹1,499/day →
+                </div>
+              </div>
+
+              <div className="bg-[#F5F2EB] p-6 rounded-xl border border-[#1E1B18]/10 space-y-3 shadow-2xs flex flex-col justify-between">
+                <div className="space-y-3">
+                  <div className="w-10 h-10 rounded-lg bg-[#0B132B]/10 text-[#0B132B] flex items-center justify-center">
+                    <span className="material-symbols-outlined text-xl">celebration</span>
+                  </div>
+                  <h3 className="font-display font-bold text-lg text-[#1E1B18]">Weddings & Special Events</h3>
+                  <p className="font-body text-sm text-[#45413B] leading-relaxed">
+                    Need extra vehicles for visiting relatives, marriage functions, or business guests in Shivpuri? Book in advance.
+                  </p>
+                </div>
+                <div className="pt-2 font-mono text-xs font-semibold text-[#1E1B18]">
+                  Verified Fleet →
+                </div>
+              </div>
+            </div>
+          </div>
+        </ScrollReveal>
+      </section>
+
+      {/* 3. FAST 30-SECOND REQUIREMENT MATCHER (SURVEY CURIOSITY HOOK) */}
+      <section className="px-4 sm:px-6 max-w-content mx-auto">
+        <ScrollReveal>
+          <div className="bg-[#EFECE4] rounded-2xl border-2 border-[#C89D3C]/40 p-6 sm:p-10 shadow-sm relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-48 h-48 bg-[#E64A19]/5 rounded-full blur-2xl pointer-events-none" />
+            <form onSubmit={handleWidgetSubmit} className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center relative z-10">
+              <div className="lg:col-span-4 space-y-2 text-center lg:text-left">
+                <div className="inline-flex items-center gap-1.5 bg-[#0B132B] text-[#C89D3C] px-2.5 py-0.5 rounded font-mono text-[10px] font-semibold">
+                  <span className="material-symbols-outlined text-xs text-[#E64A19]">tune</span>
+                  30-SECOND SURVEY
+                </div>
+                <h3 className="font-display font-bold text-2xl text-[#1E1B18] tracking-tight uppercase">
+                  Tell Us What You Need
+                </h3>
+                <p className="font-body text-sm text-[#45413B]">
+                  Select your vehicle type and travel plan. We will notify you with matching options when we launch in Shivpuri.
+                </p>
+              </div>
+
+              <div className="lg:col-span-8 grid grid-cols-1 sm:grid-cols-3 gap-3 items-end">
+                <div>
+                  <label className="block font-mono text-[11px] font-semibold uppercase text-[#45413B] mb-1">
+                    Vehicle Type
+                  </label>
+                  <select
+                    value={widgetVehicleCategory}
+                    onChange={(e) => setWidgetVehicleCategory(e.target.value)}
+                    className="w-full px-3.5 py-2.5 rounded-lg border border-[#1E1B18]/20 bg-white text-[#1E1B18] font-body text-sm focus:outline-none focus:ring-2 focus:ring-[#E64A19]/30"
+                  >
+                    <option value="bikes">Bike / Scooter (from ₹399/day)</option>
+                    <option value="cars">Car / SUV (from ₹1,499/day)</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block font-mono text-[11px] font-semibold uppercase text-[#45413B] mb-1">
+                    Travel Plan
+                  </label>
+                  <select
+                    value={widgetPurpose}
+                    onChange={(e) => setWidgetPurpose(e.target.value)}
+                    className="w-full px-3.5 py-2.5 rounded-lg border border-[#1E1B18]/20 bg-white text-[#1E1B18] font-body text-sm focus:outline-none focus:ring-2 focus:ring-[#E64A19]/30"
+                  >
+                    <option value="Daily Commute">Daily City Commute</option>
+                    <option value="Weekend Trip">Weekend Road Trip</option>
+                    <option value="Outstation Tour">Outstation Tour (Gwalior/Jhansi)</option>
+                  </select>
+                </div>
+
+                <div>
+                  <button
+                    type="submit"
+                    className="w-full bg-[#E64A19] hover:bg-[#D84315] text-white font-mono text-xs font-semibold px-4 py-3 rounded-lg shadow-xs transition-all flex items-center justify-center gap-2 cursor-pointer"
+                  >
+                    <span>CHECK AVAILABILITY</span>
+                    <span>→</span>
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </ScrollReveal>
+      </section>
+
+      {/* 4. CHOOSE YOUR FREEDOM — FLEET SHOWCASE WITH INDIAN NEO-MIRAI ART */}
       <section className="px-4 sm:px-6 max-w-content mx-auto">
         <ScrollReveal>
           <div className="text-center max-w-xl mx-auto mb-10">
@@ -137,7 +277,7 @@ export default function HomePage() {
               Choose your freedom
             </h2>
             <p className="font-body text-base text-[#45413B]">
-              Find the perfect vehicle for any journey in Shivpuri
+              Explore the bikes, scooters, and cars planned for Shivpuri
             </p>
           </div>
         </ScrollReveal>
@@ -154,7 +294,7 @@ export default function HomePage() {
                 <div className="relative overflow-hidden bg-[#EFECE4]">
                   <ImagePlaceholder
                     src={IMAGES.bikesCategory}
-                    alt="Bikes and Scooters"
+                    alt="Bikes and Scooters in Shivpuri"
                     type="scooter"
                     title="Bikes and Scooters"
                     aspectRatio="aspect-[16/10]"
@@ -208,7 +348,7 @@ export default function HomePage() {
                 <div className="relative overflow-hidden bg-[#EFECE4]">
                   <ImagePlaceholder
                     src={IMAGES.carsCategory}
-                    alt="Cars and SUVs"
+                    alt="Cars and SUVs in Shivpuri"
                     type="car"
                     title="Cars and SUVs"
                     aspectRatio="aspect-[16/10]"
@@ -256,63 +396,7 @@ export default function HomePage() {
       {/* TYRE MARKS DIVIDER */}
       <TyreMarksDivider variant="subtle" />
 
-      {/* 3. CHECK YOUR REQUIREMENTS (NEO-MIRAI TICKET PANEL) */}
-      <section className="px-4 sm:px-6 max-w-content mx-auto">
-        <ScrollReveal>
-          <div className="bg-[#EFECE4] rounded-xl border-2 border-[#C89D3C]/40 p-6 sm:p-8 shadow-sm relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-32 h-32 bg-[#E64A19]/5 rounded-full blur-2xl pointer-events-none" />
-            <form onSubmit={handleWidgetSubmit} className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center relative z-10">
-              <div className="lg:col-span-4 space-y-1.5 text-center lg:text-left">
-                <div className="inline-flex items-center gap-1.5 bg-[#0B132B] text-[#C89D3C] px-2.5 py-0.5 rounded font-mono text-[10px] font-semibold">
-                  <span className="material-symbols-outlined text-xs text-[#E64A19]">tune</span>
-                  REQUIREMENT MATCHER
-                </div>
-                <h3 className="font-display font-bold text-xl sm:text-2xl text-[#1E1B18] tracking-tight uppercase">
-                  Check your requirements
-                </h3>
-                <p className="font-body text-sm text-[#45413B]">
-                  Tell us your travel plan and submit both fields to match available vehicles in Shivpuri.
-                </p>
-              </div>
-
-              <div className="lg:col-span-8 grid grid-cols-1 sm:grid-cols-3 gap-3 items-end">
-                <div>
-                  <label className="block font-mono text-[11px] font-semibold uppercase text-[#45413B] mb-1">Category</label>
-                  <select
-                    value={widgetVehicleCategory}
-                    onChange={(e) => setWidgetVehicleCategory(e.target.value)}
-                    className="w-full px-3.5 py-2.5 rounded-lg border border-[#1E1B18]/20 bg-white text-[#1E1B18] font-body text-sm focus:outline-none focus:ring-2 focus:ring-[#E64A19]/30"
-                  >
-                    <option value="bikes">Bike / Scooter</option>
-                    <option value="cars">Car / SUV</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label className="block font-mono text-[11px] font-semibold uppercase text-[#45413B] mb-1">Purpose</label>
-                  <select
-                    value={widgetPurpose}
-                    onChange={(e) => setWidgetPurpose(e.target.value)}
-                    className="w-full px-3.5 py-2.5 rounded-lg border border-[#1E1B18]/20 bg-white text-[#1E1B18] font-body text-sm focus:outline-none focus:ring-2 focus:ring-[#E64A19]/30"
-                  >
-                    <option value="Daily Commute">Daily City Commute</option>
-                    <option value="Weekend Trip">Weekend Road Trip</option>
-                    <option value="Outstation Tour">Outstation Tour</option>
-                  </select>
-                </div>
-
-                <div>
-                  <Button type="submit" variant="primary" size="md" fullWidth icon="send">
-                    Submit Requirements
-                  </Button>
-                </div>
-              </div>
-            </form>
-          </div>
-        </ScrollReveal>
-      </section>
-
-      {/* 4. SIMPLE. FAST. YOURS. */}
+      {/* 5. 4-STEP EASY PROCESS */}
       <section className="px-4 sm:px-6 max-w-content mx-auto text-center space-y-12">
         <ScrollReveal>
           <div>
@@ -320,7 +404,7 @@ export default function HomePage() {
               Simple. Fast. Yours.
             </h2>
             <p className="font-body text-base text-[#45413B]">
-              Get moving in four clear steps.
+              Rent in four clear steps without complex paperwork.
             </p>
           </div>
         </ScrollReveal>
@@ -336,7 +420,7 @@ export default function HomePage() {
               <div>
                 <h3 className="font-display font-bold text-lg text-[#1E1B18] mb-1">State Need</h3>
                 <p className="font-body text-sm text-[#45413B] leading-relaxed">
-                  Share your trip purpose, dates and vehicle choice.
+                  Share your trip purpose, dates and preferred vehicle.
                 </p>
               </div>
             </div>
@@ -350,7 +434,7 @@ export default function HomePage() {
               <div>
                 <h3 className="font-display font-bold text-lg text-[#1E1B18] mb-1">Get Match</h3>
                 <p className="font-body text-sm text-[#45413B] leading-relaxed">
-                  ApniRide suggests verified matching vehicles.
+                  ApniRide checks verified local fleet availability.
                 </p>
               </div>
             </div>
@@ -364,7 +448,7 @@ export default function HomePage() {
               <div>
                 <h3 className="font-display font-bold text-lg text-[#1E1B18] mb-1">Confirm</h3>
                 <p className="font-body text-sm text-[#45413B] leading-relaxed">
-                  We verify availability and confirm booking.
+                  Quick digital verification via WhatsApp or phone.
                 </p>
               </div>
             </div>
@@ -378,7 +462,7 @@ export default function HomePage() {
               <div>
                 <h3 className="font-display font-bold text-lg text-[#1E1B18] mb-1">Ride</h3>
                 <p className="font-body text-sm text-[#45413B] leading-relaxed">
-                  Pick up key and enjoy your trip in Shivpuri.
+                  Pick up keys at your nearest Shivpuri location and go.
                 </p>
               </div>
             </div>
@@ -389,140 +473,46 @@ export default function HomePage() {
       {/* TYRE MARKS DIVIDER */}
       <TyreMarksDivider variant="dark" />
 
-      {/* 5. BUILT FOR A BETTER RENTAL EXPERIENCE */}
-      <section className="px-4 sm:px-6 max-w-content mx-auto text-center space-y-12">
-        <ScrollReveal>
-          <div>
-            <h2 className="font-display font-bold text-3xl sm:text-4xl text-[#1E1B18] tracking-tight mb-2 uppercase">
-              Built for a better rental experience
-            </h2>
-          </div>
-        </ScrollReveal>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          <ScrollReveal delay={0.1}>
-            <div className="bg-white p-6 rounded-xl border border-[#1E1B18]/15 text-left space-y-3 shadow-xs hover:border-[#E64A19]/40 transition-colors h-full">
-              <div className="w-10 h-10 rounded-lg bg-[#E64A19]/10 text-[#E64A19] flex items-center justify-center">
-                <span className="material-symbols-outlined text-xl">verified_user</span>
-              </div>
-              <h3 className="font-display font-bold text-base text-[#1E1B18]">Verified Vehicles</h3>
-              <p className="font-body text-xs sm:text-sm text-[#45413B] leading-relaxed">
-                Every vehicle undergoes safety inspection.
-              </p>
-            </div>
-          </ScrollReveal>
-
-          <ScrollReveal delay={0.2}>
-            <div className="bg-white p-6 rounded-xl border border-[#1E1B18]/15 text-left space-y-3 shadow-xs hover:border-[#E64A19]/40 transition-colors h-full">
-              <div className="w-10 h-10 rounded-lg bg-[#C89D3C]/15 text-[#C89D3C] flex items-center justify-center">
-                <span className="material-symbols-outlined text-xl">sell</span>
-              </div>
-              <h3 className="font-display font-bold text-base text-[#1E1B18]">Clear Pricing</h3>
-              <p className="font-body text-xs sm:text-sm text-[#45413B] leading-relaxed">
-                No hidden fees. What you see is what you pay.
-              </p>
-            </div>
-          </ScrollReveal>
-
-          <ScrollReveal delay={0.3}>
-            <div className="bg-white p-6 rounded-xl border border-[#1E1B18]/15 text-left space-y-3 shadow-xs hover:border-[#E64A19]/40 transition-colors h-full">
-              <div className="w-10 h-10 rounded-lg bg-[#E64A19]/10 text-[#E64A19] flex items-center justify-center">
-                <span className="material-symbols-outlined text-xl">support_agent</span>
-              </div>
-              <h3 className="font-display font-bold text-base text-[#1E1B18]">Local Support</h3>
-              <p className="font-body text-xs sm:text-sm text-[#45413B] leading-relaxed">
-                Our Shivpuri team is ready to help whenever you need.
-              </p>
-            </div>
-          </ScrollReveal>
-
-          <ScrollReveal delay={0.4}>
-            <div className="bg-white p-6 rounded-xl border border-[#1E1B18]/15 text-left space-y-3 shadow-xs hover:border-[#E64A19]/40 transition-colors h-full">
-              <div className="w-10 h-10 rounded-lg bg-[#0B132B]/10 text-[#0B132B] flex items-center justify-center">
-                <span className="material-symbols-outlined text-xl">shield</span>
-              </div>
-              <h3 className="font-display font-bold text-base text-[#1E1B18]">Safer Booking</h3>
-              <p className="font-body text-xs sm:text-sm text-[#45413B] leading-relaxed">
-                Direct support and easy digital verification.
-              </p>
-            </div>
-          </ScrollReveal>
-        </div>
-      </section>
-
-      {/* 6. USER REQUIREMENT HIGHLIGHT BANNER - NEO-MIRAI CYBER INDIGO */}
+      {/* 6. HOST VEHICLE PORTAL CALLOUT */}
       <section className="px-4 sm:px-6 max-w-content mx-auto">
         <ScrollReveal>
           <div className="relative bg-[#0B132B] text-[#F5F2EB] rounded-2xl p-8 sm:p-12 shadow-lg overflow-hidden grid grid-cols-1 lg:grid-cols-12 gap-8 items-center border-2 border-[#C89D3C]/40">
             <div
-              className="absolute inset-0 bg-cover bg-center opacity-25 mix-blend-luminosity pointer-events-none"
+              className="absolute inset-0 bg-cover bg-center opacity-20 mix-blend-luminosity pointer-events-none"
               style={{ backgroundImage: `url(${IMAGES.ownerBanner})` }}
             />
 
             <div className="lg:col-span-8 space-y-4 relative z-10">
-              <span className="font-mono text-xs font-semibold text-[#C89D3C] uppercase tracking-wider">[CUSTOM MOBILITY DEMAND]</span>
+              <span className="font-mono text-xs font-semibold text-[#C89D3C] uppercase tracking-wider">
+                [EARN WITH YOUR VEHICLE]
+              </span>
               <h2 className="font-display font-bold text-2xl sm:text-3xl text-[#F5F2EB] tracking-tight uppercase">
-                Need a vehicle tailored to your exact journey?
+                Have an idle bike or car in Shivpuri?
               </h2>
               <p className="font-body text-sm sm:text-base text-[#F5F2EB]/80 leading-relaxed max-w-xl">
-                Tell us your travel plan, dates, and preferred bike or car. ApniRide checks local availability and matches you with verified options in Shivpuri.
+                Turn your parked vehicle into a monthly earning source. List your bike or car on ApniRide — we handle renter verification, rental agreements, and payouts.
               </p>
               <div className="pt-2">
-                <Button to="/request" variant="primary" size="md" icon="checklist">
-                  Submit Your Requirements
-                </Button>
+                <Link
+                  to="/list-your-vehicle"
+                  className="inline-flex items-center gap-2 bg-[#E64A19] hover:bg-[#D84315] text-white font-mono text-xs font-semibold px-6 py-3 rounded-full shadow-sm transition-all"
+                >
+                  <span>LIST YOUR VEHICLE (EARN ₹15,000+/MO)</span>
+                  <span>→</span>
+                </Link>
               </div>
             </div>
 
             <div className="lg:col-span-4 hidden lg:flex justify-end relative z-10">
               <div className="w-28 h-28 rounded-xl bg-[#131E29] border border-[#C89D3C]/50 flex items-center justify-center text-[#E64A19] shadow-md">
-                <span className="material-symbols-outlined text-5xl">tune</span>
+                <span className="material-symbols-outlined text-5xl">key</span>
               </div>
             </div>
           </div>
         </ScrollReveal>
       </section>
 
-      {/* 7. STARTING IN SHIVPURI. GOING FURTHER */}
-      <section className="px-4 sm:px-6 max-w-content mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
-          <ScrollReveal className="lg:col-span-6">
-            <motion.div
-              whileHover={{ scale: 1.01 }}
-              transition={{ duration: 0.3 }}
-              className="rounded-xl overflow-hidden border border-[#1E1B18]/15 shadow-sm"
-            >
-              <ImagePlaceholder
-                src={IMAGES.shivpuriLandscape}
-                alt="Shivpuri Mountain Highway"
-                type="map"
-                title="Shivpuri Mountain Highway"
-                aspectRatio="aspect-[4/3]"
-              />
-            </motion.div>
-          </ScrollReveal>
-
-          <ScrollReveal delay={0.2} className="lg:col-span-6 space-y-4">
-            <h2 className="font-display font-bold text-3xl sm:text-4xl text-[#1E1B18] tracking-tight leading-snug uppercase">
-              Starting in Shivpuri. <br />
-              <span className="text-[#E64A19]">Going further.</span>
-            </h2>
-            <p className="font-body text-base text-[#45413B] leading-relaxed">
-              ApniRide is launching our premier rental service right here in Shivpuri. Experience the beauty of the region or manage your daily commute with vehicles you can trust.
-            </p>
-            <div className="pt-2">
-              <Button to="/waitlist" variant="primary" size="md">
-                Join the Waitlist
-              </Button>
-            </div>
-          </ScrollReveal>
-        </div>
-      </section>
-
-      {/* FINAL TYRE MARKS DIVIDER BEFORE FOOTER CTA */}
-      <TyreMarksDivider variant="subtle" />
-
-      {/* 8. FINAL CTA: BE AMONG THE FIRST TO APNIRIDE */}
+      {/* 7. FINAL CTA: BE AMONG THE FIRST TO APNIRIDE */}
       <section className="px-4 sm:px-6 max-w-content mx-auto">
         <ScrollReveal>
           <div className="relative rounded-2xl overflow-hidden bg-[#EFECE4] border-2 border-[#C89D3C]/40 p-10 sm:p-16 text-center space-y-6">
@@ -536,12 +526,16 @@ export default function HomePage() {
                 Be among the first to ApniRide.
               </h2>
               <p className="font-body text-sm sm:text-base text-[#45413B]">
-                Join our pre-launch waitlist today to receive priority access when matching rentals go live in Shivpuri.
+                Join our pre-launch waitlist today to receive priority access and exclusive 20% discount on day one in Shivpuri.
               </p>
               <div>
-                <Button to="/waitlist" variant="primary" size="lg">
-                  Join the Waitlist
-                </Button>
+                <Link
+                  to="/waitlist"
+                  className="inline-flex items-center gap-2 bg-[#E64A19] hover:bg-[#D84315] text-white font-mono text-xs font-semibold px-8 py-4 rounded-full shadow-md transition-all hover:shadow-lg tracking-wider"
+                >
+                  <span>JOIN THE WAITLIST</span>
+                  <span>→</span>
+                </Link>
               </div>
             </div>
           </div>

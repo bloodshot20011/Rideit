@@ -1,19 +1,19 @@
-import neoMiraiHero from '../assets/neo_mirai_hero.jpg';
-import neoMiraiBikes from '../assets/neo_mirai_bikes.jpg';
-import neoMiraiCars from '../assets/neo_mirai_cars.jpg';
+import neoMiraiHeroIndian from '../assets/neo_mirai_hero_indian.jpg';
+import neoMiraiBikesIndian from '../assets/neo_mirai_bikes_indian.jpg';
+import neoMiraiCarsIndian from '../assets/neo_mirai_cars_indian.jpg';
 
 export const IMAGES = {
-  // Hero Section Exact Neo-Mirai Golden Sunset Background
-  heroBackground: neoMiraiHero,
+  // Hero Section Indian Retro-Futuristic Golden Sunset Art
+  heroBackground: neoMiraiHeroIndian,
   
   // Category Showcase Art
-  bikesCategory: neoMiraiBikes,
-  carsCategory: neoMiraiCars,
+  bikesCategory: neoMiraiBikesIndian,
+  carsCategory: neoMiraiCarsIndian,
   
   // Section Backgrounds & Visuals
-  shivpuriLandscape: neoMiraiCars,
-  ownerBanner: neoMiraiBikes,
-  finalCtaBackground: neoMiraiHero,
+  shivpuriLandscape: neoMiraiCarsIndian,
+  ownerBanner: neoMiraiBikesIndian,
+  finalCtaBackground: neoMiraiHeroIndian,
 
   // Vehicle Fleet Catalog Images
   vehicles: {
