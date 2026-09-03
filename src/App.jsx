@@ -1,8 +1,9 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import WhatsAppButton from './components/WhatsAppButton';
+import CarLoader from './components/CarLoader';
 
 // Pages
 import HomePage from './pages/HomePage';
@@ -24,8 +25,20 @@ function ScrollToTop() {
 }
 
 export default function App() {
+  const [initialLoading, setInitialLoading] = useState(() => {
+    // Show splash once per browser session
+    return !sessionStorage.getItem('apniride_visited');
+  });
+
+  const handleLoaderComplete = () => {
+    sessionStorage.setItem('apniride_visited', 'true');
+    setInitialLoading(false);
+  };
+
   return (
     <div className="flex flex-col min-h-screen bg-background text-on-surface">
+      {initialLoading && <CarLoader onComplete={handleLoaderComplete} />}
+
       <ScrollToTop />
       <Navbar />
 
