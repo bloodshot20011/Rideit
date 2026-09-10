@@ -52,8 +52,8 @@ export default function HomePage() {
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center pt-4 sm:pt-6">
-            {/* Left Column: Hero Text & Calligraphy */}
-            <div className="lg:col-span-8 flex flex-col items-start text-left relative">
+            {/* Left Column: Hero Text & Calligraphy with Mobile High-Contrast Scrim */}
+            <div className="lg:col-span-8 flex flex-col items-start text-left relative bg-[#F5F2EB]/90 sm:bg-transparent backdrop-blur-xs sm:backdrop-blur-none p-4 sm:p-0 rounded-2xl border border-[#1E1B18]/10 sm:border-0 shadow-xs sm:shadow-none">
               {/* Vertical Hindi Calligraphy Margin Stamp (Desktop/Tablet) */}
               <div className="hidden sm:flex absolute -left-12 top-2 flex-col items-center gap-2 font-serif text-xs text-[#45413B]/80 pointer-events-none">
                 <span className="[writing-mode:vertical-rl] tracking-widest font-medium">
@@ -64,12 +64,12 @@ export default function HomePage() {
                 </span>
               </div>
 
-              {/* Main Neo-Mirai Display Headline - SIMPLE EVERYDAY WORDS */}
+              {/* Main Neo-Mirai Display Headline - BOLD ON MOBILE FOR CRYSTAL CLEAR VISIBILITY */}
               <motion.h1
                 initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.1 }}
-                className="font-display font-light text-3xl sm:text-5xl lg:text-7xl text-[#1E1B18] tracking-tight leading-[1.04] sm:leading-[0.98] mb-3 uppercase"
+                className="font-display font-bold sm:font-light text-3xl sm:text-5xl lg:text-7xl text-[#1E1B18] tracking-tight leading-[1.06] sm:leading-[0.98] mb-3 uppercase"
               >
                 APNIRIDE<br />
                 BIKE & CAR<br />
@@ -81,7 +81,7 @@ export default function HomePage() {
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.2 }}
-                className="font-serif text-xl sm:text-2xl lg:text-3xl text-[#D84315] font-semibold mb-2"
+                className="font-serif text-xl sm:text-2xl lg:text-3xl text-[#D84315] font-bold sm:font-semibold mb-2"
               >
                 Shivpuri 2026
               </motion.div>
@@ -91,7 +91,7 @@ export default function HomePage() {
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.3 }}
-                className="font-body text-sm sm:text-base text-[#45413B] max-w-lg mb-6 leading-relaxed"
+                className="font-body text-sm sm:text-base text-[#1E1B18] sm:text-[#45413B] font-medium sm:font-normal max-w-lg mb-6 leading-relaxed"
               >
                 Shivpuri's first self-drive rental service. Rent scooters from ₹399/day and cars from ₹1,499/day with zero deposit hassles.
               </motion.p>
@@ -101,33 +101,22 @@ export default function HomePage() {
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.4 }}
-                className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto mb-6 sm:mb-8"
+                className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto mb-2 sm:mb-4"
               >
                 <Link
                   to="/waitlist"
-                  className="inline-flex items-center justify-center gap-2 bg-[#E64A19] hover:bg-[#D84315] text-white font-mono text-xs font-semibold px-5 py-3 rounded-full shadow-sm transition-all hover:shadow-md tracking-wider"
+                  className="inline-flex items-center justify-center gap-2 bg-[#E64A19] hover:bg-[#D84315] text-white font-mono text-xs font-bold sm:font-semibold px-5 py-3.5 sm:py-3 rounded-full shadow-sm transition-all hover:shadow-md tracking-wider"
                 >
                   <span>JOIN THE WAITLIST</span>
                   <span>→</span>
                 </Link>
                 <Link
                   to="/request"
-                  className="inline-flex items-center justify-center gap-2 bg-white/90 text-[#1E1B18] border border-[#1E1B18]/25 hover:bg-[#EFECE4] font-mono text-xs font-semibold px-5 py-3 rounded-full backdrop-blur-sm transition-all shadow-2xs"
+                  className="inline-flex items-center justify-center gap-2 bg-white/95 text-[#1E1B18] border border-[#1E1B18]/30 hover:bg-[#EFECE4] font-mono text-xs font-bold sm:font-semibold px-5 py-3.5 sm:py-3 rounded-full backdrop-blur-sm transition-all shadow-2xs"
                 >
                   <span className="material-symbols-outlined text-sm">checklist</span>
                   <span>CHECK REQUIREMENTS</span>
                 </Link>
-              </motion.div>
-
-              {/* Bottom Metadata Strip */}
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.5, delay: 0.5 }}
-                className="font-mono text-[11px] font-semibold text-[#7C776E] space-y-0.5 uppercase tracking-wider"
-              >
-                <div>LAUNCHING Q3 2026</div>
-                <div>SHIVPURI, MADHYA PRADESH</div>
               </motion.div>
             </div>
           </div>
@@ -236,14 +225,14 @@ export default function HomePage() {
             <form onSubmit={handleWidgetSubmit} className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6 items-center relative z-10">
               <div className="lg:col-span-4 space-y-1.5 text-center lg:text-left">
                 <div className="inline-flex items-center gap-1 bg-[#E64A19]/10 text-[#E64A19] px-2.5 py-0.5 rounded font-mono text-[9px] font-bold border border-[#E64A19]/25">
-                  <span className="material-symbols-outlined text-[11px] text-[#E64A19]">tune</span>
-                  30-SECOND SURVEY
+                  <span className="material-symbols-outlined text-[11px] text-[#E64A19]">volunteer_activism</span>
+                  [HELP US GET STARTED IN SHIVPURI]
                 </div>
                 <h3 className="font-display font-bold text-lg sm:text-xl text-[#1E1B18] tracking-tight uppercase">
-                  Tell Us What You Need
+                  Help Us Launch in Shivpuri!
                 </h3>
-                <p className="font-body text-xs text-[#45413B]">
-                  Select your vehicle and travel plan. We will update you when matching rides launch in Shivpuri.
+                <p className="font-body text-xs text-[#45413B] leading-relaxed">
+                  Tell us which bikes or cars you need, and we'll bring them to your locality first.
                 </p>
               </div>
 

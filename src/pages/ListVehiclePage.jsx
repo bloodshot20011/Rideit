@@ -101,13 +101,13 @@ export default function ListVehiclePage() {
           List Your Vehicle & <span className="text-[#E64A19] font-normal">Earn Monthly</span>
         </h1>
         <p className="font-body text-sm sm:text-base text-[#45413B] leading-relaxed">
-          Have an idle scooter, bike, or car in Shivpuri? Earn ₹15,000+ per month safely through ApniRide.
+          Have an idle scooter, bike, or car in Shivpuri? Earn flexible rental income safely through ApniRide.
         </p>
       </div>
 
       {/* 2-Column Neo-Mirai Layout */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
-        {/* Left Column: Earning Estimate & Host Security */}
+        {/* Left Column: Host Partnership & Security */}
         <div className="lg:col-span-5 space-y-6 lg:sticky lg:top-24">
           <div className="bg-white rounded-xl border border-[#1E1B18]/15 overflow-hidden shadow-sm">
             <img
@@ -116,10 +116,11 @@ export default function ListVehiclePage() {
               className="w-full h-52 object-cover object-center"
             />
             <div className="p-6 space-y-5">
-              <div className="bg-[#0B132B] text-white p-4 rounded-lg border border-[#C89D3C]/30 flex items-center justify-between">
+              <div className="bg-[#EFECE4] text-[#1E1B18] p-4 rounded-lg border border-[#1E1B18]/15 flex items-center justify-between">
                 <div>
-                  <div className="font-mono text-[10px] text-[#C89D3C] uppercase tracking-wider">ESTIMATED EARNINGS</div>
-                  <div className="font-display font-bold text-2xl text-white">₹15,000 - ₹35,000<span className="text-xs font-normal text-white/70">/mo</span></div>
+                  <div className="font-mono text-[10px] text-[#E64A19] font-bold uppercase tracking-wider">HOST PARTNERSHIP</div>
+                  <div className="font-display font-bold text-xl text-[#1E1B18]">Flexible Monthly Earnings</div>
+                  <div className="font-body text-xs text-[#7C776E]">Earn on your terms with complete security</div>
                 </div>
                 <span className="material-symbols-outlined text-[#E64A19] text-3xl">payments</span>
               </div>

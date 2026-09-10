@@ -7,9 +7,6 @@ export default function VehicleCard({ vehicle, onSelect }) {
     name,
     type,
     pricePerDay = '₹399/day',
-    fuel,
-    transmission,
-    capacity,
     badge,
     status = 'Coming Soon',
     image
@@ -76,15 +73,6 @@ export default function VehicleCard({ vehicle, onSelect }) {
             <span className="font-mono text-[10px] font-semibold text-[#45413B] bg-[#EFECE4] px-2 py-0.5 rounded uppercase shrink-0">
               {type}
             </span>
-          </div>
-
-          {/* 1-Line Key Spec Summary */}
-          <div className="flex items-center gap-1.5 font-mono text-[11px] text-[#7C776E] pt-1">
-            <span>{fuel || 'Petrol'}</span>
-            <span>•</span>
-            <span>{transmission || 'Auto'}</span>
-            <span>•</span>
-            <span>{capacity || '2 Seats'}</span>
           </div>
         </div>
 
