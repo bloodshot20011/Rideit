@@ -1,9 +1,8 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import ImagePlaceholder from './ImagePlaceholder';
-import Button from './Button';
 
-export default function VehicleCard({ vehicle }) {
+export default function VehicleCard({ vehicle, onSelect }) {
   const {
     name,
     type,
@@ -13,94 +12,92 @@ export default function VehicleCard({ vehicle }) {
     capacity,
     badge,
     status = 'Coming Soon',
-    location,
-    tagline,
     image
   } = vehicle;
 
+  const handleClick = () => {
+    if (onSelect) {
+      onSelect(vehicle);
+    }
+  };
+
   return (
     <motion.div
-      whileHover={{ y: -6 }}
+      whileHover={{ y: -5 }}
       transition={{ duration: 0.2 }}
-      className="bg-white rounded-xl border border-[#1E1B18]/15 shadow-sm hover:shadow-md hover:border-[#E64A19]/50 transition-all duration-300 flex flex-col overflow-hidden group opacity-100 relative"
+      onClick={handleClick}
+      className="bg-white rounded-xl border border-[#1E1B18]/15 shadow-xs hover:shadow-md hover:border-[#E64A19]/50 transition-all duration-300 flex flex-col overflow-hidden group cursor-pointer select-none"
     >
-      {/* Top Ticket Header Graphic */}
-      <div className="relative overflow-hidden bg-[#EFECE4]">
-        <ImagePlaceholder
-          src={image}
-          alt={name}
-          type={type}
-          title={name}
-          aspectRatio="aspect-[16/10]"
-        />
-        
-        {/* Status Stamp Seal */}
-        <div className="absolute top-3 left-3 bg-[#0B132B]/95 backdrop-blur-md px-2.5 py-1 rounded-md text-[11px] font-mono font-bold text-[#F5F2EB] border border-[#C89D3C]/40 flex items-center gap-1.5 shadow-xs">
-          <span className="w-1.5 h-1.5 rounded-full bg-[#E64A19] animate-pulse" />
-          {status}
+      {/* 1. Vehicle Photo with Hover Zoom Effect */}
+      <div className="relative overflow-hidden bg-[#EFECE4] aspect-[16/10]">
+        <div className="w-full h-full transform group-hover:scale-105 transition-transform duration-300 ease-out">
+          <ImagePlaceholder
+            src={image}
+            alt={name}
+            type={type}
+            title={name}
+            aspectRatio="aspect-[16/10]"
+          />
         </div>
 
-        {/* Prominent Neo-Mirai Ticket Price Tag */}
-        <div className="absolute top-3 right-3 bg-[#F5F2EB] text-[#1E1B18] font-mono font-bold text-xs px-3 py-1 rounded-md border-2 border-[#C89D3C] shadow-sm flex items-center gap-1">
+        {/* Status Stamp */}
+        <div className="absolute top-2.5 left-2.5">
+          <span
+            className={`px-2.5 py-0.5 rounded-md font-mono text-[10px] font-bold backdrop-blur-md shadow-2xs border ${
+              status === 'Available'
+                ? 'bg-emerald-600/90 text-white border-emerald-400'
+                : 'bg-white/95 text-[#E64A19] border-[#E64A19]/30'
+            }`}
+          >
+            {status === 'Available' ? '✓ Available' : 'Coming Soon'}
+          </span>
+        </div>
+
+        {/* Price Tag Pill */}
+        <div className="absolute top-2.5 right-2.5 bg-[#F5F2EB]/95 text-[#1E1B18] font-mono font-bold text-xs px-2.5 py-1 rounded-md border border-[#E64A19]/30 shadow-2xs">
           <span className="text-[#E64A19]">{pricePerDay}</span>
         </div>
 
-        {/* Feature / Badge Tag */}
+        {/* Badge Tag (if present) */}
         {badge && (
-          <div className="absolute bottom-3 right-3 bg-[#0B132B]/90 backdrop-blur-md text-[#C89D3C] font-mono text-[10px] font-semibold px-2 py-0.5 rounded border border-[#C89D3C]/30">
-            [{badge}]
+          <div className="absolute bottom-2.5 left-2.5 bg-[#0B132B]/80 backdrop-blur-md text-[#C89D3C] font-mono text-[9px] font-semibold px-2 py-0.5 rounded border border-[#C89D3C]/30">
+            {badge}
           </div>
         )}
       </div>
 
-      {/* Ticket Card Content */}
-      <div className="p-5 flex flex-col flex-grow justify-between space-y-4 bg-white text-[#1E1B18]">
+      {/* 2. Minimal Clean Card Body (No Clutter) */}
+      <div className="p-4 flex flex-col justify-between flex-grow space-y-3 bg-white text-[#1E1B18]">
         <div>
-          <div className="flex items-start justify-between gap-2 mb-1.5">
-            <h3 className="font-display font-bold text-lg text-[#1E1B18] group-hover:text-[#E64A19] transition-colors tracking-tight">
+          <div className="flex items-start justify-between gap-2">
+            <h3 className="font-display font-bold text-base sm:text-lg text-[#1E1B18] group-hover:text-[#E64A19] transition-colors tracking-tight">
               {name}
             </h3>
-            <span className="font-mono text-[11px] font-semibold text-[#45413B] bg-[#EFECE4] px-2 py-0.5 rounded border border-[#1E1B18]/10 shrink-0 uppercase">
+            <span className="font-mono text-[10px] font-semibold text-[#45413B] bg-[#EFECE4] px-2 py-0.5 rounded uppercase shrink-0">
               {type}
             </span>
           </div>
 
-          <p className="font-body text-xs text-[#45413B] line-clamp-2 mb-3 leading-relaxed">
-            {tagline}
-          </p>
-
-          {/* Neo-Mirai Technical Spec Badges */}
-          <div className="flex flex-wrap gap-1.5 text-xs text-[#45413B]">
-            <span className="inline-flex items-center gap-1 bg-[#EFECE4] px-2 py-1 rounded font-mono text-[11px] border border-[#1E1B18]/10">
-              <span className="material-symbols-outlined text-xs text-[#E64A19]">local_gas_station</span>
-              {fuel}
-            </span>
-            <span className="inline-flex items-center gap-1 bg-[#EFECE4] px-2 py-1 rounded font-mono text-[11px] border border-[#1E1B18]/10">
-              <span className="material-symbols-outlined text-xs text-[#E64A19]">settings</span>
-              {transmission}
-            </span>
-            <span className="inline-flex items-center gap-1 bg-[#EFECE4] px-2 py-1 rounded font-mono text-[11px] border border-[#1E1B18]/10">
-              <span className="material-symbols-outlined text-xs text-[#E64A19]">group</span>
-              {capacity}
-            </span>
+          {/* 1-Line Key Spec Summary */}
+          <div className="flex items-center gap-1.5 font-mono text-[11px] text-[#7C776E] pt-1">
+            <span>{fuel || 'Petrol'}</span>
+            <span>•</span>
+            <span>{transmission || 'Auto'}</span>
+            <span>•</span>
+            <span>{capacity || '2 Seats'}</span>
           </div>
         </div>
 
-        {/* Card Footer & Action */}
-        <div className="pt-3 border-t border-[#1E1B18]/10 flex items-center justify-between gap-2">
-          <div className="flex items-center gap-1 font-mono text-[11px] text-[#45413B]">
-            <span className="material-symbols-outlined text-sm text-[#E64A19]">location_on</span>
-            <span className="truncate max-w-[120px]">{location}</span>
-          </div>
+        {/* 3. Bottom Action Bar: Hover Affordance */}
+        <div className="pt-2 border-t border-[#1E1B18]/10 flex items-center justify-between text-xs">
+          <span className="font-mono text-[11px] text-[#E64A19] font-semibold flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+            <span>View Full Details</span>
+            <span>→</span>
+          </span>
 
-          <Button
-            to={`/request?vehicle=${encodeURIComponent(name)}`}
-            variant="outline"
-            size="sm"
-            icon="checklist"
-          >
-            Check Requirements
-          </Button>
+          <span className="font-mono text-[10px] text-[#7C776E] uppercase bg-[#F5F2EB] px-2 py-0.5 rounded">
+            Self-Drive
+          </span>
         </div>
       </div>
     </motion.div>

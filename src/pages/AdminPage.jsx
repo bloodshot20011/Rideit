@@ -93,17 +93,17 @@ export default function AdminPage() {
     setPinInput('');
   };
 
-  // Smart price auto-formatter
+  // Smart price auto-formatter (supports 2XX, X99, 9X7, 399, ₹1,499/day)
   const formatPriceString = (input) => {
     if (!input) return '₹399/day';
-    const str = String(input).trim();
-    if (str.includes('/day') || str.includes('₹')) return str;
-    
-    const num = parseInt(str.replace(/[^0-9]/g, ''), 10);
-    if (!isNaN(num)) {
-      return `₹${num.toLocaleString('en-IN')}/day`;
+    let str = String(input).trim();
+    if (!str.startsWith('₹') && !str.toLowerCase().startsWith('rs')) {
+      str = `₹${str}`;
     }
-    return `₹${str}/day`;
+    if (!str.includes('/')) {
+      str = `${str}/day`;
+    }
+    return str;
   };
 
   // Manual Cloud Sync
@@ -143,14 +143,14 @@ export default function AdminPage() {
     setShowVehicleModal(true);
   };
 
-  // Open modal for Editing Vehicle
+  // Open modal for Editing Vehicle (preserves 2XX, X99 without stripping)
   const handleOpenEditModal = (v) => {
     setEditingVehicle(v);
     setVName(v.name || '');
     setVCategory(v.category || 'bikes');
     setVSubcategory(v.subcategory || 'scooter');
     setVType(v.type || 'Scooter');
-    setVPrice(v.pricePerDay ? v.pricePerDay.replace(/[^0-9]/g, '') || v.pricePerDay : '399');
+    setVPrice(v.pricePerDay ? v.pricePerDay.replace(/^₹\s*/, '').replace(/\s*\/day$/, '').trim() : '399');
     setVFuel(v.fuel || 'Petrol');
     setVTransmission(v.transmission || 'Automatic');
     setVCapacity(v.capacity || '2 Passengers');
@@ -733,7 +733,7 @@ export default function AdminPage() {
                     <button
                       onClick={() => {
                         setQuickPriceVehicle(v);
-                        setQuickPriceValue(v.pricePerDay || '399');
+                        setQuickPriceValue(v.pricePerDay ? v.pricePerDay.replace(/^₹\s*/, '').replace(/\s*\/day$/, '').trim() : '399');
                       }}
                       className="absolute top-3 right-3 bg-[#0B132B]/90 hover:bg-[#E64A19] backdrop-blur-md text-[#C89D3C] hover:text-white font-mono text-xs font-bold px-2.5 py-1 rounded border border-[#C89D3C]/30 shadow-xs transition-colors cursor-pointer flex items-center gap-1"
                       title="Click to edit price directly"
