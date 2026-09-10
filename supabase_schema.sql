@@ -1,9 +1,9 @@
 -- ==============================================================================
--- APNIRIDE SHIVPURI — SUPABASE SQL SCHEMA
+-- APNIRIDE SHIVPURI — SUPABASE SQL SCHEMA & STORAGE BUCKET
 -- Run this in your Supabase Project -> SQL Editor -> Click 'Run'
 -- ==============================================================================
 
--- 1. VEHICLE FLEET & PRICING CATALOG
+-- 1. VEHICLE FLEET & PRICING CATALOG (Stores Image URL in "image" column)
 CREATE TABLE IF NOT EXISTS public.vehicles (
   id TEXT PRIMARY KEY,
   name TEXT NOT NULL,
@@ -88,3 +88,21 @@ CREATE POLICY "Allow public update/delete on host_vehicles" ON public.host_vehic
 CREATE POLICY "Allow public read on waitlist" ON public.waitlist FOR SELECT USING (true);
 CREATE POLICY "Allow public insert on waitlist" ON public.waitlist FOR INSERT WITH CHECK (true);
 CREATE POLICY "Allow public update/delete on waitlist" ON public.waitlist FOR ALL USING (true);
+
+-- 5. SUPABASE STORAGE BUCKET FOR VEHICLE PHOTOS
+-- Creates a public 'vehicle-images' storage bucket for direct photo uploads from Admin Studio
+INSERT INTO storage.buckets (id, name, public)
+VALUES ('vehicle-images', 'vehicle-images', true)
+ON CONFLICT (id) DO NOTHING;
+
+CREATE POLICY "Allow public read on vehicle-images"
+ON storage.objects FOR SELECT
+USING (bucket_id = 'vehicle-images');
+
+CREATE POLICY "Allow public uploads to vehicle-images"
+ON storage.objects FOR INSERT
+WITH CHECK (bucket_id = 'vehicle-images');
+
+CREATE POLICY "Allow public update/delete on vehicle-images"
+ON storage.objects FOR ALL
+USING (bucket_id = 'vehicle-images');

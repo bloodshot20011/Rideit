@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { adminStore } from '../data/adminStore';
-import { isSupabaseConfigured } from '../lib/supabase';
+import { isSupabaseConfigured, uploadVehicleImageToSupabase } from '../lib/supabase';
 import Button from '../components/Button';
 import FormField from '../components/FormField';
 import ImagePlaceholder from '../components/ImagePlaceholder';
@@ -37,6 +37,11 @@ export default function AdminPage() {
   // In-Line Quick Price Edit Modal
   const [quickPriceVehicle, setQuickPriceVehicle] = useState(null);
   const [quickPriceValue, setQuickPriceValue] = useState('');
+
+  // In-Line Quick Image Edit Modal
+  const [quickImageVehicle, setQuickImageVehicle] = useState(null);
+  const [quickImageUrl, setQuickImageUrl] = useState('');
+  const [uploadingImage, setUploadingImage] = useState(false);
 
   // Requirement Detail Modal
   const [selectedRequirement, setSelectedRequirement] = useState(null);
@@ -122,6 +127,33 @@ export default function AdminPage() {
     const formatted = formatPriceString(quickPriceValue);
     adminStore.updateVehicle(quickPriceVehicle.id, { pricePerDay: formatted });
     setQuickPriceVehicle(null);
+  };
+
+  // In-Line Quick Image Edit Submit
+  const handleSaveQuickImage = (e) => {
+    e.preventDefault();
+    if (!quickImageVehicle) return;
+    adminStore.updateVehicle(quickImageVehicle.id, { image: quickImageUrl });
+    setQuickImageVehicle(null);
+  };
+
+  // Handle Image File Upload (Supabase Storage / Local Fallback)
+  const handleImageUpload = async (e, callback) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setUploadingImage(true);
+    const cloudUrl = await uploadVehicleImageToSupabase(file);
+    if (cloudUrl) {
+      callback(cloudUrl);
+    } else {
+      const reader = new FileReader();
+      reader.onload = () => {
+        callback(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+    setUploadingImage(false);
   };
 
   // Open modal for Adding New Vehicle
@@ -741,6 +773,19 @@ export default function AdminPage() {
                       <span>{v.pricePerDay}</span>
                       <span className="material-symbols-outlined text-[11px]">edit</span>
                     </button>
+
+                    {/* Direct In-Line Photo Editor Button */}
+                    <button
+                      onClick={() => {
+                        setQuickImageVehicle(v);
+                        setQuickImageUrl(v.image || '');
+                      }}
+                      className="absolute bottom-2.5 right-2.5 bg-[#0B132B]/85 hover:bg-[#E64A19] backdrop-blur-md text-[#F5F2EB] font-mono text-[11px] font-semibold px-2.5 py-1 rounded border border-white/20 shadow-xs transition-colors cursor-pointer flex items-center gap-1"
+                      title="Change vehicle photo"
+                    >
+                      <span className="material-symbols-outlined text-xs">photo_camera</span>
+                      <span>Change Photo</span>
+                    </button>
                   </div>
 
                   <div className="p-4 space-y-2">
@@ -1285,6 +1330,97 @@ export default function AdminPage() {
         )}
       </AnimatePresence>
 
+      {/* QUICK IMAGE EDIT MODAL */}
+      <AnimatePresence>
+        {quickImageVehicle && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              className="bg-white rounded-2xl border border-[#1E1B18]/20 shadow-xl max-w-md w-full p-6 space-y-4"
+            >
+              <div className="flex items-center justify-between border-b border-[#1E1B18]/15 pb-3">
+                <div>
+                  <h3 className="font-display font-bold text-lg text-[#1E1B18]">
+                    Update Vehicle Photo
+                  </h3>
+                  <p className="font-body text-xs text-[#7C776E]">{quickImageVehicle.name}</p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setQuickImageVehicle(null)}
+                  className="text-[#7C776E] hover:bg-[#EFECE4] p-1 rounded-lg cursor-pointer"
+                >
+                  <span className="material-symbols-outlined text-lg">close</span>
+                </button>
+              </div>
+
+              {/* Live Preview */}
+              {quickImageUrl && (
+                <div className="rounded-xl overflow-hidden aspect-[16/10] bg-[#EFECE4] border border-[#1E1B18]/15 shadow-inner">
+                  <img src={quickImageUrl} alt="Preview" className="w-full h-full object-cover" />
+                </div>
+              )}
+
+              <form onSubmit={handleSaveQuickImage} className="space-y-4">
+                <div>
+                  <label className="block font-mono text-xs font-semibold uppercase text-[#45413B] mb-1.5">
+                    Upload Image or Paste URL
+                  </label>
+                  <div className="space-y-2">
+                    <input
+                      type="text"
+                      value={quickImageUrl}
+                      onChange={(e) => setQuickImageUrl(e.target.value)}
+                      placeholder="https://images.unsplash.com/..."
+                      className="w-full px-3 py-2 rounded-lg border border-[#1E1B18]/20 text-xs font-mono bg-white focus:outline-none focus:ring-2 focus:ring-[#E64A19]/30"
+                    />
+
+                    <label className="bg-[#EFECE4] hover:bg-[#E64A19] hover:text-white px-3 py-2.5 rounded-lg border border-[#1E1B18]/20 cursor-pointer flex items-center justify-center gap-1.5 text-xs font-mono font-semibold transition-colors">
+                      <span className="material-symbols-outlined text-sm">upload_file</span>
+                      <span>{uploadingImage ? 'Uploading Image...' : 'Upload Photo from Device'}</span>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        disabled={uploadingImage}
+                        className="hidden"
+                        onChange={(e) => handleImageUpload(e, (url) => setQuickImageUrl(url))}
+                      />
+                    </label>
+                  </div>
+                  <p className="font-body text-[11px] text-[#7C776E] mt-1.5">
+                    Images upload to Supabase cloud storage automatically.
+                  </p>
+                </div>
+
+                <div className="flex gap-2 pt-2">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    fullWidth
+                    onClick={() => setQuickImageVehicle(null)}
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    type="submit"
+                    variant="primary"
+                    size="sm"
+                    fullWidth
+                    icon="check"
+                    disabled={uploadingImage}
+                  >
+                    Save Photo
+                  </Button>
+                </div>
+              </form>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
       {/* REQUIREMENT DETAIL MODAL */}
       <AnimatePresence>
         {selectedRequirement && (
@@ -1527,14 +1663,40 @@ export default function AdminPage() {
                   />
                 </div>
 
-                <FormField
-                  label="Image URL"
-                  id="v-image"
-                  value={vImage}
-                  onChange={e => setVImage(e.target.value)}
-                  placeholder="https://images.unsplash.com/..."
-                  helperText="Enter high-res image URL or static asset path."
-                />
+                <div>
+                  <div className="flex items-center justify-between mb-1.5">
+                    <label className="block font-mono text-xs font-semibold uppercase text-[#45413B]">
+                      Vehicle Image (URL or Upload)
+                    </label>
+                    <label className="bg-[#EFECE4] hover:bg-[#E64A19] hover:text-white px-2.5 py-1 rounded border border-[#1E1B18]/20 cursor-pointer flex items-center gap-1 text-[11px] font-mono font-semibold transition-colors">
+                      <span className="material-symbols-outlined text-xs">upload_file</span>
+                      <span>{uploadingImage ? 'Uploading...' : 'Upload File'}</span>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        disabled={uploadingImage}
+                        className="hidden"
+                        onChange={(e) => handleImageUpload(e, (url) => setVImage(url))}
+                      />
+                    </label>
+                  </div>
+                  <input
+                    type="text"
+                    id="v-image"
+                    value={vImage}
+                    onChange={(e) => setVImage(e.target.value)}
+                    placeholder="https://images.unsplash.com/..."
+                    className="w-full px-3.5 py-2.5 rounded-lg border border-[#1E1B18]/20 bg-white text-xs font-mono focus:outline-none focus:ring-2 focus:ring-[#E64A19]/30"
+                  />
+                  {vImage && (
+                    <div className="mt-2.5 h-28 w-44 rounded-lg overflow-hidden border border-[#1E1B18]/15 bg-[#EFECE4] shadow-xs">
+                      <img src={vImage} alt="Vehicle preview" className="w-full h-full object-cover" />
+                    </div>
+                  )}
+                  <p className="font-body text-[11px] text-[#7C776E] mt-1">
+                    Enter high-res image URL or upload directly from your device.
+                  </p>
+                </div>
 
                 <FormField
                   label="Tagline / Description"

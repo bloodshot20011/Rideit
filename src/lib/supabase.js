@@ -46,6 +46,37 @@ export async function upsertVehicleToSupabase(vehicle) {
 }
 
 /**
+ * Upload Image File directly to Supabase Storage Bucket ('vehicle-images')
+ * Returns the public image URL
+ */
+export async function uploadVehicleImageToSupabase(file) {
+  if (!supabase) return null;
+  try {
+    const fileExt = file.name.split('.').pop();
+    const fileName = `vehicle-${Date.now()}-${Math.random().toString(36).substring(2, 8)}.${fileExt}`;
+    const filePath = `public/${fileName}`;
+
+    const { error: uploadError } = await supabase.storage
+      .from('vehicle-images')
+      .upload(filePath, file, { cacheControl: '3600', upsert: true });
+
+    if (uploadError) {
+      console.warn('[Supabase Storage] Upload error:', uploadError.message);
+      return null;
+    }
+
+    const { data: publicUrlData } = supabase.storage
+      .from('vehicle-images')
+      .getPublicUrl(filePath);
+
+    return publicUrlData?.publicUrl || null;
+  } catch (err) {
+    console.warn('[Supabase Storage] Image upload failed:', err);
+    return null;
+  }
+}
+
+/**
  * Save Requirement Survey submission to Supabase
  */
 export async function saveRequirementToSupabase(requirement) {
