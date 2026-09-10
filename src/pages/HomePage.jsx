@@ -153,8 +153,8 @@ export default function HomePage() {
             </p>
             {/* Continuous Ad Connecting Line */}
             <div className="pt-1">
-              <div className="inline-block bg-[#0B132B] text-[#F5F2EB] px-4 py-2 rounded-lg font-mono text-xs sm:text-sm font-medium border border-[#C89D3C]/40 shadow-xs">
-                ✨ Zero down payment, zero maintenance, 100% freedom. Shivpuri residents, get ready for affordable daily rentals.
+              <div className="inline-block bg-[#EFECE4] text-[#1E1B18] px-4 py-2 rounded-full font-mono text-xs sm:text-sm font-medium border border-[#E64A19]/30 shadow-2xs">
+                <span className="text-[#E64A19] font-bold">✨ Zero down payment, zero maintenance, 100% freedom.</span> Shivpuri residents, get ready for affordable daily rentals.
               </div>
             </div>
           </div>
@@ -164,7 +164,7 @@ export default function HomePage() {
         <ScrollReveal delay={0.1}>
           <div className="bg-white rounded-xl sm:rounded-2xl border border-[#1E1B18]/15 p-4 sm:p-8 lg:p-10 shadow-xs space-y-6">
             <div className="text-center max-w-xl mx-auto space-y-2">
-              <span className="font-mono text-[10px] font-bold text-[#C89D3C] uppercase tracking-wider bg-[#0B132B] px-2.5 py-0.5 rounded">
+              <span className="font-mono text-[10px] font-bold text-[#E64A19] uppercase tracking-wider bg-[#E64A19]/10 px-2.5 py-0.5 rounded border border-[#E64A19]/25">
                 EASY & TRANSPARENT RENTALS
               </span>
               <h3 className="font-display font-bold text-xl sm:text-2xl text-[#1E1B18] tracking-tight uppercase">
@@ -235,7 +235,7 @@ export default function HomePage() {
           <div className="bg-[#EFECE4] rounded-xl sm:rounded-2xl border border-[#C89D3C]/40 p-4 sm:p-8 shadow-xs relative overflow-hidden">
             <form onSubmit={handleWidgetSubmit} className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6 items-center relative z-10">
               <div className="lg:col-span-4 space-y-1.5 text-center lg:text-left">
-                <div className="inline-flex items-center gap-1 bg-[#0B132B] text-[#C89D3C] px-2 py-0.5 rounded font-mono text-[9px] font-semibold">
+                <div className="inline-flex items-center gap-1 bg-[#E64A19]/10 text-[#E64A19] px-2.5 py-0.5 rounded font-mono text-[9px] font-bold border border-[#E64A19]/25">
                   <span className="material-symbols-outlined text-[11px] text-[#E64A19]">tune</span>
                   30-SECOND SURVEY
                 </div>

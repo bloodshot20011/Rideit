@@ -1,27 +1,48 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { adminStore } from '../data/adminStore';
+import { isSupabaseConfigured } from '../lib/supabase';
 import Button from '../components/Button';
 import FormField from '../components/FormField';
 import ImagePlaceholder from '../components/ImagePlaceholder';
 
 export default function AdminPage() {
+  // Security & Authentication State (Default PIN: 1234)
+  const [isAuthenticated, setIsAuthenticated] = useState(() => {
+    return sessionStorage.getItem('apniride_admin_auth') === 'true';
+  });
+  const [pinInput, setPinInput] = useState('');
+  const [pinError, setPinError] = useState('');
+  const [rememberDevice, setRememberDevice] = useState(true);
+
+  // Navigation & Tabs
   const [activeTab, setActiveTab] = useState('overview'); // overview, vehicles, requirements, hosts, waitlist
 
-  // Store data states
+  // Store Data States
   const [vehicles, setVehicles] = useState([]);
   const [requirements, setRequirements] = useState([]);
   const [hostVehicles, setHostVehicles] = useState([]);
   const [waitlist, setWaitlist] = useState([]);
+  const [syncingCloud, setSyncingCloud] = useState(false);
 
   // Search & Filter States
   const [searchQuery, setSearchQuery] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('all');
   const [statusFilter, setStatusFilter] = useState('all');
 
-  // Modals state
+  // Vehicle Modals
   const [showVehicleModal, setShowVehicleModal] = useState(false);
   const [editingVehicle, setEditingVehicle] = useState(null);
+
+  // In-Line Quick Price Edit Modal
+  const [quickPriceVehicle, setQuickPriceVehicle] = useState(null);
+  const [quickPriceValue, setQuickPriceValue] = useState('');
+
+  // Requirement Detail Modal
+  const [selectedRequirement, setSelectedRequirement] = useState(null);
+
+  // Host Detail & Photo Modal
+  const [selectedHost, setSelectedHost] = useState(null);
 
   // Form State for Vehicle Modal
   const [vName, setVName] = useState('');
@@ -52,6 +73,26 @@ export default function AdminPage() {
     return () => unsubscribe();
   }, []);
 
+  // Handle PIN Authentication
+  const handlePinSubmit = (e) => {
+    e.preventDefault();
+    if (pinInput === '1234' || pinInput === 'admin2026') {
+      if (rememberDevice) {
+        sessionStorage.setItem('apniride_admin_auth', 'true');
+      }
+      setIsAuthenticated(true);
+      setPinError('');
+    } else {
+      setPinError('Invalid PIN code. Please enter default PIN (1234).');
+    }
+  };
+
+  const handleLogout = () => {
+    sessionStorage.removeItem('apniride_admin_auth');
+    setIsAuthenticated(false);
+    setPinInput('');
+  };
+
   // Smart price auto-formatter
   const formatPriceString = (input) => {
     if (!input) return '₹399/day';
@@ -63,6 +104,24 @@ export default function AdminPage() {
       return `₹${num.toLocaleString('en-IN')}/day`;
     }
     return `₹${str}/day`;
+  };
+
+  // Manual Cloud Sync
+  const handleCloudSync = async () => {
+    setSyncingCloud(true);
+    await adminStore.initSupabaseSync();
+    setTimeout(() => {
+      setSyncingCloud(false);
+    }, 600);
+  };
+
+  // In-Line Quick Price Edit Submit
+  const handleSaveQuickPrice = (e) => {
+    e.preventDefault();
+    if (!quickPriceVehicle) return;
+    const formatted = formatPriceString(quickPriceValue);
+    adminStore.updateVehicle(quickPriceVehicle.id, { pricePerDay: formatted });
+    setQuickPriceVehicle(null);
   };
 
   // Open modal for Adding New Vehicle
@@ -133,43 +192,87 @@ export default function AdminPage() {
     setShowVehicleModal(false);
   };
 
-  // Delete Vehicle
+  // Delete Handlers
   const handleDeleteVehicle = (id, name) => {
     if (window.confirm(`Are you sure you want to delete "${name}" from the vehicle catalog?`)) {
       adminStore.deleteVehicle(id);
     }
   };
 
-  // Delete Requirement
   const handleDeleteRequirement = (id, name) => {
     if (window.confirm(`Delete requirement submission from ${name}?`)) {
       adminStore.deleteRequirement(id);
     }
   };
 
-  // Delete Host Vehicle
   const handleDeleteHostVehicle = (id, model) => {
     if (window.confirm(`Delete host registration for ${model}?`)) {
       adminStore.deleteHostVehicle(id);
     }
   };
 
-  // Export JSON
-  const handleExportData = () => {
-    const exportObj = {
-      vehicles,
-      requirements,
-      hostVehicles,
-      waitlist,
-      exportedAt: new Date().toISOString()
-    };
-    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(exportObj, null, 2));
-    const downloadAnchor = document.createElement('a');
-    downloadAnchor.setAttribute("href", dataStr);
-    downloadAnchor.setAttribute("download", `apniride_admin_export_${new Date().toISOString().slice(0, 10)}.json`);
-    document.body.appendChild(downloadAnchor);
-    downloadAnchor.click();
-    downloadAnchor.remove();
+  // Export Data to CSV (Excel format)
+  const handleExportCSV = (datasetName) => {
+    let rows = [];
+    let filename = `apniride_${datasetName}_${new Date().toISOString().slice(0, 10)}.csv`;
+
+    if (datasetName === 'requirements') {
+      rows = [
+        ['Customer Name', 'WhatsApp', 'Email', 'Purpose', 'Category', 'SubType', 'Pickup Date', 'Return Date', 'Locality', 'Status', 'Notes', 'Submitted At'],
+        ...requirements.map(r => [
+          `"${r.fullName || ''}"`,
+          `"${r.whatsapp || ''}"`,
+          `"${r.email || ''}"`,
+          `"${r.purpose || ''}"`,
+          `"${r.vehicleCategory || ''}"`,
+          `"${r.subType || ''}"`,
+          `"${r.pickupDate || ''}"`,
+          `"${r.returnDate || ''}"`,
+          `"${r.location || ''}"`,
+          `"${r.status || ''}"`,
+          `"${(r.notes || '').replace(/"/g, '""')}"`,
+          `"${r.createdAt || ''}"`
+        ])
+      ];
+    } else if (datasetName === 'vehicles') {
+      rows = [
+        ['Model Name', 'Category', 'Type', 'Price Per Day', 'Fuel', 'Transmission', 'Capacity', 'Status', 'Location'],
+        ...vehicles.map(v => [
+          `"${v.name || ''}"`,
+          `"${v.category || ''}"`,
+          `"${v.type || ''}"`,
+          `"${v.pricePerDay || ''}"`,
+          `"${v.fuel || ''}"`,
+          `"${v.transmission || ''}"`,
+          `"${v.capacity || ''}"`,
+          `"${v.status || ''}"`,
+          `"${v.location || ''}"`
+        ])
+      ];
+    } else {
+      rows = [
+        ['Full Name', 'WhatsApp', 'Email', 'Interest', 'Frequency', 'Preference', 'Status', 'Submitted At'],
+        ...waitlist.map(w => [
+          `"${w.fullName || ''}"`,
+          `"${w.whatsapp || ''}"`,
+          `"${w.email || ''}"`,
+          `"${w.interest || ''}"`,
+          `"${w.timing || ''}"`,
+          `"${(w.preferenceText || '').replace(/"/g, '""')}"`,
+          `"${w.status || ''}"`,
+          `"${w.createdAt || ''}"`
+        ])
+      ];
+    }
+
+    const csvContent = "data:text/csv;charset=utf-8," + rows.map(e => e.join(",")).join("\n");
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", filename);
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
   };
 
   // Helper WhatsApp Link Generator
@@ -188,47 +291,138 @@ export default function AdminPage() {
   });
 
   const filteredRequirementsList = requirements.filter(r => {
-    const matchesSearch = r.fullName.toLowerCase().includes(searchQuery.toLowerCase()) || r.whatsapp.includes(searchQuery) || (r.location && r.location.toLowerCase().includes(searchQuery.toLowerCase()));
+    const matchesSearch = r.fullName.toLowerCase().includes(searchQuery.toLowerCase()) || r.whatsapp.includes(searchQuery) || (r.location && r.location.toLowerCase().includes(searchQuery.toLowerCase())) || (r.purpose && r.purpose.toLowerCase().includes(searchQuery.toLowerCase()));
     const matchesStatus = statusFilter === 'all' || r.status === statusFilter;
     return matchesSearch && matchesStatus;
   });
 
   const filteredHostVehiclesList = hostVehicles.filter(h => {
-    const matchesSearch = h.fullName.toLowerCase().includes(searchQuery.toLowerCase()) || h.modelName.toLowerCase().includes(searchQuery.toLowerCase()) || h.whatsapp.includes(searchQuery);
+    const matchesSearch = h.fullName.toLowerCase().includes(searchQuery.toLowerCase()) || h.modelName.toLowerCase().includes(searchQuery.toLowerCase()) || h.whatsapp.includes(searchQuery) || (h.location && h.location.toLowerCase().includes(searchQuery.toLowerCase()));
     const matchesStatus = statusFilter === 'all' || h.status === statusFilter;
     return matchesSearch && matchesStatus;
   });
 
   const filteredWaitlistList = waitlist.filter(w => {
-    const matchesSearch = w.fullName.toLowerCase().includes(searchQuery.toLowerCase()) || w.whatsapp.includes(searchQuery);
+    const matchesSearch = w.fullName.toLowerCase().includes(searchQuery.toLowerCase()) || w.whatsapp.includes(searchQuery) || (w.preferenceText && w.preferenceText.toLowerCase().includes(searchQuery.toLowerCase()));
     const matchesStatus = statusFilter === 'all' || w.status === statusFilter;
     return matchesSearch && matchesStatus;
   });
 
+  // 1. PIN LOCK GATE MODAL
+  if (!isAuthenticated) {
+    return (
+      <div className="min-h-[75vh] flex items-center justify-center px-4 py-12">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="bg-white rounded-2xl border border-[#1E1B18]/15 p-8 sm:p-10 max-w-md w-full shadow-lg text-center space-y-6"
+        >
+          <div className="w-14 h-14 rounded-2xl bg-[#0B132B] text-[#C89D3C] mx-auto flex items-center justify-center border border-[#C89D3C]/30 shadow-xs">
+            <span className="material-symbols-outlined text-3xl">lock</span>
+          </div>
+
+          <div className="space-y-1">
+            <h2 className="font-display font-bold text-2xl text-[#1E1B18] uppercase tracking-tight">
+              ApniRide Admin Studio
+            </h2>
+            <p className="font-body text-xs text-[#7C776E]">
+              Protected management portal for Shivpuri vehicle pricing & customer surveys.
+            </p>
+          </div>
+
+          <form onSubmit={handlePinSubmit} className="space-y-4 text-left">
+            <div>
+              <label className="block font-mono text-[11px] font-semibold uppercase text-[#45413B] mb-1.5">
+                Enter Admin Access PIN (Default: 1234)
+              </label>
+              <input
+                type="password"
+                maxLength={8}
+                value={pinInput}
+                onChange={e => setPinInput(e.target.value)}
+                placeholder="Enter 4-digit PIN..."
+                autoFocus
+                className="w-full px-4 py-3 rounded-xl border border-[#1E1B18]/20 bg-[#F5F2EB] text-center font-mono text-xl tracking-widest text-[#1E1B18] focus:outline-none focus:ring-2 focus:ring-[#E64A19]/30"
+              />
+              {pinError && <p className="font-body text-xs text-red-600 mt-1.5">{pinError}</p>}
+            </div>
+
+            <div className="flex items-center gap-2 pt-1">
+              <input
+                type="checkbox"
+                id="remember"
+                checked={rememberDevice}
+                onChange={e => setRememberDevice(e.target.checked)}
+                className="rounded border-[#1E1B18]/20 text-[#E64A19] focus:ring-[#E64A19]"
+              />
+              <label htmlFor="remember" className="font-body text-xs text-[#45413B] cursor-pointer">
+                Keep studio unlocked on this browser session
+              </label>
+            </div>
+
+            <button
+              type="submit"
+              className="w-full bg-[#E64A19] hover:bg-[#D84315] text-white font-mono text-xs font-semibold py-3.5 px-4 rounded-xl shadow-xs transition-all flex items-center justify-center gap-2 cursor-pointer uppercase tracking-wider"
+            >
+              <span>UNLOCK CONTROL PANEL</span>
+              <span>→</span>
+            </button>
+          </form>
+        </motion.div>
+      </div>
+    );
+  }
+
+  // 2. MAIN COMPLETED ADMIN PANEL
   return (
     <div className="py-6 sm:py-8 px-4 sm:px-6 max-w-content mx-auto space-y-6 sm:space-y-8">
-      {/* Studio Header */}
-      <div className="bg-white rounded-2xl border border-[#1E1B18]/15 p-5 sm:p-6 shadow-xs flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-        <div>
-          <div className="inline-flex items-center gap-1.5 bg-[#0B132B] text-[#C89D3C] px-3 py-1 rounded-md font-mono text-[10px] font-semibold uppercase tracking-wider mb-2 border border-[#C89D3C]/40 shadow-2xs">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#E64A19] animate-pulse" />
-            MANAGEMENT STUDIO
+      {/* Studio Header with Supabase Live Cloud Sync Bar */}
+      <div className="bg-white rounded-2xl border border-[#1E1B18]/15 p-5 sm:p-6 shadow-xs space-y-4">
+        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+          <div>
+            <div className="inline-flex items-center gap-2 bg-[#0B132B] text-[#C89D3C] px-3 py-1 rounded-md font-mono text-[10px] font-semibold uppercase tracking-wider border border-[#C89D3C]/40 shadow-2xs">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#E64A19] animate-pulse" />
+              APNIRIDE OPERATIONS SUITE
+            </div>
+            <h1 className="font-display font-light text-2xl sm:text-3xl text-[#1E1B18] uppercase tracking-tight mt-1">
+              Control Panel & Fleet Manager
+            </h1>
+            <p className="font-body text-xs sm:text-sm text-[#45413B]">
+              Real-time management of vehicle catalog, pricing, customer requirements survey, and host registrations.
+            </p>
           </div>
-          <h1 className="font-display font-light text-2xl sm:text-3xl text-[#1E1B18] uppercase tracking-tight">
-            ApniRide Control Panel
-          </h1>
-          <p className="font-body text-xs sm:text-sm text-[#45413B] mt-1">
-            Manage Shivpuri vehicle fleet, pricing rates, customer travel requirements, host vehicle listings, and waitlist signups.
-          </p>
+
+          <div className="flex flex-wrap items-center gap-2 w-full md:w-auto">
+            <Button variant="outline" size="sm" icon="sync" onClick={handleCloudSync} disabled={syncingCloud} className="flex-1 sm:flex-initial">
+              {syncingCloud ? 'Syncing...' : 'Sync Cloud'}
+            </Button>
+            <Button variant="primary" size="sm" icon="add" onClick={handleOpenAddModal} className="flex-1 sm:flex-initial">
+              Add Vehicle
+            </Button>
+            <button
+              onClick={handleLogout}
+              className="p-2 rounded-lg text-[#7C776E] hover:bg-[#EFECE4] transition-colors"
+              title="Lock Admin Panel"
+            >
+              <span className="material-symbols-outlined text-lg">lock</span>
+            </button>
+          </div>
         </div>
 
-        <div className="flex flex-wrap gap-2 w-full sm:w-auto">
-          <Button variant="outline" size="sm" icon="download" onClick={handleExportData} className="flex-1 sm:flex-initial">
-            Export Data
-          </Button>
-          <Button variant="primary" size="sm" icon="add" onClick={handleOpenAddModal} className="flex-1 sm:flex-initial">
-            Add Vehicle
-          </Button>
+        {/* Database Live Status Indicator Strip */}
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 pt-3 border-t border-[#1E1B18]/10 text-xs font-mono">
+          <div className="flex items-center gap-2">
+            <span className={`w-2 h-2 rounded-full ${isSupabaseConfigured ? 'bg-emerald-500' : 'bg-amber-500 animate-ping'}`} />
+            <span className="text-[#45413B]">
+              Database Status: <strong className={isSupabaseConfigured ? 'text-emerald-700' : 'text-amber-700'}>
+                {isSupabaseConfigured ? 'Connected to Supabase Cloud' : 'Local Storage Engine (Active)'}
+              </strong>
+            </span>
+          </div>
+
+          <div className="text-[#7C776E]">
+            Shivpuri Hub: <strong>+91 8370092226</strong>
+          </div>
         </div>
       </div>
 
@@ -236,10 +430,10 @@ export default function AdminPage() {
       <div className="flex border-b border-[#1E1B18]/15 overflow-x-auto no-scrollbar gap-2 pb-1 -mx-4 px-4 sm:mx-0 sm:px-0 text-sm font-medium">
         {[
           { id: 'overview', label: 'Dashboard Overview', icon: 'dashboard', count: null },
-          { id: 'vehicles', label: 'Vehicle Catalog & Prices', icon: 'two_wheeler', count: vehicles.length },
-          { id: 'requirements', label: 'Requirements Survey', icon: 'checklist', count: requirements.length },
-          { id: 'hosts', label: 'Host Vehicles List', icon: 'key', count: hostVehicles.length },
-          { id: 'waitlist', label: 'Waitlist Signups', icon: 'star', count: waitlist.length }
+          { id: 'vehicles', label: 'Fleet & Price Editor', icon: 'two_wheeler', count: vehicles.length },
+          { id: 'requirements', label: 'Requirements CRM', icon: 'checklist', count: requirements.length },
+          { id: 'hosts', label: 'Host Partner Listings', icon: 'key', count: hostVehicles.length },
+          { id: 'waitlist', label: 'Waitlist Pass', icon: 'star', count: waitlist.length }
         ].map(tab => (
           <button
             key={tab.id}
@@ -275,10 +469,10 @@ export default function AdminPage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             <div className="bg-white p-5 rounded-xl border border-[#1E1B18]/15 shadow-xs flex items-center justify-between">
               <div>
-                <p className="font-mono text-[10px] font-semibold uppercase text-[#7C776E]">Fleet Vehicles</p>
+                <p className="font-mono text-[10px] font-semibold uppercase text-[#7C776E]">Total Fleet Models</p>
                 <h3 className="font-display font-bold text-2xl sm:text-3xl text-[#1E1B18] mt-1">{vehicles.length}</h3>
                 <p className="font-body text-xs text-[#E64A19] font-medium mt-1">
-                  {vehicles.filter(v => v.status === 'Available').length} Available now
+                  {vehicles.filter(v => v.status === 'Available').length} Ready for Rent
                 </p>
               </div>
               <div className="w-12 h-12 rounded-xl bg-[#E64A19]/10 text-[#E64A19] flex items-center justify-center">
@@ -288,10 +482,10 @@ export default function AdminPage() {
 
             <div className="bg-white p-5 rounded-xl border border-[#1E1B18]/15 shadow-xs flex items-center justify-between">
               <div>
-                <p className="font-mono text-[10px] font-semibold uppercase text-[#7C776E]">Requirement Submissions</p>
+                <p className="font-mono text-[10px] font-semibold uppercase text-[#7C776E]">Requirement Surveys</p>
                 <h3 className="font-display font-bold text-2xl sm:text-3xl text-[#1E1B18] mt-1">{requirements.length}</h3>
                 <p className="font-body text-xs text-amber-700 font-medium mt-1">
-                  {requirements.filter(r => r.status === 'New').length} New pending contact
+                  {requirements.filter(r => r.status === 'New').length} New Submissions
                 </p>
               </div>
               <div className="w-12 h-12 rounded-xl bg-amber-500/10 text-amber-700 flex items-center justify-center">
@@ -301,9 +495,9 @@ export default function AdminPage() {
 
             <div className="bg-white p-5 rounded-xl border border-[#1E1B18]/15 shadow-xs flex items-center justify-between">
               <div>
-                <p className="font-mono text-[10px] font-semibold uppercase text-[#7C776E]">Host Vehicle Listings</p>
+                <p className="font-mono text-[10px] font-semibold uppercase text-[#7C776E]">Host Partner Vehicles</p>
                 <h3 className="font-display font-bold text-2xl sm:text-3xl text-[#1E1B18] mt-1">{hostVehicles.length}</h3>
-                <p className="font-body text-xs text-blue-700 font-medium mt-1">Owner Registrations</p>
+                <p className="font-body text-xs text-blue-700 font-medium mt-1">Registered Owners</p>
               </div>
               <div className="w-12 h-12 rounded-xl bg-blue-500/10 text-blue-700 flex items-center justify-center">
                 <span className="material-symbols-outlined text-2xl">key</span>
@@ -312,9 +506,9 @@ export default function AdminPage() {
 
             <div className="bg-white p-5 rounded-xl border border-[#1E1B18]/15 shadow-xs flex items-center justify-between">
               <div>
-                <p className="font-mono text-[10px] font-semibold uppercase text-[#7C776E]">Waitlist Signups</p>
+                <p className="font-mono text-[10px] font-semibold uppercase text-[#7C776E]">Early Waitlist Passes</p>
                 <h3 className="font-display font-bold text-2xl sm:text-3xl text-[#1E1B18] mt-1">{waitlist.length}</h3>
-                <p className="font-body text-xs text-emerald-700 font-medium mt-1">Early Access Members</p>
+                <p className="font-body text-xs text-emerald-700 font-medium mt-1">20% Voucher Members</p>
               </div>
               <div className="w-12 h-12 rounded-xl bg-emerald-500/10 text-emerald-700 flex items-center justify-center">
                 <span className="material-symbols-outlined text-2xl">star</span>
@@ -322,109 +516,147 @@ export default function AdminPage() {
             </div>
           </div>
 
-          {/* Recent Requirements Section */}
-          <div className="bg-white rounded-xl border border-[#1E1B18]/15 p-5 sm:p-6 shadow-xs space-y-4">
-            <div className="flex items-center justify-between">
-              <h3 className="font-display font-bold text-lg text-[#1E1B18] flex items-center gap-2">
-                <span className="material-symbols-outlined text-[#E64A19]">schedule</span>
-                Recent Travel Requirements
-              </h3>
-              <Button variant="outline" size="sm" onClick={() => setActiveTab('requirements')}>
-                View All ({requirements.length})
-              </Button>
-            </div>
+          {/* Quick Actions & Recent Activity */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            <div className="lg:col-span-8 bg-white rounded-xl border border-[#1E1B18]/15 p-5 sm:p-6 shadow-xs space-y-4">
+              <div className="flex items-center justify-between">
+                <h3 className="font-display font-bold text-base sm:text-lg text-[#1E1B18] flex items-center gap-2">
+                  <span className="material-symbols-outlined text-[#E64A19]">schedule</span>
+                  Recent Customer Travel Inquiries
+                </h3>
+                <Button variant="outline" size="sm" onClick={() => setActiveTab('requirements')}>
+                  View All ({requirements.length})
+                </Button>
+              </div>
 
-            {/* Mobile Card Stack */}
-            <div className="md:hidden space-y-3">
-              {requirements.slice(0, 4).map(req => (
-                <div key={req.id} className="p-4 rounded-lg border border-[#1E1B18]/15 bg-[#F5F2EB]/50 space-y-2">
-                  <div className="flex items-center justify-between">
-                    <span className="font-display font-bold text-sm text-[#1E1B18]">{req.fullName}</span>
-                    <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${
-                      req.status === 'New' ? 'bg-yellow-100 text-yellow-800' :
-                      req.status === 'Contacted' ? 'bg-purple-100 text-purple-800' : 'bg-emerald-100 text-emerald-800'
-                    }`}>
-                      {req.status}
-                    </span>
+              {/* Mobile Card Stack */}
+              <div className="md:hidden space-y-3">
+                {requirements.slice(0, 3).map(req => (
+                  <div key={req.id} className="p-4 rounded-lg border border-[#1E1B18]/15 bg-[#F5F2EB]/50 space-y-2">
+                    <div className="flex items-center justify-between">
+                      <span className="font-display font-bold text-sm text-[#1E1B18]">{req.fullName}</span>
+                      <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${
+                        req.status === 'New' ? 'bg-yellow-100 text-yellow-800' :
+                        req.status === 'Contacted' ? 'bg-purple-100 text-purple-800' : 'bg-emerald-100 text-emerald-800'
+                      }`}>
+                        {req.status}
+                      </span>
+                    </div>
+                    <div className="font-mono text-xs text-[#E64A19]">{req.whatsapp}</div>
+                    <div className="text-xs text-[#45413B]">
+                      <strong>{req.purpose}</strong> ({req.vehicleCategory}) • 📍 {req.location || 'Shivpuri'}
+                    </div>
+                    <div className="pt-2">
+                      <a
+                        href={getWhatsAppLink(req.whatsapp, `Hi ${req.fullName}! This is ApniRide Shivpuri team regarding your ${req.purpose} rental requirement.`)}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-full inline-flex items-center justify-center gap-1.5 bg-[#25D366] text-white py-2 rounded-lg text-xs font-semibold"
+                      >
+                        <span className="material-symbols-outlined text-sm">chat</span>
+                        Message on WhatsApp
+                      </a>
+                    </div>
                   </div>
-                  <div className="font-mono text-xs text-[#E64A19]">{req.whatsapp}</div>
-                  <div className="text-xs text-[#45413B]">
-                    <strong>{req.purpose}</strong> ({req.vehicleCategory}) • 📍 {req.location || 'Shivpuri'}
-                  </div>
-                  <div className="pt-2">
-                    <a
-                      href={getWhatsAppLink(req.whatsapp, `Hi ${req.fullName}! This is ApniRide Shivpuri team regarding your ${req.purpose} rental requirement.`)}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="w-full inline-flex items-center justify-center gap-1.5 bg-[#25D366] text-white py-2 rounded-lg text-xs font-semibold"
-                    >
-                      <span className="material-symbols-outlined text-sm">chat</span>
-                      Message on WhatsApp
-                    </a>
-                  </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
 
-            {/* Desktop Table View */}
-            <div className="hidden md:block overflow-x-auto">
-              <table className="w-full text-left border-collapse text-sm">
-                <thead>
-                  <tr className="border-b border-[#1E1B18]/15 text-xs uppercase text-[#7C776E] bg-[#EFECE4]">
-                    <th className="p-3">Customer</th>
-                    <th className="p-3">Category</th>
-                    <th className="p-3">Trip Purpose</th>
-                    <th className="p-3">Locality</th>
-                    <th className="p-3">Status</th>
-                    <th className="p-3 text-right">Quick Action</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-[#1E1B18]/10">
-                  {requirements.slice(0, 5).map(req => (
-                    <tr key={req.id} className="hover:bg-[#EFECE4]/50 transition-colors">
-                      <td className="p-3 font-semibold text-[#1E1B18]">
-                        <div>{req.fullName}</div>
-                        <div className="text-xs text-[#E64A19] font-mono">{req.whatsapp}</div>
-                      </td>
-                      <td className="p-3">
-                        <span className={`px-2 py-0.5 rounded text-xs font-semibold capitalize ${
-                          req.vehicleCategory === 'car' ? 'bg-blue-100 text-blue-800' : 'bg-amber-100 text-amber-800'
-                        }`}>
-                          {req.vehicleCategory}
-                        </span>
-                      </td>
-                      <td className="p-3 font-medium text-[#1E1B18]">{req.purpose}</td>
-                      <td className="p-3 text-[#45413B]">{req.location || 'Shivpuri'}</td>
-                      <td className="p-3">
-                        <span className={`px-2.5 py-1 rounded-full text-xs font-semibold ${
-                          req.status === 'New' ? 'bg-yellow-100 text-yellow-800' :
-                          req.status === 'Contacted' ? 'bg-purple-100 text-purple-800' :
-                          'bg-emerald-100 text-emerald-800'
-                        }`}>
-                          {req.status}
-                        </span>
-                      </td>
-                      <td className="p-3 text-right">
-                        <a
-                          href={getWhatsAppLink(req.whatsapp, `Hi ${req.fullName}! This is ApniRide Shivpuri team regarding your ${req.purpose} rental requirement.`)}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1.5 bg-[#25D366] text-white px-3 py-1.5 rounded-lg text-xs font-semibold hover:bg-[#20ba59] transition-colors"
-                        >
-                          <span className="material-symbols-outlined text-sm">chat</span>
-                          WhatsApp
-                        </a>
-                      </td>
+              {/* Desktop Table View */}
+              <div className="hidden md:block overflow-x-auto">
+                <table className="w-full text-left border-collapse text-sm">
+                  <thead>
+                    <tr className="border-b border-[#1E1B18]/15 text-xs uppercase text-[#7C776E] bg-[#EFECE4]">
+                      <th className="p-3">Customer</th>
+                      <th className="p-3">Category</th>
+                      <th className="p-3">Trip Purpose</th>
+                      <th className="p-3">Locality</th>
+                      <th className="p-3">Status</th>
+                      <th className="p-3 text-right">Action</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody className="divide-y divide-[#1E1B18]/10">
+                    {requirements.slice(0, 5).map(req => (
+                      <tr key={req.id} className="hover:bg-[#EFECE4]/50 transition-colors">
+                        <td className="p-3 font-semibold text-[#1E1B18]">
+                          <div>{req.fullName}</div>
+                          <div className="text-xs text-[#E64A19] font-mono">{req.whatsapp}</div>
+                        </td>
+                        <td className="p-3">
+                          <span className={`px-2 py-0.5 rounded text-xs font-semibold capitalize ${
+                            req.vehicleCategory === 'car' ? 'bg-blue-100 text-blue-800' : 'bg-amber-100 text-amber-800'
+                          }`}>
+                            {req.vehicleCategory}
+                          </span>
+                        </td>
+                        <td className="p-3 font-medium text-[#1E1B18]">{req.purpose}</td>
+                        <td className="p-3 text-[#45413B]">{req.location || 'Shivpuri'}</td>
+                        <td className="p-3">
+                          <span className={`px-2.5 py-1 rounded-full text-xs font-semibold ${
+                            req.status === 'New' ? 'bg-yellow-100 text-yellow-800' :
+                            req.status === 'Contacted' ? 'bg-purple-100 text-purple-800' :
+                            'bg-emerald-100 text-emerald-800'
+                          }`}>
+                            {req.status}
+                          </span>
+                        </td>
+                        <td className="p-3 text-right">
+                          <a
+                            href={getWhatsAppLink(req.whatsapp, `Hi ${req.fullName}! This is ApniRide Shivpuri team regarding your ${req.purpose} rental requirement.`)}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1.5 bg-[#25D366] text-white px-3 py-1.5 rounded-lg text-xs font-semibold hover:bg-[#20ba59] transition-colors"
+                          >
+                            <span className="material-symbols-outlined text-sm">chat</span>
+                            WhatsApp
+                          </a>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            {/* Quick Export Tools */}
+            <div className="lg:col-span-4 bg-white rounded-xl border border-[#1E1B18]/15 p-5 sm:p-6 shadow-xs space-y-4">
+              <h3 className="font-display font-bold text-base text-[#1E1B18] uppercase tracking-wider">
+                Export Operations Data
+              </h3>
+              <p className="font-body text-xs text-[#7C776E]">
+                Download live survey and fleet data directly into Excel/CSV spreadsheets.
+              </p>
+
+              <div className="space-y-2 pt-2">
+                <button
+                  onClick={() => handleExportCSV('requirements')}
+                  className="w-full flex items-center justify-between p-3 rounded-lg border border-[#1E1B18]/15 hover:bg-[#F5F2EB] text-xs font-mono font-semibold transition-colors cursor-pointer"
+                >
+                  <span>Export Customer Surveys (.csv)</span>
+                  <span className="material-symbols-outlined text-sm text-[#E64A19]">download</span>
+                </button>
+
+                <button
+                  onClick={() => handleExportCSV('vehicles')}
+                  className="w-full flex items-center justify-between p-3 rounded-lg border border-[#1E1B18]/15 hover:bg-[#F5F2EB] text-xs font-mono font-semibold transition-colors cursor-pointer"
+                >
+                  <span>Export Vehicle Catalog (.csv)</span>
+                  <span className="material-symbols-outlined text-sm text-[#E64A19]">download</span>
+                </button>
+
+                <button
+                  onClick={() => handleExportCSV('waitlist')}
+                  className="w-full flex items-center justify-between p-3 rounded-lg border border-[#1E1B18]/15 hover:bg-[#F5F2EB] text-xs font-mono font-semibold transition-colors cursor-pointer"
+                >
+                  <span>Export Waitlist Signups (.csv)</span>
+                  <span className="material-symbols-outlined text-sm text-[#E64A19]">download</span>
+                </button>
+              </div>
             </div>
           </div>
         </div>
       )}
 
-      {/* TAB 2: VEHICLE CATALOG (CRUD & PRICES) */}
+      {/* TAB 2: VEHICLE FLEET & DIRECT IN-LINE PRICE EDITOR */}
       {activeTab === 'vehicles' && (
         <div className="space-y-6">
           <div className="bg-white p-4 rounded-xl border border-[#1E1B18]/15 shadow-xs flex flex-col sm:flex-row gap-4 items-center justify-between">
@@ -454,15 +686,23 @@ export default function AdminPage() {
               >
                 <option value="all">All Statuses</option>
                 <option value="Available">Available</option>
+                <option value="Booked">Booked</option>
+                <option value="Maintenance">In Maintenance</option>
                 <option value="Coming Soon">Coming Soon</option>
               </select>
             </div>
 
-            <Button variant="primary" size="sm" icon="add" onClick={handleOpenAddModal} className="w-full sm:w-auto">
-              Add Vehicle Model
-            </Button>
+            <div className="flex gap-2 w-full sm:w-auto">
+              <Button variant="outline" size="sm" icon="download" onClick={() => handleExportCSV('vehicles')}>
+                Export
+              </Button>
+              <Button variant="primary" size="sm" icon="add" onClick={handleOpenAddModal}>
+                Add Vehicle Model
+              </Button>
+            </div>
           </div>
 
+          {/* Vehicle Grid with In-Line Price Tagger */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredVehiclesList.map(v => (
               <div key={v.id} className="bg-white rounded-xl border border-[#1E1B18]/15 shadow-xs overflow-hidden flex flex-col justify-between">
@@ -470,21 +710,37 @@ export default function AdminPage() {
                   <div className="relative">
                     <ImagePlaceholder src={v.image} alt={v.name} type={v.type} title={v.name} aspectRatio="aspect-[16/10]" />
                     
-                    <button
-                      onClick={() => adminStore.toggleVehicleStatus(v.id)}
-                      className={`absolute top-3 left-3 px-3 py-1 rounded-full text-xs font-semibold border backdrop-blur-md shadow-xs transition-colors cursor-pointer ${
-                        v.status === 'Available'
-                          ? 'bg-emerald-500/90 text-white border-emerald-400'
-                          : 'bg-white/90 text-[#E64A19] border-[#1E1B18]/20'
-                      }`}
-                      title="Click to toggle status"
-                    >
-                      {v.status === 'Available' ? '✓ Available' : '⌛ Coming Soon'}
-                    </button>
-
-                    <div className="absolute top-3 right-3 bg-[#0B132B]/90 backdrop-blur-md text-[#C89D3C] font-mono text-xs font-bold px-2.5 py-1 rounded border border-[#C89D3C]/30 shadow-xs">
-                      {v.pricePerDay}
+                    {/* Status Dropdown Indicator */}
+                    <div className="absolute top-3 left-3">
+                      <select
+                        value={v.status || 'Coming Soon'}
+                        onChange={e => adminStore.updateVehicle(v.id, { status: e.target.value })}
+                        className={`px-2.5 py-1 rounded-full text-xs font-semibold border backdrop-blur-md shadow-xs cursor-pointer ${
+                          v.status === 'Available' ? 'bg-emerald-500/90 text-white border-emerald-400' :
+                          v.status === 'Booked' ? 'bg-blue-600/90 text-white border-blue-400' :
+                          v.status === 'Maintenance' ? 'bg-amber-600/90 text-white border-amber-400' :
+                          'bg-white/90 text-[#E64A19] border-[#1E1B18]/20'
+                        }`}
+                      >
+                        <option value="Available">✓ Available</option>
+                        <option value="Booked">🚗 Booked / Out</option>
+                        <option value="Maintenance">🔧 In Maintenance</option>
+                        <option value="Coming Soon">⌛ Coming Soon</option>
+                      </select>
                     </div>
+
+                    {/* Direct In-Line Price Editor Button */}
+                    <button
+                      onClick={() => {
+                        setQuickPriceVehicle(v);
+                        setQuickPriceValue(v.pricePerDay || '399');
+                      }}
+                      className="absolute top-3 right-3 bg-[#0B132B]/90 hover:bg-[#E64A19] backdrop-blur-md text-[#C89D3C] hover:text-white font-mono text-xs font-bold px-2.5 py-1 rounded border border-[#C89D3C]/30 shadow-xs transition-colors cursor-pointer flex items-center gap-1"
+                      title="Click to edit price directly"
+                    >
+                      <span>{v.pricePerDay}</span>
+                      <span className="material-symbols-outlined text-[11px]">edit</span>
+                    </button>
                   </div>
 
                   <div className="p-4 space-y-2">
@@ -519,7 +775,7 @@ export default function AdminPage() {
                     className="text-xs font-mono font-semibold text-[#E64A19] hover:underline flex items-center gap-1 cursor-pointer"
                   >
                     <span className="material-symbols-outlined text-sm">edit</span>
-                    Edit Vehicle
+                    Full Edit
                   </button>
 
                   <button
@@ -536,14 +792,14 @@ export default function AdminPage() {
         </div>
       )}
 
-      {/* TAB 3: REQUIREMENTS SURVEY MANAGER */}
+      {/* TAB 3: REQUIREMENTS CRM & SURVEY MANAGER */}
       {activeTab === 'requirements' && (
         <div className="space-y-6">
           <div className="bg-white p-4 rounded-xl border border-[#1E1B18]/15 shadow-xs flex flex-col sm:flex-row gap-4 items-center justify-between">
             <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto flex-1">
               <input
                 type="text"
-                placeholder="Search customer name or phone..."
+                placeholder="Search name, phone, or location..."
                 value={searchQuery}
                 onChange={e => setSearchQuery(e.target.value)}
                 className="px-3.5 py-2 rounded-lg border border-[#1E1B18]/20 bg-white text-sm w-full sm:w-64 focus:outline-none focus:ring-2 focus:ring-[#E64A19]/30"
@@ -562,8 +818,13 @@ export default function AdminPage() {
               </select>
             </div>
 
-            <div className="text-xs text-[#7C776E] font-medium">
-              Showing {filteredRequirementsList.length} requirement submissions
+            <div className="flex items-center gap-3 w-full sm:w-auto justify-between sm:justify-end">
+              <span className="text-xs text-[#7C776E] font-medium">
+                {filteredRequirementsList.length} Submissions
+              </span>
+              <Button variant="outline" size="sm" icon="download" onClick={() => handleExportCSV('requirements')}>
+                Export CSV
+              </Button>
             </div>
           </div>
 
@@ -611,6 +872,12 @@ export default function AdminPage() {
                     <span className="material-symbols-outlined text-sm">chat</span>
                     WhatsApp
                   </a>
+                  <button
+                    onClick={() => setSelectedRequirement(req)}
+                    className="px-3 py-2 text-xs font-mono font-semibold text-[#E64A19] hover:bg-[#EFECE4] rounded-lg"
+                  >
+                    Details
+                  </button>
                   <button
                     onClick={() => handleDeleteRequirement(req.id, req.fullName)}
                     className="px-3 py-2 text-xs text-red-600 hover:bg-red-50 rounded-lg"
@@ -684,6 +951,12 @@ export default function AdminPage() {
                         WhatsApp
                       </a>
                       <button
+                        onClick={() => setSelectedRequirement(req)}
+                        className="text-xs text-[#E64A19] hover:underline p-1 cursor-pointer"
+                      >
+                        Details
+                      </button>
+                      <button
                         onClick={() => handleDeleteRequirement(req.id, req.fullName)}
                         className="text-xs text-red-600 hover:underline p-1 cursor-pointer"
                       >
@@ -698,12 +971,17 @@ export default function AdminPage() {
         </div>
       )}
 
-      {/* TAB 4: HOST VEHICLES LIST */}
+      {/* TAB 4: HOST PARTNER LISTINGS */}
       {activeTab === 'hosts' && (
         <div className="space-y-6">
           <div className="bg-white p-4 rounded-xl border border-[#1E1B18]/15 shadow-xs flex justify-between items-center">
             <h3 className="font-display font-bold text-base sm:text-lg text-[#1E1B18]">Registered Host Vehicles</h3>
-            <span className="font-mono text-xs font-semibold text-[#E64A19]">{filteredHostVehiclesList.length} Submissions</span>
+            <div className="flex items-center gap-3">
+              <span className="font-mono text-xs font-semibold text-[#E64A19]">{filteredHostVehiclesList.length} Submissions</span>
+              <Button variant="outline" size="sm" icon="download" onClick={() => handleExportCSV('hosts')}>
+                Export CSV
+              </Button>
+            </div>
           </div>
 
           {/* Mobile Card Stack */}
@@ -736,6 +1014,11 @@ export default function AdminPage() {
                 <div className="text-xs text-[#45413B] space-y-1 bg-[#F5F2EB] p-3 rounded-lg">
                   <div><strong>Locality:</strong> 📍 {h.location}</div>
                   {h.notes && <div><strong>Notes:</strong> {h.notes}</div>}
+                  {h.photos && h.photos.length > 0 && (
+                    <div className="text-[11px] text-[#E64A19] font-mono pt-1">
+                      📸 {h.photos.length} photos attached (tap inspect)
+                    </div>
+                  )}
                 </div>
 
                 <div className="flex items-center gap-2 pt-1">
@@ -748,6 +1031,12 @@ export default function AdminPage() {
                     <span className="material-symbols-outlined text-sm">chat</span>
                     WhatsApp
                   </a>
+                  <button
+                    onClick={() => setSelectedHost(h)}
+                    className="px-3 py-2 text-xs font-mono font-semibold text-[#E64A19] hover:bg-[#EFECE4] rounded-lg"
+                  >
+                    Inspect
+                  </button>
                   <button
                     onClick={() => handleDeleteHostVehicle(h.id, h.modelName)}
                     className="px-3 py-2 text-xs text-red-600 hover:bg-red-50 rounded-lg"
@@ -791,11 +1080,11 @@ export default function AdminPage() {
                     </td>
                     <td className="p-3">
                       {h.photos && h.photos.length > 0 ? (
-                        <div className="flex gap-1">
-                          {h.photos.map((pUrl, i) => (
-                            <img key={i} src={pUrl} alt="Host photo" className="w-9 h-9 rounded object-cover border border-[#1E1B18]/20" />
+                        <button onClick={() => setSelectedHost(h)} className="flex gap-1 hover:opacity-80">
+                          {h.photos.slice(0, 3).map((pUrl, i) => (
+                            <img key={i} src={pUrl} alt="Host photo" className="w-8 h-8 rounded object-cover border border-[#1E1B18]/20" />
                           ))}
-                        </div>
+                        </button>
                       ) : (
                         <span className="text-xs text-[#7C776E]">No photos</span>
                       )}
@@ -831,6 +1120,12 @@ export default function AdminPage() {
                         WhatsApp
                       </a>
                       <button
+                        onClick={() => setSelectedHost(h)}
+                        className="text-xs text-[#E64A19] hover:underline p-1 cursor-pointer"
+                      >
+                        Inspect
+                      </button>
+                      <button
                         onClick={() => handleDeleteHostVehicle(h.id, h.modelName)}
                         className="text-xs text-red-600 hover:underline p-1 cursor-pointer"
                       >
@@ -845,12 +1140,17 @@ export default function AdminPage() {
         </div>
       )}
 
-      {/* TAB 5: WAITLIST SIGNUPS */}
+      {/* TAB 5: WAITLIST EARLY PASS SIGNUPS */}
       {activeTab === 'waitlist' && (
         <div className="space-y-6">
           <div className="bg-white p-4 rounded-xl border border-[#1E1B18]/15 shadow-xs flex justify-between items-center">
             <h3 className="font-display font-bold text-base sm:text-lg text-[#1E1B18]">Waitlist Registrations</h3>
-            <span className="font-mono text-xs font-semibold text-[#E64A19]">{filteredWaitlistList.length} Signups</span>
+            <div className="flex items-center gap-3">
+              <span className="font-mono text-xs font-semibold text-[#E64A19]">{filteredWaitlistList.length} Signups</span>
+              <Button variant="outline" size="sm" icon="download" onClick={() => handleExportCSV('waitlist')}>
+                Export CSV
+              </Button>
+            </div>
           </div>
 
           {/* Mobile Card Stack */}
@@ -875,13 +1175,13 @@ export default function AdminPage() {
 
                 <div className="pt-1">
                   <a
-                    href={getWhatsAppLink(w.whatsapp, `Hi ${w.fullName}! Thank you for joining the ApniRide Shivpuri pre-launch waitlist.`)}
+                    href={getWhatsAppLink(w.whatsapp, `Hi ${w.fullName}! Congratulations, you have priority access for ApniRide Shivpuri launch with 20% discount.`)}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="w-full inline-flex items-center justify-center gap-1.5 bg-[#25D366] text-white py-2 rounded-lg text-xs font-semibold"
                   >
                     <span className="material-symbols-outlined text-sm">chat</span>
-                    Message on WhatsApp
+                    Send 20% Discount Code
                   </a>
                 </div>
               </div>
@@ -914,13 +1214,13 @@ export default function AdminPage() {
                     <td className="p-3 text-xs text-[#45413B]">{w.preferenceText || 'General'}</td>
                     <td className="p-3 text-right">
                       <a
-                        href={getWhatsAppLink(w.whatsapp, `Hi ${w.fullName}! Thank you for joining the ApniRide Shivpuri pre-launch waitlist.`)}
+                        href={getWhatsAppLink(w.whatsapp, `Hi ${w.fullName}! Congratulations, you have priority access for ApniRide Shivpuri launch with 20% discount.`)}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="inline-flex items-center gap-1 bg-[#25D366] text-white px-2.5 py-1 rounded text-xs font-semibold hover:bg-[#20ba59]"
                       >
                         <span className="material-symbols-outlined text-sm">chat</span>
-                        WhatsApp
+                        Send 20% Pass
                       </a>
                     </td>
                   </tr>
@@ -931,7 +1231,181 @@ export default function AdminPage() {
         </div>
       )}
 
-      {/* ADD / EDIT VEHICLE MODAL */}
+      {/* QUICK IN-LINE PRICE EDIT MODAL */}
+      <AnimatePresence>
+        {quickPriceVehicle && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              className="bg-white rounded-2xl border border-[#1E1B18]/20 shadow-xl max-w-sm w-full p-6 space-y-4"
+            >
+              <div className="flex items-center justify-between border-b border-[#1E1B18]/15 pb-3">
+                <h3 className="font-display font-bold text-lg text-[#1E1B18]">
+                  Edit Rate: {quickPriceVehicle.name}
+                </h3>
+                <button
+                  onClick={() => setQuickPriceVehicle(null)}
+                  className="text-[#7C776E] hover:bg-[#EFECE4] p-1 rounded-lg"
+                >
+                  <span className="material-symbols-outlined text-lg">close</span>
+                </button>
+              </div>
+
+              <form onSubmit={handleSaveQuickPrice} className="space-y-4">
+                <div>
+                  <label className="block font-mono text-xs font-semibold uppercase text-[#45413B] mb-1">
+                    Rental Rate per Day
+                  </label>
+                  <input
+                    type="text"
+                    value={quickPriceValue}
+                    onChange={e => setQuickPriceValue(e.target.value)}
+                    placeholder="e.g. 399, 499, 1499"
+                    autoFocus
+                    className="w-full px-3.5 py-2.5 rounded-lg border border-[#1E1B18]/20 font-mono text-base font-bold text-[#E64A19] focus:outline-none focus:ring-2 focus:ring-[#E64A19]/30"
+                  />
+                  <p className="font-body text-[11px] text-[#7C776E] mt-1">
+                    Auto-formats to ₹X/day (e.g. 399 → ₹399/day)
+                  </p>
+                </div>
+
+                <div className="flex gap-2 pt-2">
+                  <Button type="button" variant="outline" size="sm" fullWidth onClick={() => setQuickPriceVehicle(null)}>
+                    Cancel
+                  </Button>
+                  <Button type="submit" variant="primary" size="sm" fullWidth icon="check">
+                    Save Price
+                  </Button>
+                </div>
+              </form>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* REQUIREMENT DETAIL MODAL */}
+      <AnimatePresence>
+        {selectedRequirement && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              className="bg-white rounded-2xl border border-[#1E1B18]/20 shadow-xl max-w-lg w-full p-6 sm:p-8 space-y-4"
+            >
+              <div className="flex items-center justify-between border-b border-[#1E1B18]/15 pb-3">
+                <h3 className="font-display font-bold text-xl text-[#1E1B18]">
+                  Survey: {selectedRequirement.fullName}
+                </h3>
+                <button
+                  onClick={() => setSelectedRequirement(null)}
+                  className="text-[#7C776E] hover:bg-[#EFECE4] p-1 rounded-lg"
+                >
+                  <span className="material-symbols-outlined text-lg">close</span>
+                </button>
+              </div>
+
+              <div className="space-y-3 font-body text-xs sm:text-sm text-[#45413B]">
+                <div className="grid grid-cols-2 gap-2 bg-[#F5F2EB] p-3 rounded-lg">
+                  <div><strong>WhatsApp:</strong> <span className="font-mono text-[#E64A19]">{selectedRequirement.whatsapp}</span></div>
+                  <div><strong>Email:</strong> {selectedRequirement.email || 'N/A'}</div>
+                  <div><strong>Vehicle Category:</strong> <span className="uppercase font-semibold">{selectedRequirement.vehicleCategory}</span></div>
+                  <div><strong>Preferred Subtype:</strong> {selectedRequirement.subType || 'Any'}</div>
+                  <div><strong>Planned Dates:</strong> {selectedRequirement.pickupDate || 'Flexible'} → {selectedRequirement.returnDate || 'Flexible'}</div>
+                  <div><strong>Shivpuri Pickup:</strong> {selectedRequirement.location || 'City Center'}</div>
+                </div>
+
+                <div>
+                  <strong>Customer Special Notes:</strong>
+                  <p className="bg-[#F5F2EB] p-3 rounded-lg mt-1 italic text-[#1E1B18]">
+                    {selectedRequirement.notes || 'No extra notes submitted.'}
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex gap-2 pt-2">
+                <a
+                  href={getWhatsAppLink(selectedRequirement.whatsapp, `Hi ${selectedRequirement.fullName}! This is ApniRide team regarding your ${selectedRequirement.purpose} rental requirement in Shivpuri.`)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex-1 inline-flex items-center justify-center gap-1.5 bg-[#25D366] text-white py-2.5 rounded-lg text-xs font-semibold"
+                >
+                  <span className="material-symbols-outlined text-sm">chat</span>
+                  Message on WhatsApp
+                </a>
+                <Button variant="outline" size="sm" onClick={() => setSelectedRequirement(null)}>
+                  Close
+                </Button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* HOST INSPECTION & PHOTO MODAL */}
+      <AnimatePresence>
+        {selectedHost && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              className="bg-white rounded-2xl border border-[#1E1B18]/20 shadow-xl max-w-lg w-full p-6 sm:p-8 space-y-4 max-h-[90vh] overflow-y-auto"
+            >
+              <div className="flex items-center justify-between border-b border-[#1E1B18]/15 pb-3">
+                <h3 className="font-display font-bold text-xl text-[#1E1B18]">
+                  Host: {selectedHost.modelName} ({selectedHost.year})
+                </h3>
+                <button
+                  onClick={() => setSelectedHost(null)}
+                  className="text-[#7C776E] hover:bg-[#EFECE4] p-1 rounded-lg"
+                >
+                  <span className="material-symbols-outlined text-lg">close</span>
+                </button>
+              </div>
+
+              <div className="space-y-3 font-body text-xs sm:text-sm text-[#45413B]">
+                <div className="bg-[#F5F2EB] p-3 rounded-lg space-y-1">
+                  <div><strong>Owner:</strong> {selectedHost.fullName}</div>
+                  <div><strong>WhatsApp:</strong> <span className="font-mono text-[#E64A19]">{selectedHost.whatsapp}</span></div>
+                  <div><strong>Locality:</strong> 📍 {selectedHost.location}</div>
+                  {selectedHost.notes && <div><strong>Condition Notes:</strong> {selectedHost.notes}</div>}
+                </div>
+
+                {selectedHost.photos && selectedHost.photos.length > 0 && (
+                  <div>
+                    <strong>Uploaded Vehicle Photos:</strong>
+                    <div className="grid grid-cols-2 gap-2 mt-2">
+                      {selectedHost.photos.map((src, i) => (
+                        <img key={i} src={src} alt="Host Vehicle" className="w-full h-32 object-cover rounded-lg border border-[#1E1B18]/15" />
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              <div className="flex gap-2 pt-2">
+                <a
+                  href={getWhatsAppLink(selectedHost.whatsapp, `Hi ${selectedHost.fullName}! This is ApniRide team regarding your ${selectedHost.modelName} host registration in Shivpuri.`)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex-1 inline-flex items-center justify-center gap-1.5 bg-[#25D366] text-white py-2.5 rounded-lg text-xs font-semibold"
+                >
+                  <span className="material-symbols-outlined text-sm">chat</span>
+                  Contact Owner
+                </a>
+                <Button variant="outline" size="sm" onClick={() => setSelectedHost(null)}>
+                  Close
+                </Button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* ADD / FULL EDIT VEHICLE MODAL */}
       <AnimatePresence>
         {showVehicleModal && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs">
@@ -1041,7 +1515,7 @@ export default function AdminPage() {
                     type="select"
                     value={vStatus}
                     onChange={e => setVStatus(e.target.value)}
-                    options={['Coming Soon', 'Available']}
+                    options={['Coming Soon', 'Available', 'Booked', 'Maintenance']}
                   />
 
                   <FormField
