@@ -52,8 +52,8 @@ export default function HomePage() {
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center pt-4 sm:pt-6">
-            {/* Left Column: Hero Text & Calligraphy with Mobile High-Contrast Scrim */}
-            <div className="lg:col-span-8 flex flex-col items-start text-left relative bg-[#F5F2EB]/90 sm:bg-transparent backdrop-blur-xs sm:backdrop-blur-none p-4 sm:p-0 rounded-2xl border border-[#1E1B18]/10 sm:border-0 shadow-xs sm:shadow-none">
+            {/* Left Column: Hero Text & Calligraphy (Open Full-Bleed Layout) */}
+            <div className="lg:col-span-8 flex flex-col items-start text-left relative">
               {/* Vertical Hindi Calligraphy Margin Stamp (Desktop/Tablet) */}
               <div className="hidden sm:flex absolute -left-12 top-2 flex-col items-center gap-2 font-serif text-xs text-[#45413B]/80 pointer-events-none">
                 <span className="[writing-mode:vertical-rl] tracking-widest font-medium">
@@ -64,7 +64,7 @@ export default function HomePage() {
                 </span>
               </div>
 
-              {/* Main Neo-Mirai Display Headline - BOLD ON MOBILE FOR CRYSTAL CLEAR VISIBILITY */}
+              {/* Main Neo-Mirai Display Headline - BOLD ON MOBILE FOR CRISP VISIBILITY */}
               <motion.h1
                 initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -105,14 +105,14 @@ export default function HomePage() {
               >
                 <Link
                   to="/waitlist"
-                  className="inline-flex items-center justify-center gap-2 bg-[#E64A19] hover:bg-[#D84315] text-white font-mono text-xs font-bold sm:font-semibold px-5 py-3.5 sm:py-3 rounded-full shadow-sm transition-all hover:shadow-md tracking-wider"
+                  className="inline-flex items-center justify-center gap-2 bg-[#E64A19] hover:bg-[#D84315] text-white font-mono text-xs font-semibold px-5 py-3.5 sm:py-3 rounded-full shadow-sm transition-all hover:shadow-md tracking-wider"
                 >
                   <span>JOIN THE WAITLIST</span>
                   <span>→</span>
                 </Link>
                 <Link
                   to="/request"
-                  className="inline-flex items-center justify-center gap-2 bg-white/95 text-[#1E1B18] border border-[#1E1B18]/30 hover:bg-[#EFECE4] font-mono text-xs font-bold sm:font-semibold px-5 py-3.5 sm:py-3 rounded-full backdrop-blur-sm transition-all shadow-2xs"
+                  className="inline-flex items-center justify-center gap-2 bg-white/95 text-[#1E1B18] border border-[#1E1B18]/30 hover:bg-[#EFECE4] font-mono text-xs font-semibold px-5 py-3.5 sm:py-3 rounded-full backdrop-blur-sm transition-all shadow-2xs"
                 >
                   <span className="material-symbols-outlined text-sm">checklist</span>
                   <span>CHECK REQUIREMENTS</span>
