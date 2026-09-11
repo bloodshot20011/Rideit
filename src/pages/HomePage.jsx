@@ -5,6 +5,7 @@ import Button from '../components/Button';
 import ImagePlaceholder from '../components/ImagePlaceholder';
 import ScrollReveal from '../components/ScrollReveal';
 import TyreMarksDivider from '../components/TyreMarksDivider';
+import ShivpuriDestinationsCarousel from '../components/ShivpuriDestinationsCarousel';
 import { IMAGES } from '../data/images';
 import { useSurvey } from '../context/SurveyContext';
 
@@ -234,6 +235,11 @@ export default function HomePage() {
           </div>
         </ScrollReveal>
       </section>
+
+      {/* TOP PLACES TO VISIT IN SHIVPURI DESTINATIONS CAROUSEL */}
+      <ScrollReveal>
+        <ShivpuriDestinationsCarousel />
+      </ScrollReveal>
 
       {/* 3. FAST 30-SECOND REQUIREMENT SURVEY WIDGET */}
       <section className="px-4 sm:px-6 max-w-content mx-auto">
