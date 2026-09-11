@@ -2,9 +2,12 @@ import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import ImagePlaceholder from './ImagePlaceholder';
+import { useSurvey } from '../context/SurveyContext';
 
 export default function VehicleDetailModal({ vehicle, onClose }) {
+  const { openSurvey } = useSurvey();
   if (!vehicle) return null;
+
 
   const getWhatsAppBookingLink = () => {
     const text = `Hi ApniRide team! I am interested in renting the *${vehicle.name}* (${vehicle.pricePerDay}) in Shivpuri. Please share availability & booking details.`;
@@ -145,14 +148,17 @@ export default function VehicleDetailModal({ vehicle, onClose }) {
               <span>BOOK / INQUIRE ON WHATSAPP</span>
             </a>
 
-            <Link
-              to="/request"
-              onClick={onClose}
-              className="inline-flex items-center justify-center gap-1 bg-white text-[#1E1B18] border border-[#1E1B18]/25 hover:bg-[#EFECE4] font-mono text-xs font-semibold py-3 px-4 rounded-xl transition-colors uppercase tracking-wider"
+            <button
+              type="button"
+              onClick={() => {
+                onClose();
+                openSurvey({ vehicle: vehicle.name, category: vehicle.category });
+              }}
+              className="inline-flex items-center justify-center gap-1 bg-white text-[#1E1B18] border border-[#1E1B18]/25 hover:bg-[#EFECE4] font-mono text-xs font-semibold py-3 px-4 rounded-xl transition-colors uppercase tracking-wider cursor-pointer"
             >
-              <span className="material-symbols-outlined text-sm text-[#E64A19]">checklist</span>
+              <span className="material-symbols-outlined text-sm text-[#E64A19]">assignment</span>
               <span>CUSTOM NEED</span>
-            </Link>
+            </button>
           </div>
         </motion.div>
       </div>

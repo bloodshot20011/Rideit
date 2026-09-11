@@ -6,10 +6,12 @@ import ImagePlaceholder from '../components/ImagePlaceholder';
 import ScrollReveal from '../components/ScrollReveal';
 import TyreMarksDivider from '../components/TyreMarksDivider';
 import { IMAGES } from '../data/images';
+import { useSurvey } from '../context/SurveyContext';
 
 export default function HomePage() {
   const navigate = useNavigate();
   const shouldReduceMotion = useReducedMotion();
+  const { openSurvey } = useSurvey();
 
   // Widget state for requirements checker
   const [widgetVehicleCategory, setWidgetVehicleCategory] = useState('bikes');
@@ -17,8 +19,9 @@ export default function HomePage() {
 
   const handleWidgetSubmit = (e) => {
     e.preventDefault();
-    navigate(`/request?category=${encodeURIComponent(widgetVehicleCategory)}&purpose=${encodeURIComponent(widgetPurpose)}&autoSubmit=true`);
+    openSurvey({ category: widgetVehicleCategory, purpose: widgetPurpose });
   };
+
 
   return (
     <div className="space-y-8 sm:space-y-16 lg:space-y-20 pb-10">
@@ -110,13 +113,14 @@ export default function HomePage() {
                   <span>JOIN THE WAITLIST</span>
                   <span>→</span>
                 </Link>
-                <Link
-                  to="/request"
-                  className="inline-flex items-center justify-center gap-2 bg-white/95 text-[#1E1B18] border border-[#1E1B18]/30 hover:bg-[#EFECE4] font-mono text-xs font-semibold px-5 py-3.5 sm:py-3 rounded-full backdrop-blur-sm transition-all shadow-2xs"
+                <button
+                  type="button"
+                  onClick={() => openSurvey()}
+                  className="inline-flex items-center justify-center gap-2 bg-white/95 text-[#1E1B18] border border-[#1E1B18]/30 hover:bg-[#EFECE4] font-mono text-xs font-semibold px-5 py-3.5 sm:py-3 rounded-full backdrop-blur-sm transition-all shadow-2xs cursor-pointer"
                 >
-                  <span className="material-symbols-outlined text-sm">checklist</span>
-                  <span>CHECK REQUIREMENTS</span>
-                </Link>
+                  <span className="material-symbols-outlined text-sm text-[#E64A19]">assignment</span>
+                  <span>QUICK SURVEY</span>
+                </button>
               </motion.div>
             </div>
           </div>
@@ -207,9 +211,10 @@ export default function HomePage() {
                 </div>
               </Link>
 
-              <Link
-                to="/request"
-                className="group bg-[#F5F2EB] hover:bg-white p-4 sm:p-5 rounded-lg border border-[#1E1B18]/10 hover:border-[#1E1B18]/40 transition-all space-y-2.5 flex flex-col justify-between shadow-2xs hover:shadow-xs cursor-pointer"
+              <button
+                type="button"
+                onClick={() => openSurvey({ purpose: 'Wedding / Event' })}
+                className="group bg-[#F5F2EB] hover:bg-white p-4 sm:p-5 rounded-lg border border-[#1E1B18]/10 hover:border-[#1E1B18]/40 transition-all space-y-2.5 flex flex-col justify-between shadow-2xs hover:shadow-xs cursor-pointer text-left"
               >
                 <div className="space-y-2">
                   <div className="w-8 h-8 rounded-md bg-[#0B132B]/10 group-hover:bg-[#0B132B] group-hover:text-white text-[#0B132B] flex items-center justify-center transition-colors">
@@ -221,10 +226,10 @@ export default function HomePage() {
                   </p>
                 </div>
                 <div className="pt-1 font-mono text-[11px] font-semibold text-[#1E1B18] flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
-                  <span>Verified Fleet Options</span>
+                  <span>Tell Us Your Requirement</span>
                   <span>→</span>
                 </div>
-              </Link>
+              </button>
             </div>
           </div>
         </ScrollReveal>

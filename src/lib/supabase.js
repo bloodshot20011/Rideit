@@ -235,6 +235,28 @@ export async function saveRequirementToSupabase(requirement) {
 }
 
 /**
+ * Fetch all Requirements / Survey Submissions from Supabase
+ */
+export async function syncRequirementsFromSupabase() {
+  const client = getSupabaseClient();
+  if (!client) return null;
+  try {
+    const { data, error } = await client
+      .from('requirements')
+      .select('*')
+      .order('created_at', { ascending: false });
+    if (error) {
+      console.warn('[Supabase] Failed to fetch requirements:', error.message);
+      return null;
+    }
+    return data;
+  } catch (err) {
+    console.warn('[Supabase] Error fetching requirements:', err);
+    return null;
+  }
+}
+
+/**
  * Save Host Vehicle submission to Supabase
  */
 export async function saveHostVehicleToSupabase(hostVehicle) {
@@ -246,6 +268,28 @@ export async function saveHostVehicleToSupabase(hostVehicle) {
     return data;
   } catch (err) {
     console.warn('[Supabase] Error saving host vehicle:', err);
+    return null;
+  }
+}
+
+/**
+ * Fetch all Host Vehicle Registrations from Supabase
+ */
+export async function syncHostVehiclesFromSupabase() {
+  const client = getSupabaseClient();
+  if (!client) return null;
+  try {
+    const { data, error } = await client
+      .from('host_vehicles')
+      .select('*')
+      .order('created_at', { ascending: false });
+    if (error) {
+      console.warn('[Supabase] Failed to fetch host vehicles:', error.message);
+      return null;
+    }
+    return data;
+  } catch (err) {
+    console.warn('[Supabase] Error fetching host vehicles:', err);
     return null;
   }
 }
@@ -265,3 +309,26 @@ export async function saveWaitlistToSupabase(waitlistEntry) {
     return null;
   }
 }
+
+/**
+ * Fetch all Waitlist Members from Supabase
+ */
+export async function syncWaitlistFromSupabase() {
+  const client = getSupabaseClient();
+  if (!client) return null;
+  try {
+    const { data, error } = await client
+      .from('waitlist')
+      .select('*')
+      .order('created_at', { ascending: false });
+    if (error) {
+      console.warn('[Supabase] Failed to fetch waitlist:', error.message);
+      return null;
+    }
+    return data;
+  } catch (err) {
+    console.warn('[Supabase] Error fetching waitlist:', err);
+    return null;
+  }
+}
+

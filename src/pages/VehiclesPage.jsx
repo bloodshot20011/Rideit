@@ -8,10 +8,13 @@ import ScrollReveal from '../components/ScrollReveal';
 import TyreMarksDivider from '../components/TyreMarksDivider';
 import { BIKE_SUBCATEGORIES, CAR_SUBCATEGORIES } from '../data/vehicles';
 import { adminStore } from '../data/adminStore';
+import { useSurvey } from '../context/SurveyContext';
 
 export default function VehiclesPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const initialCategory = searchParams.get('category') || 'all';
+  const { openSurvey } = useSurvey();
+
 
   const [vehicles, setVehicles] = useState([]);
   const [activeCategory, setActiveCategory] = useState(initialCategory);
@@ -92,8 +95,8 @@ export default function VehiclesPage() {
           description="Join the ApniRide waitlist to get priority notification and early booking discounts as soon as rentals go live."
           primaryCtaText="Join the Waitlist"
           primaryCtaTo="/waitlist"
-          secondaryCtaText="Check Requirements"
-          secondaryCtaTo="/request"
+          secondaryCtaText="Quick Survey"
+          secondaryOnClick={() => openSurvey({ category: activeCategory !== 'all' ? activeCategory : undefined })}
         />
       </ScrollReveal>
     </div>

@@ -6,8 +6,10 @@ export default function CTASection({
   description = "Join our waitlist as a renter or register your vehicle to start earning when we launch.",
   primaryCtaText = "Join the Waitlist",
   primaryCtaTo = "/waitlist",
+  primaryOnClick,
   secondaryCtaText = "List Your Vehicle",
   secondaryCtaTo = "/list-your-vehicle",
+  secondaryOnClick,
   variant = "primary" // "primary" | "surface"
 }) {
   const isPrimary = variant === 'primary';
@@ -38,7 +40,8 @@ export default function CTASection({
         <div className="flex flex-col sm:flex-row gap-3 justify-center pt-2">
           {primaryCtaText && (
             <Button
-              to={primaryCtaTo}
+              to={primaryOnClick ? undefined : primaryCtaTo}
+              onClick={primaryOnClick}
               variant="primary"
               size="lg"
               className="bg-[#E64A19] hover:bg-[#D84315] text-white shadow-sm"
@@ -49,7 +52,8 @@ export default function CTASection({
 
           {secondaryCtaText && (
             <Button
-              to={secondaryCtaTo}
+              to={secondaryOnClick ? undefined : secondaryCtaTo}
+              onClick={secondaryOnClick}
               variant="outline"
               size="lg"
               className={isPrimary ? 'text-[#F5F2EB] border-[#C89D3C]/50 hover:bg-[#131E29]' : 'border-[#1E1B18]/20'}
@@ -62,3 +66,4 @@ export default function CTASection({
     </section>
   );
 }
+

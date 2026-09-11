@@ -4,6 +4,9 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import WhatsAppButton from './components/WhatsAppButton';
 import CarLoader from './components/CarLoader';
+import SurveyModal from './components/SurveyModal';
+import FloatingSurveyButton from './components/FloatingSurveyButton';
+import { SurveyProvider } from './context/SurveyContext';
 
 // Pages
 import HomePage from './pages/HomePage';
@@ -36,27 +39,31 @@ export default function App() {
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-background text-on-surface">
-      {initialLoading && <CarLoader onComplete={handleLoaderComplete} />}
+    <SurveyProvider>
+      <div className="flex flex-col min-h-screen bg-background text-on-surface">
+        {initialLoading && <CarLoader onComplete={handleLoaderComplete} />}
 
-      <ScrollToTop />
-      <Navbar />
+        <ScrollToTop />
+        <Navbar />
 
-      <main className="flex-grow">
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/vehicles" element={<VehiclesPage />} />
-          <Route path="/request" element={<RequestPage />} />
-          <Route path="/list-your-vehicle" element={<ListVehiclePage />} />
-          <Route path="/about" element={<AboutPage />} />
-          <Route path="/waitlist" element={<WaitlistPage />} />
-          <Route path="/admin" element={<AdminPage />} />
-          <Route path="*" element={<HomePage />} />
-        </Routes>
-      </main>
+        <main className="flex-grow">
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/vehicles" element={<VehiclesPage />} />
+            <Route path="/request" element={<RequestPage />} />
+            <Route path="/list-your-vehicle" element={<ListVehiclePage />} />
+            <Route path="/about" element={<AboutPage />} />
+            <Route path="/waitlist" element={<WaitlistPage />} />
+            <Route path="/admin" element={<AdminPage />} />
+            <Route path="*" element={<HomePage />} />
+          </Routes>
+        </main>
 
-      <Footer />
-      <WhatsAppButton />
-    </div>
+        <Footer />
+        <FloatingSurveyButton />
+        <WhatsAppButton />
+        <SurveyModal />
+      </div>
+    </SurveyProvider>
   );
 }

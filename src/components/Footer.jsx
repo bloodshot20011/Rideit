@@ -1,7 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useSurvey } from '../context/SurveyContext';
 
 export default function Footer() {
+  const { openSurvey } = useSurvey();
+
   return (
     <footer className="bg-[#F5F2EB] border-t border-[#1E1B18]/15 py-12 mt-auto text-[#1E1B18]">
       <div className="max-w-content mx-auto px-4 sm:px-6">
@@ -51,7 +54,13 @@ export default function Footer() {
               <h4 className="font-display font-bold text-[#1E1B18] uppercase tracking-wider mb-3">Get Involved</h4>
               <ul className="space-y-2 text-[#45413B]">
                 <li>
-                  <Link to="/request" className="hover:text-[#E64A19] transition-colors">Check Requirements</Link>
+                  <button
+                    type="button"
+                    onClick={() => openSurvey()}
+                    className="hover:text-[#E64A19] transition-colors cursor-pointer text-left"
+                  >
+                    Quick Survey
+                  </button>
                 </li>
                 <li>
                   <Link to="/list-your-vehicle" className="hover:text-[#E64A19] transition-colors">List Your Vehicle</Link>

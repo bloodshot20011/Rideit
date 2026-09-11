@@ -6,8 +6,11 @@ import {
   upsertVehicleToSupabase,
   pushAllVehiclesToSupabase,
   saveRequirementToSupabase,
+  syncRequirementsFromSupabase,
   saveHostVehicleToSupabase,
-  saveWaitlistToSupabase
+  syncHostVehiclesFromSupabase,
+  saveWaitlistToSupabase,
+  syncWaitlistFromSupabase
 } from '../lib/supabase';
 
 const VEHICLES_KEY = 'apniride_vehicles_v3';
@@ -97,18 +100,79 @@ class AdminStore {
   }
 
   notify() {
-    this.listeners.forEach(l => l());
+    this.listeners.forEach(l => {
+      try {
+        l();
+      } catch (e) {
+        console.error('Listener notification error:', e);
+      }
+    });
   }
 
   async initSupabaseSync() {
+    await this.syncAllFromSupabase();
+  }
+
+  /**
+   * Fetch all collections from Supabase and sync with local memory/storage
+   */
+  async syncAllFromSupabase() {
     const creds = getSupabaseCredentials();
-    if (creds.isConfigured) {
-      const cloudVehicles = await syncVehiclesFromSupabase();
-      if (cloudVehicles && cloudVehicles.length > 0) {
-        this.saveVehicles(cloudVehicles, false);
+    if (!creds.isConfigured) return { success: false, message: 'Supabase not configured' };
+
+    try {
+      const [cloudVehicles, cloudReqs, cloudHosts, cloudWaitlist] = await Promise.all([
+        syncVehiclesFromSupabase(),
+        syncRequirementsFromSupabase(),
+        syncHostVehiclesFromSupabase(),
+        syncWaitlistFromSupabase()
+      ]);
+
+      let changed = false;
+
+      if (cloudVehicles && Array.isArray(cloudVehicles) && cloudVehicles.length > 0) {
+        localStorage.setItem(VEHICLES_KEY, JSON.stringify(cloudVehicles));
+        changed = true;
       }
+
+      if (cloudReqs && Array.isArray(cloudReqs)) {
+        if (cloudReqs.length > 0) {
+          localStorage.setItem(REQUIREMENTS_KEY, JSON.stringify(cloudReqs));
+        }
+        changed = true;
+      }
+
+      if (cloudHosts && Array.isArray(cloudHosts)) {
+        if (cloudHosts.length > 0) {
+          localStorage.setItem(HOST_VEHICLES_KEY, JSON.stringify(cloudHosts));
+        }
+        changed = true;
+      }
+
+      if (cloudWaitlist && Array.isArray(cloudWaitlist)) {
+        if (cloudWaitlist.length > 0) {
+          localStorage.setItem(WAITLIST_KEY, JSON.stringify(cloudWaitlist));
+        }
+        changed = true;
+      }
+
+      if (changed) {
+        this.notify();
+      }
+
+      return {
+        success: true,
+        vehiclesCount: cloudVehicles?.length || 0,
+        requirementsCount: cloudReqs?.length || 0,
+        hostsCount: cloudHosts?.length || 0,
+        waitlistCount: cloudWaitlist?.length || 0
+      };
+    } catch (err) {
+      console.warn('[AdminStore] Cloud sync failed:', err);
+      return { success: false, error: err.message };
     }
   }
+
 
   // --- VEHICLE CATALOG CRUD ---
   getVehicles() {

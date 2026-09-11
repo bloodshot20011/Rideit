@@ -3,8 +3,11 @@ import { Link } from 'react-router-dom';
 import CTASection from '../components/CTASection';
 import TyreMarksDivider from '../components/TyreMarksDivider';
 import { IMAGES } from '../data/images';
+import { useSurvey } from '../context/SurveyContext';
 
 export default function AboutPage() {
+  const { openSurvey } = useSurvey();
+
   return (
     <div className="space-y-16 py-8 px-4 sm:px-6 max-w-content mx-auto">
       {/* Page Hero - Thin Neo-Mirai Display */}
@@ -150,13 +153,14 @@ export default function AboutPage() {
             <span>JOIN THE WAITLIST</span>
             <span>→</span>
           </Link>
-          <Link
-            to="/request"
-            className="inline-flex items-center justify-center gap-2 bg-white text-[#1E1B18] border border-[#1E1B18]/20 hover:bg-[#EFECE4] font-mono text-xs font-semibold px-6 py-3 rounded-full"
+          <button
+            type="button"
+            onClick={() => openSurvey()}
+            className="inline-flex items-center justify-center gap-2 bg-white text-[#1E1B18] border border-[#1E1B18]/20 hover:bg-[#EFECE4] font-mono text-xs font-semibold px-6 py-3 rounded-full cursor-pointer"
           >
-            <span>SUBMIT REQUIREMENTS</span>
+            <span>QUICK SURVEY</span>
             <span>→</span>
-          </Link>
+          </button>
         </div>
       </section>
 
@@ -169,8 +173,8 @@ export default function AboutPage() {
         description="Join our Shivpuri pre-launch waitlist to get early notification as soon as matching rentals go live."
         primaryCtaText="Join the Waitlist"
         primaryCtaTo="/waitlist"
-        secondaryCtaText="Submit Requirements"
-        secondaryCtaTo="/request"
+        secondaryCtaText="Quick Survey"
+        secondaryOnClick={() => openSurvey()}
       />
     </div>
   );

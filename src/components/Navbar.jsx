@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
 import { NavLink, Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useSurvey } from '../context/SurveyContext';
 
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const location = useLocation();
+  const { openSurvey } = useSurvey();
 
   const navItems = [
     { label: 'HOME', path: '/' },
     { label: 'VEHICLES', path: '/vehicles' },
-    { label: 'REQUIREMENTS', path: '/request' },
     { label: 'HOST VEHICLE', path: '/list-your-vehicle' },
     { label: 'ABOUT', path: '/about' },
   ];
@@ -65,7 +66,7 @@ export default function Navbar() {
                   {item.label}
                 </span>
 
-                {/* Active Solid Dot ● Underneath Link */}
+                {/* Active Solid Dot Underneath Link */}
                 {isActive ? (
                   <motion.span
                     layoutId="activeDot"
@@ -80,8 +81,19 @@ export default function Navbar() {
           })}
         </nav>
 
-        {/* Right Action: Amber Pill Button with Arrow Icon */}
+        {/* Right Actions: Quick Survey Button + Get Started */}
         <div className="hidden md:flex items-center gap-3">
+          {/* Quick Survey Trigger */}
+          <button
+            type="button"
+            onClick={() => openSurvey()}
+            className="inline-flex items-center gap-1.5 bg-white hover:bg-[#FAF8F5] text-[#1E1B18] border border-[#1E1B18]/20 hover:border-[#E64A19] font-mono text-xs font-semibold px-3.5 py-2 rounded-full shadow-2xs transition-all cursor-pointer"
+          >
+            <span className="material-symbols-outlined text-sm text-[#E64A19]">assignment</span>
+            <span>QUICK SURVEY</span>
+          </button>
+
+          {/* Get Started Waitlist Link */}
           <Link
             to="/waitlist"
             className="inline-flex items-center gap-2 bg-[#E64A19] hover:bg-[#D84315] text-white font-mono text-xs font-semibold px-4 py-2 rounded-full shadow-xs transition-all hover:shadow-sm"
@@ -134,7 +146,22 @@ export default function Navbar() {
                   </NavLink>
                 );
               })}
+
               <div className="pt-3 border-t border-[#1E1B18]/15 space-y-2">
+                {/* Quick Survey Mobile Button */}
+                <button
+                  type="button"
+                  onClick={() => {
+                    setMobileMenuOpen(false);
+                    openSurvey();
+                  }}
+                  className="w-full inline-flex items-center justify-center gap-2 bg-white hover:bg-[#FAF8F5] text-[#1E1B18] border border-[#1E1B18]/20 font-mono text-xs font-bold px-4 py-3 rounded-full shadow-2xs transition-colors cursor-pointer"
+                >
+                  <span className="material-symbols-outlined text-base text-[#E64A19]">assignment</span>
+                  <span>QUICK VEHICLE SURVEY</span>
+                </button>
+
+                {/* Join Waitlist Mobile Button */}
                 <Link
                   to="/waitlist"
                   onClick={() => setMobileMenuOpen(false)}

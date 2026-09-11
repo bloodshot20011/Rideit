@@ -238,15 +238,25 @@ export default function AdminPage() {
     return str;
   };
 
-  // Manual Cloud Sync
+  // Manual Cloud Sync for All Tables (Vehicles, Surveys/Requirements, Host Listings, Waitlist)
   const handleCloudSync = async () => {
     setSyncingCloud(true);
-    await adminStore.initSupabaseSync();
+    const result = await adminStore.syncAllFromSupabase();
     setVehicles(adminStore.getVehicles());
-    setTimeout(() => {
-      setSyncingCloud(false);
-    }, 600);
+    setRequirements(adminStore.getRequirements());
+    setHostVehicles(adminStore.getHostVehicles());
+    setWaitlist(adminStore.getWaitlist());
+    setSyncingCloud(false);
+    return result;
   };
+
+  // Auto-sync when authenticated admin loads the dashboard
+  useEffect(() => {
+    if (currentUser) {
+      handleCloudSync();
+    }
+  }, [currentUser]);
+
 
   // Test connection to Supabase
   const handleTestCloudConnection = async () => {
@@ -1103,6 +1113,17 @@ export default function AdminPage() {
               <span className="text-xs text-[#7C776E] font-medium">
                 {filteredRequirementsList.length} Submissions
               </span>
+              <button
+                onClick={handleCloudSync}
+                disabled={syncingCloud}
+                className="inline-flex items-center gap-1.5 bg-[#F5F2EB] hover:bg-[#EFECE4] text-[#1E1B18] border border-[#1E1B18]/20 px-3 py-1.5 rounded-lg text-xs font-mono font-semibold transition-colors cursor-pointer"
+                title="Fetch latest surveys from Supabase cloud database"
+              >
+                <span className={`material-symbols-outlined text-sm text-[#E64A19] ${syncingCloud ? 'animate-spin' : ''}`}>
+                  sync
+                </span>
+                <span>{syncingCloud ? 'Syncing...' : 'Sync Cloud Surveys'}</span>
+              </button>
               <Button variant="outline" size="sm" icon="download" onClick={() => handleExportCSV('requirements')}>
                 Export CSV
               </Button>
