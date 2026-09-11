@@ -475,7 +475,7 @@ export default function SurveyModal() {
                             setFullName(e.target.value);
                             if (errors.fullName) setErrors({ ...errors, fullName: null });
                           }}
-                          placeholder="e.g. Khusharth Sharma"
+                          placeholder="Enter your full name"
                           className={`w-full bg-white border rounded-xl px-3.5 py-2.5 font-sans text-xs sm:text-sm text-[#1E1B18] outline-none transition-all ${
                             errors.fullName ? 'border-red-500 ring-2 ring-red-500/20' : 'border-[#1E1B18]/20 focus:border-[#E64A19]'
                           }`}
@@ -500,7 +500,7 @@ export default function SurveyModal() {
                               setWhatsapp(e.target.value);
                               if (errors.whatsapp) setErrors({ ...errors, whatsapp: null });
                             }}
-                            placeholder="8370092226"
+                            placeholder="98765 43210"
                             className={`w-full bg-white border rounded-xl pl-12 pr-3.5 py-2.5 font-mono text-xs sm:text-sm text-[#1E1B18] outline-none transition-all ${
                               errors.whatsapp ? 'border-red-500 ring-2 ring-red-500/20' : 'border-[#1E1B18]/20 focus:border-[#E64A19]'
                             }`}
