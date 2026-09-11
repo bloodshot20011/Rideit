@@ -1,7 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { adminStore } from '../data/adminStore';
-import { isSupabaseConfigured, uploadVehicleImageToSupabase } from '../lib/supabase';
+import {
+  getSupabaseCredentials,
+  saveSupabaseCredentials,
+  clearSupabaseCredentials,
+  testSupabaseConnection,
+  pushAllVehiclesToSupabase,
+  uploadVehicleImageToSupabase
+} from '../lib/supabase';
 import Button from '../components/Button';
 import FormField from '../components/FormField';
 import ImagePlaceholder from '../components/ImagePlaceholder';
@@ -14,6 +21,16 @@ export default function AdminPage() {
   const [pinInput, setPinInput] = useState('');
   const [pinError, setPinError] = useState('');
   const [rememberDevice, setRememberDevice] = useState(true);
+
+  // Cloud Database Connection State
+  const [showCloudModal, setShowCloudModal] = useState(false);
+  const [cloudUrl, setCloudUrl] = useState(() => getSupabaseCredentials().url);
+  const [cloudKey, setCloudKey] = useState(() => getSupabaseCredentials().key);
+  const [cloudTesting, setCloudTesting] = useState(false);
+  const [cloudTestResult, setCloudTestResult] = useState(null);
+  const [pushingFleet, setPushingFleet] = useState(false);
+  const [pushResult, setPushResult] = useState(null);
+  const [cloudConfigured, setCloudConfigured] = useState(() => getSupabaseCredentials().isConfigured);
 
   // Navigation & Tabs
   const [activeTab, setActiveTab] = useState('overview'); // overview, vehicles, requirements, hosts, waitlist
@@ -115,9 +132,57 @@ export default function AdminPage() {
   const handleCloudSync = async () => {
     setSyncingCloud(true);
     await adminStore.initSupabaseSync();
+    setVehicles(adminStore.getVehicles());
     setTimeout(() => {
       setSyncingCloud(false);
     }, 600);
+  };
+
+  // Test connection to Supabase
+  const handleTestCloudConnection = async () => {
+    if (!cloudUrl.trim() || !cloudKey.trim()) {
+      setCloudTestResult({ success: false, message: 'Please enter both Supabase Project URL and Anon Public Key.' });
+      return;
+    }
+    setCloudTesting(true);
+    setCloudTestResult(null);
+    const res = await testSupabaseConnection(cloudUrl.trim(), cloudKey.trim());
+    setCloudTesting(false);
+    if (res.success) {
+      setCloudTestResult({ success: true, message: '✓ Successfully connected to Supabase database!' });
+    } else {
+      setCloudTestResult({ success: false, message: `Connection failed: ${res.error}` });
+    }
+  };
+
+  // Save Supabase credentials
+  const handleSaveCloudCredentials = async (e) => {
+    e.preventDefault();
+    if (!cloudUrl.trim() || !cloudKey.trim()) return;
+    saveSupabaseCredentials(cloudUrl, cloudKey);
+    setCloudConfigured(true);
+    setCloudTestResult({ success: true, message: '✓ Credentials saved in browser! Syncing fleet...' });
+    await adminStore.initSupabaseSync();
+    setVehicles(adminStore.getVehicles());
+    setTimeout(() => {
+      setShowCloudModal(false);
+    }, 1200);
+  };
+
+  // Push all local vehicles to Supabase
+  const handlePushAllToCloud = async () => {
+    setPushingFleet(true);
+    setPushResult(null);
+    const currentVehicles = adminStore.getVehicles();
+    const res = await pushAllVehiclesToSupabase(currentVehicles);
+    setPushingFleet(false);
+    if (res.success) {
+      setPushResult({ success: true, message: `✓ Successfully synced ${currentVehicles.length} vehicles to Supabase Cloud!` });
+      await adminStore.initSupabaseSync();
+      setVehicles(adminStore.getVehicles());
+    } else {
+      setPushResult({ success: false, message: `Failed to push: ${res.error}` });
+    }
   };
 
   // In-Line Quick Price Edit Submit
@@ -425,6 +490,18 @@ export default function AdminPage() {
           </div>
 
           <div className="flex flex-wrap items-center gap-2 w-full md:w-auto">
+            <button
+              onClick={() => {
+                setShowCloudModal(true);
+                setCloudTestResult(null);
+                setPushResult(null);
+              }}
+              className="px-3 py-1.5 rounded-lg border border-[#C89D3C]/50 bg-[#0B132B] text-[#C89D3C] hover:bg-[#E64A19] hover:text-white hover:border-[#E64A19] font-mono text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer shadow-2xs"
+              title="Configure Supabase Cloud Settings"
+            >
+              <span className="material-symbols-outlined text-sm">cloud_sync</span>
+              <span>{cloudConfigured ? 'Cloud Configured' : 'Connect Cloud (Supabase)'}</span>
+            </button>
             <Button variant="outline" size="sm" icon="sync" onClick={handleCloudSync} disabled={syncingCloud} className="flex-1 sm:flex-initial">
               {syncingCloud ? 'Syncing...' : 'Sync Cloud'}
             </Button>
@@ -433,7 +510,7 @@ export default function AdminPage() {
             </Button>
             <button
               onClick={handleLogout}
-              className="p-2 rounded-lg text-[#7C776E] hover:bg-[#EFECE4] transition-colors"
+              className="p-2 rounded-lg text-[#7C776E] hover:bg-[#EFECE4] transition-colors cursor-pointer"
               title="Lock Admin Panel"
             >
               <span className="material-symbols-outlined text-lg">lock</span>
@@ -443,13 +520,21 @@ export default function AdminPage() {
 
         {/* Database Live Status Indicator Strip */}
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 pt-3 border-t border-[#1E1B18]/10 text-xs font-mono">
-          <div className="flex items-center gap-2">
-            <span className={`w-2 h-2 rounded-full ${isSupabaseConfigured ? 'bg-emerald-500' : 'bg-amber-500 animate-ping'}`} />
+          <div className="flex items-center gap-2 flex-wrap">
+            <span className={`w-2.5 h-2.5 rounded-full ${cloudConfigured ? 'bg-emerald-500' : 'bg-amber-500 animate-ping'}`} />
             <span className="text-[#45413B]">
-              Database Status: <strong className={isSupabaseConfigured ? 'text-emerald-700' : 'text-amber-700'}>
-                {isSupabaseConfigured ? 'Connected to Supabase Cloud' : 'Local Storage Engine (Active)'}
+              Database Status: <strong className={cloudConfigured ? 'text-emerald-700 font-bold' : 'text-amber-700 font-bold'}>
+                {cloudConfigured ? '🟢 Connected to Supabase Cloud' : '🟡 Local Storage Mode (Only saves on this device)'}
               </strong>
             </span>
+            {!cloudConfigured && (
+              <button
+                onClick={() => setShowCloudModal(true)}
+                className="text-[#E64A19] underline font-bold cursor-pointer hover:text-[#D84315] ml-1"
+              >
+                Connect to save across all phones & devices →
+              </button>
+            )}
           </div>
 
           <div className="text-[#7C776E]">
@@ -1717,6 +1802,183 @@ export default function AdminPage() {
                   </Button>
                 </div>
               </form>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* SUPABASE CLOUD SETUP & SYNC MODAL */}
+      <AnimatePresence>
+        {showCloudModal && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              className="bg-white rounded-2xl border border-[#1E1B18]/20 shadow-2xl max-w-xl w-full max-h-[90vh] overflow-y-auto p-6 sm:p-8 space-y-6"
+            >
+              <div className="flex items-center justify-between border-b border-[#1E1B18]/15 pb-3">
+                <div className="flex items-center gap-2">
+                  <div className="w-9 h-9 rounded-lg bg-[#0B132B] text-[#C89D3C] flex items-center justify-center border border-[#C89D3C]/30">
+                    <span className="material-symbols-outlined text-xl">cloud_sync</span>
+                  </div>
+                  <div>
+                    <h3 className="font-display font-bold text-lg sm:text-xl text-[#1E1B18]">
+                      Cloud Database & Sync Setup
+                    </h3>
+                    <p className="font-body text-xs text-[#7C776E]">Sync catalog, prices & surveys across all phones globally</p>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setShowCloudModal(false)}
+                  className="text-[#7C776E] hover:bg-[#EFECE4] p-1.5 rounded-lg cursor-pointer"
+                >
+                  <span className="material-symbols-outlined text-xl">close</span>
+                </button>
+              </div>
+
+              {/* Status Alert */}
+              <div className={`p-4 rounded-xl border text-xs font-mono flex items-start gap-3 ${
+                cloudConfigured ? 'bg-emerald-50 border-emerald-300 text-emerald-900' : 'bg-amber-50 border-amber-300 text-amber-900'
+              }`}>
+                <span className="material-symbols-outlined text-lg shrink-0 mt-0.5">
+                  {cloudConfigured ? 'check_circle' : 'info'}
+                </span>
+                <div className="space-y-1">
+                  <strong className="block text-sm font-semibold">
+                    {cloudConfigured ? 'Cloud Connection Active' : 'Running in Local Storage Mode'}
+                  </strong>
+                  <p className="font-body text-xs leading-relaxed">
+                    {cloudConfigured
+                      ? 'Edits to vehicles, prices, and status update Supabase in real-time and reflect across all phones.'
+                      : 'Changes are currently stored in this browser only. Connect your Supabase project below to save changes globally.'}
+                  </p>
+                </div>
+              </div>
+
+              {/* Credentials Form */}
+              <form onSubmit={handleSaveCloudCredentials} className="space-y-4">
+                <FormField
+                  label="Supabase Project URL"
+                  id="cloud-url"
+                  value={cloudUrl}
+                  onChange={e => setCloudUrl(e.target.value)}
+                  placeholder="https://abcdefghijklm.supabase.co"
+                  helperText="Found in Supabase Dashboard → Project Settings → API"
+                  required
+                />
+
+                <FormField
+                  label="Supabase Anon / Public Key"
+                  id="cloud-key"
+                  type="textarea"
+                  rows={2}
+                  value={cloudKey}
+                  onChange={e => setCloudKey(e.target.value)}
+                  placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                  helperText="Found in Supabase Dashboard → Project Settings → API → anon public key"
+                  required
+                />
+
+                {cloudTestResult && (
+                  <div className={`p-3 rounded-lg text-xs font-mono border ${
+                    cloudTestResult.success ? 'bg-emerald-50 text-emerald-800 border-emerald-300' : 'bg-red-50 text-red-800 border-red-300'
+                  }`}>
+                    {cloudTestResult.message}
+                  </div>
+                )}
+
+                <div className="flex flex-col sm:flex-row gap-2 pt-1">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    fullWidth
+                    icon="wifi_tethering"
+                    onClick={handleTestCloudConnection}
+                    disabled={cloudTesting}
+                  >
+                    {cloudTesting ? 'Testing...' : 'Test Connection'}
+                  </Button>
+                  <Button
+                    type="submit"
+                    variant="primary"
+                    size="sm"
+                    fullWidth
+                    icon="save"
+                  >
+                    Save & Activate
+                  </Button>
+                </div>
+              </form>
+
+              {/* Seed / Bulk Sync Section */}
+              <div className="bg-[#F5F2EB] p-4 rounded-xl border border-[#1E1B18]/15 space-y-3">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h4 className="font-display font-bold text-sm text-[#1E1B18]">Push Local Fleet to Cloud</h4>
+                    <p className="font-body text-xs text-[#7C776E]">Upload all current vehicles and prices into your Supabase database table.</p>
+                  </div>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    icon="cloud_upload"
+                    onClick={handlePushAllToCloud}
+                    disabled={pushingFleet || !cloudConfigured}
+                  >
+                    {pushingFleet ? 'Uploading...' : 'Push All'}
+                  </Button>
+                </div>
+                {pushResult && (
+                  <div className={`p-2.5 rounded-lg text-xs font-mono border ${
+                    pushResult.success ? 'bg-emerald-100 text-emerald-900 border-emerald-300' : 'bg-red-100 text-red-900 border-red-300'
+                  }`}>
+                    {pushResult.message}
+                  </div>
+                )}
+              </div>
+
+              {/* Vercel Permanent Auto-Sync Guide */}
+              <div className="border-t border-[#1E1B18]/15 pt-4 space-y-2 font-body text-xs text-[#45413B]">
+                <strong className="block font-display text-sm text-[#1E1B18]">
+                  📌 How to enable automatic sync for all visitors on Vercel:
+                </strong>
+                <ol className="list-decimal list-inside space-y-1 bg-[#EFECE4] p-3.5 rounded-lg text-[#1E1B18]">
+                  <li>Open <strong>vercel.com</strong> → Select your <strong>Ride it</strong> project.</li>
+                  <li>Go to <strong>Settings</strong> → <strong>Environment Variables</strong>.</li>
+                  <li>Add <strong>`VITE_SUPABASE_URL`</strong> with your project URL.</li>
+                  <li>Add <strong>`VITE_SUPABASE_ANON_KEY`</strong> with your anon public key.</li>
+                  <li>Go to <strong>Deployments</strong> → Click <strong>Redeploy</strong> to apply.</li>
+                </ol>
+              </div>
+
+              <div className="pt-2 flex justify-between items-center border-t border-[#1E1B18]/10">
+                {cloudConfigured && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      clearSupabaseCredentials();
+                      setCloudConfigured(false);
+                      setCloudUrl('');
+                      setCloudKey('');
+                    }}
+                    className="text-xs font-mono text-red-600 hover:underline cursor-pointer"
+                  >
+                    Disconnect Cloud
+                  </button>
+                )}
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setShowCloudModal(false)}
+                  className="ml-auto"
+                >
+                  Close
+                </Button>
+              </div>
             </motion.div>
           </div>
         )}

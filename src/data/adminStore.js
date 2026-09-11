@@ -1,9 +1,10 @@
 import { VEHICLES_DATA } from './vehicles';
 import {
-  supabase,
-  isSupabaseConfigured,
+  getSupabaseCredentials,
+  getSupabaseClient,
   syncVehiclesFromSupabase,
   upsertVehicleToSupabase,
+  pushAllVehiclesToSupabase,
   saveRequirementToSupabase,
   saveHostVehicleToSupabase,
   saveWaitlistToSupabase
@@ -100,7 +101,8 @@ class AdminStore {
   }
 
   async initSupabaseSync() {
-    if (isSupabaseConfigured) {
+    const creds = getSupabaseCredentials();
+    if (creds.isConfigured) {
       const cloudVehicles = await syncVehiclesFromSupabase();
       if (cloudVehicles && cloudVehicles.length > 0) {
         this.saveVehicles(cloudVehicles, false);
@@ -139,9 +141,7 @@ class AdminStore {
     this.saveVehicles(updated);
 
     // Sync to Supabase
-    if (isSupabaseConfigured) {
-      upsertVehicleToSupabase(vehicleWithId);
-    }
+    upsertVehicleToSupabase(vehicleWithId);
 
     return vehicleWithId;
   }
@@ -159,7 +159,7 @@ class AdminStore {
     this.saveVehicles(updated);
 
     // Sync to Supabase
-    if (isSupabaseConfigured && updatedVehicle) {
+    if (updatedVehicle) {
       upsertVehicleToSupabase(updatedVehicle);
     }
   }
@@ -177,7 +177,7 @@ class AdminStore {
     });
     this.saveVehicles(updated);
 
-    if (isSupabaseConfigured && target) {
+    if (target) {
       upsertVehicleToSupabase(target);
     }
   }
@@ -187,8 +187,9 @@ class AdminStore {
     const updated = vehicles.filter(v => v.id !== id);
     this.saveVehicles(updated);
 
-    if (isSupabaseConfigured && supabase) {
-      supabase.from('vehicles').delete().eq('id', id).then(() => {});
+    const client = getSupabaseClient();
+    if (client) {
+      client.from('vehicles').delete().eq('id', id).then(() => {});
     }
   }
 
@@ -225,9 +226,7 @@ class AdminStore {
     this.saveRequirements(updated);
 
     // Sync to Supabase
-    if (isSupabaseConfigured) {
-      saveRequirementToSupabase(newEntry);
-    }
+    saveRequirementToSupabase(newEntry);
 
     return newEntry;
   }
@@ -237,8 +236,9 @@ class AdminStore {
     const updated = reqs.map(r => r.id === id ? { ...r, status } : r);
     this.saveRequirements(updated);
 
-    if (isSupabaseConfigured && supabase) {
-      supabase.from('requirements').update({ status }).eq('id', id).then(() => {});
+    const client = getSupabaseClient();
+    if (client) {
+      client.from('requirements').update({ status }).eq('id', id).then(() => {});
     }
   }
 
@@ -247,8 +247,9 @@ class AdminStore {
     const updated = reqs.filter(r => r.id !== id);
     this.saveRequirements(updated);
 
-    if (isSupabaseConfigured && supabase) {
-      supabase.from('requirements').delete().eq('id', id).then(() => {});
+    const client = getSupabaseClient();
+    if (client) {
+      client.from('requirements').delete().eq('id', id).then(() => {});
     }
   }
 
@@ -285,9 +286,7 @@ class AdminStore {
     this.saveHostVehicles(updated);
 
     // Sync to Supabase
-    if (isSupabaseConfigured) {
-      saveHostVehicleToSupabase(newEntry);
-    }
+    saveHostVehicleToSupabase(newEntry);
 
     return newEntry;
   }
@@ -297,8 +296,9 @@ class AdminStore {
     const updated = hosts.map(h => h.id === id ? { ...h, status } : h);
     this.saveHostVehicles(updated);
 
-    if (isSupabaseConfigured && supabase) {
-      supabase.from('host_vehicles').update({ status }).eq('id', id).then(() => {});
+    const client = getSupabaseClient();
+    if (client) {
+      client.from('host_vehicles').update({ status }).eq('id', id).then(() => {});
     }
   }
 
@@ -307,8 +307,9 @@ class AdminStore {
     const updated = hosts.filter(h => h.id !== id);
     this.saveHostVehicles(updated);
 
-    if (isSupabaseConfigured && supabase) {
-      supabase.from('host_vehicles').delete().eq('id', id).then(() => {});
+    const client = getSupabaseClient();
+    if (client) {
+      client.from('host_vehicles').delete().eq('id', id).then(() => {});
     }
   }
 
@@ -345,9 +346,7 @@ class AdminStore {
     this.saveWaitlist(updated);
 
     // Sync to Supabase
-    if (isSupabaseConfigured) {
-      saveWaitlistToSupabase(newEntry);
-    }
+    saveWaitlistToSupabase(newEntry);
 
     return newEntry;
   }
@@ -357,8 +356,9 @@ class AdminStore {
     const updated = list.filter(w => w.id !== id);
     this.saveWaitlist(updated);
 
-    if (isSupabaseConfigured && supabase) {
-      supabase.from('waitlist').delete().eq('id', id).then(() => {});
+    const client = getSupabaseClient();
+    if (client) {
+      client.from('waitlist').delete().eq('id', id).then(() => {});
     }
   }
 }
