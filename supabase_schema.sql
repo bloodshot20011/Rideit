@@ -106,3 +106,6 @@ WITH CHECK (bucket_id = 'vehicle-images');
 CREATE POLICY "Allow public update/delete on vehicle-images"
 ON storage.objects FOR ALL
 USING (bucket_id = 'vehicle-images');
+
+-- 6. RELOAD SCHEMA CACHE (Makes tables visible immediately to API)
+NOTIFY pgrst, 'reload schema';
