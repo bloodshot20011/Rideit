@@ -26,7 +26,13 @@ export function getSupabaseClient() {
   if (!isConfigured) return null;
   if (!activeClient) {
     try {
-      activeClient = createClient(url, key);
+      activeClient = createClient(url, key, {
+        auth: {
+          detectSessionInUrl: true,
+          persistSession: true,
+          autoRefreshToken: true
+        }
+      });
     } catch (e) {
       console.warn('[Supabase] Failed to init client:', e);
       return null;
@@ -61,7 +67,13 @@ export function saveSupabaseCredentials(url, key) {
   if (typeof window !== 'undefined') {
     localStorage.setItem('apniride_supabase_url', url.trim());
     localStorage.setItem('apniride_supabase_anon_key', key.trim());
-    activeClient = createClient(url.trim(), key.trim());
+    activeClient = createClient(url.trim(), key.trim(), {
+      auth: {
+        detectSessionInUrl: true,
+        persistSession: true,
+        autoRefreshToken: true
+      }
+    });
   }
 }
 

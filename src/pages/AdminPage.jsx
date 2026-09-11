@@ -97,7 +97,8 @@ export default function AdminPage() {
   const getWhitelistedList = () => {
     const envEmails = import.meta.env.VITE_ADMIN_EMAILS || '';
     const stored = typeof window !== 'undefined' ? localStorage.getItem('apniride_admin_whitelist') || '' : '';
-    const merged = `${envEmails},${stored}`
+    const defaults = 'spidiweb438@gmail.com';
+    const merged = `${defaults},${envEmails},${stored}`
       .split(',')
       .map(e => e.trim().toLowerCase())
       .filter(Boolean);
