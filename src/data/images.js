@@ -1,19 +1,19 @@
-import neoMiraiHeroIndian from '../assets/neo_mirai_hero_indian.jpg';
-import neoMiraiBikesIndian from '../assets/neo_mirai_bikes_indian.jpg';
-import neoMiraiCarsIndian from '../assets/neo_mirai_cars_indian.jpg';
+import shivpuriChhatrisHero from '../assets/shivpuri_chhatris_hero.jpg';
+import shivpuriMadhavParkBikes from '../assets/shivpuri_madhav_park_bikes.jpg';
+import shivpuriGeorgeCastleCars from '../assets/shivpuri_george_castle_cars.jpg';
 
 export const IMAGES = {
-  // Hero Section Indian Retro-Futuristic Golden Sunset Art
-  heroBackground: neoMiraiHeroIndian,
+  // Hero Section Shivpuri Chhatris Historic Landmark Visual
+  heroBackground: shivpuriChhatrisHero,
   
-  // Category Showcase Art
-  bikesCategory: neoMiraiBikesIndian,
-  carsCategory: neoMiraiCarsIndian,
+  // Category Showcase Art (Madhav National Park Lake & George Castle / Palace Hilltop)
+  bikesCategory: shivpuriMadhavParkBikes,
+  carsCategory: shivpuriGeorgeCastleCars,
   
   // Section Backgrounds & Visuals
-  shivpuriLandscape: neoMiraiCarsIndian,
-  ownerBanner: neoMiraiBikesIndian,
-  finalCtaBackground: neoMiraiHeroIndian,
+  shivpuriLandscape: shivpuriGeorgeCastleCars,
+  ownerBanner: shivpuriChhatrisHero,
+  finalCtaBackground: shivpuriChhatrisHero,
 
   // Vehicle Fleet Catalog Images
   vehicles: {

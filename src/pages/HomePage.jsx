@@ -167,52 +167,64 @@ export default function HomePage() {
               </p>
             </div>
 
-            {/* 3 Everyday Use-Case Compact Cards */}
+            {/* 3 Everyday Use-Case Interactive Cards */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-3.5 sm:gap-5 pt-2">
-              <div className="bg-[#F5F2EB] p-4 sm:p-5 rounded-lg border border-[#1E1B18]/10 space-y-2.5 flex flex-col justify-between">
+              <Link
+                to="/vehicles?category=bikes"
+                className="group bg-[#F5F2EB] hover:bg-white p-4 sm:p-5 rounded-lg border border-[#1E1B18]/10 hover:border-[#E64A19]/40 transition-all space-y-2.5 flex flex-col justify-between shadow-2xs hover:shadow-xs cursor-pointer"
+              >
                 <div className="space-y-2">
-                  <div className="w-8 h-8 rounded-md bg-[#E64A19]/10 text-[#E64A19] flex items-center justify-center">
+                  <div className="w-8 h-8 rounded-md bg-[#E64A19]/10 group-hover:bg-[#E64A19] group-hover:text-white text-[#E64A19] flex items-center justify-center transition-colors">
                     <span className="material-symbols-outlined text-lg">school</span>
                   </div>
-                  <h4 className="font-display font-bold text-sm sm:text-base text-[#1E1B18]">College & Daily Errands</h4>
+                  <h4 className="font-display font-bold text-sm sm:text-base text-[#1E1B18] group-hover:text-[#E64A19] transition-colors">College & Daily Errands</h4>
                   <p className="font-body text-xs text-[#45413B] leading-relaxed">
                     Need an Activa or Jupiter for college, coaching, or market runs? Rent affordably from ₹399/day.
                   </p>
                 </div>
-                <div className="pt-1 font-mono text-[11px] font-semibold text-[#E64A19]">
-                  Rates from ₹399/day →
+                <div className="pt-1 font-mono text-[11px] font-semibold text-[#E64A19] flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
+                  <span>Rates from ₹399/day</span>
+                  <span>→</span>
                 </div>
-              </div>
+              </Link>
 
-              <div className="bg-[#F5F2EB] p-4 sm:p-5 rounded-lg border border-[#1E1B18]/10 space-y-2.5 flex flex-col justify-between">
+              <Link
+                to="/vehicles?category=cars"
+                className="group bg-[#F5F2EB] hover:bg-white p-4 sm:p-5 rounded-lg border border-[#1E1B18]/10 hover:border-[#C89D3C]/50 transition-all space-y-2.5 flex flex-col justify-between shadow-2xs hover:shadow-xs cursor-pointer"
+              >
                 <div className="space-y-2">
-                  <div className="w-8 h-8 rounded-md bg-[#C89D3C]/15 text-[#C89D3C] flex items-center justify-center">
+                  <div className="w-8 h-8 rounded-md bg-[#C89D3C]/15 group-hover:bg-[#C89D3C] group-hover:text-white text-[#C89D3C] flex items-center justify-center transition-colors">
                     <span className="material-symbols-outlined text-lg">luggage</span>
                   </div>
-                  <h4 className="font-display font-bold text-sm sm:text-base text-[#1E1B18]">Gwalior & Outstation Trips</h4>
+                  <h4 className="font-display font-bold text-sm sm:text-base text-[#1E1B18] group-hover:text-[#C89D3C] transition-colors">Gwalior & Outstation Trips</h4>
                   <p className="font-body text-xs text-[#45413B] leading-relaxed">
                     Family trip to Gwalior, Jhansi, or Madhav National Park? Rent a clean Swift or Creta with AC.
                   </p>
                 </div>
-                <div className="pt-1 font-mono text-[11px] font-semibold text-[#C89D3C]">
-                  Rates from ₹1,499/day →
+                <div className="pt-1 font-mono text-[11px] font-semibold text-[#C89D3C] flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
+                  <span>Rates from ₹1,499/day</span>
+                  <span>→</span>
                 </div>
-              </div>
+              </Link>
 
-              <div className="bg-[#F5F2EB] p-4 sm:p-5 rounded-lg border border-[#1E1B18]/10 space-y-2.5 flex flex-col justify-between">
+              <Link
+                to="/request"
+                className="group bg-[#F5F2EB] hover:bg-white p-4 sm:p-5 rounded-lg border border-[#1E1B18]/10 hover:border-[#1E1B18]/40 transition-all space-y-2.5 flex flex-col justify-between shadow-2xs hover:shadow-xs cursor-pointer"
+              >
                 <div className="space-y-2">
-                  <div className="w-8 h-8 rounded-md bg-[#0B132B]/10 text-[#0B132B] flex items-center justify-center">
+                  <div className="w-8 h-8 rounded-md bg-[#0B132B]/10 group-hover:bg-[#0B132B] group-hover:text-white text-[#0B132B] flex items-center justify-center transition-colors">
                     <span className="material-symbols-outlined text-lg">celebration</span>
                   </div>
-                  <h4 className="font-display font-bold text-sm sm:text-base text-[#1E1B18]">Weddings & Special Events</h4>
+                  <h4 className="font-display font-bold text-sm sm:text-base text-[#1E1B18] group-hover:text-[#0B132B] transition-colors">Weddings & Special Events</h4>
                   <p className="font-body text-xs text-[#45413B] leading-relaxed">
                     Extra vehicles for visiting guests and family functions in Shivpuri without hefty security deposits.
                   </p>
                 </div>
-                <div className="pt-1 font-mono text-[11px] font-semibold text-[#1E1B18]">
-                  Verified Fleet →
+                <div className="pt-1 font-mono text-[11px] font-semibold text-[#1E1B18] flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
+                  <span>Verified Fleet Options</span>
+                  <span>→</span>
                 </div>
-              </div>
+              </Link>
             </div>
           </div>
         </ScrollReveal>
@@ -477,20 +489,20 @@ export default function HomePage() {
           <div className="relative bg-[#0B132B] text-[#F5F2EB] rounded-xl sm:rounded-2xl p-5 sm:p-8 shadow-sm overflow-hidden border border-[#C89D3C]/40">
             <div className="space-y-3 relative z-10 max-w-xl">
               <span className="font-mono text-[10px] font-semibold text-[#C89D3C] uppercase tracking-wider">
-                [EARN WITH YOUR VEHICLE]
+                [HOST PARTNERSHIP]
               </span>
               <h2 className="font-display font-bold text-lg sm:text-2xl text-[#F5F2EB] tracking-tight uppercase">
                 Have an idle bike or car in Shivpuri?
               </h2>
               <p className="font-body text-xs sm:text-sm text-[#F5F2EB]/80 leading-relaxed">
-                Turn your parked vehicle into a monthly earning source. List on ApniRide — we handle renter verification, agreements, and payouts.
+                List your parked vehicle on ApniRide. We handle renter verification, rental agreements, and secure handovers.
               </p>
               <div className="pt-1">
                 <Link
                   to="/list-your-vehicle"
-                  className="inline-flex items-center gap-1.5 bg-[#E64A19] hover:bg-[#D84315] text-white font-mono text-xs font-semibold px-5 py-2.5 rounded-full shadow-xs transition-all"
+                  className="inline-flex items-center gap-1.5 bg-[#E64A19] hover:bg-[#D84315] text-white font-mono text-xs font-semibold px-5 py-2.5 rounded-full shadow-xs transition-all cursor-pointer"
                 >
-                  <span>LIST YOUR VEHICLE (EARN ₹15,000+/MO)</span>
+                  <span>LIST YOUR VEHICLE</span>
                   <span>→</span>
                 </Link>
               </div>

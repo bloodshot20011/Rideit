@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import CategorySelector from '../components/CategorySelector';
 import VehicleGrid from '../components/VehicleGrid';
@@ -9,9 +10,20 @@ import { BIKE_SUBCATEGORIES, CAR_SUBCATEGORIES } from '../data/vehicles';
 import { adminStore } from '../data/adminStore';
 
 export default function VehiclesPage() {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const initialCategory = searchParams.get('category') || 'all';
+
   const [vehicles, setVehicles] = useState([]);
-  const [activeCategory, setActiveCategory] = useState('all');
+  const [activeCategory, setActiveCategory] = useState(initialCategory);
   const [activeSubcategory, setActiveSubcategory] = useState('all');
+
+  // Sync with searchParams if URL changes
+  useEffect(() => {
+    const cat = searchParams.get('category');
+    if (cat && (cat === 'bikes' || cat === 'cars' || cat === 'all')) {
+      setActiveCategory(cat);
+    }
+  }, [searchParams]);
 
   useEffect(() => {
     const syncVehicles = () => {
