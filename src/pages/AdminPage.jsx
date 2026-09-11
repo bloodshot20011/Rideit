@@ -3,24 +3,36 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { adminStore } from '../data/adminStore';
 import {
   getSupabaseCredentials,
+  getSupabaseClient,
   saveSupabaseCredentials,
   clearSupabaseCredentials,
   testSupabaseConnection,
   pushAllVehiclesToSupabase,
-  uploadVehicleImageToSupabase
+  uploadVehicleImageToSupabase,
+  signInWithGoogle,
+  signOutAdmin
 } from '../lib/supabase';
 import Button from '../components/Button';
 import FormField from '../components/FormField';
 import ImagePlaceholder from '../components/ImagePlaceholder';
 
+// 3 Days Session Duration in Milliseconds (3 * 24 * 60 * 60 * 1000)
+const THREE_DAYS_MS = 259200000;
+
 export default function AdminPage() {
-  // Security & Authentication State (Default PIN: 1234)
-  const [isAuthenticated, setIsAuthenticated] = useState(() => {
-    return sessionStorage.getItem('apniride_admin_auth') === 'true';
+  // Google Authentication & Whitelist State (PIN Removed)
+  const [currentUser, setCurrentUser] = useState(null);
+  const [authChecking, setAuthChecking] = useState(true);
+  const [signingIn, setSigningIn] = useState(false);
+  const [authError, setAuthError] = useState('');
+  const [unauthorizedEmail, setUnauthorizedEmail] = useState('');
+
+  // Whitelisted Emails String for Settings Modal
+  const [whitelistInput, setWhitelistInput] = useState(() => {
+    const envEmails = import.meta.env.VITE_ADMIN_EMAILS || '';
+    const stored = typeof window !== 'undefined' ? localStorage.getItem('apniride_admin_whitelist') || '' : '';
+    return stored || envEmails;
   });
-  const [pinInput, setPinInput] = useState('');
-  const [pinError, setPinError] = useState('');
-  const [rememberDevice, setRememberDevice] = useState(true);
 
   // Cloud Database Connection State
   const [showCloudModal, setShowCloudModal] = useState(false);
@@ -81,6 +93,96 @@ export default function AdminPage() {
   const [vTagline, setVTagline] = useState('');
   const [vImage, setVImage] = useState('');
 
+  // Helper to parse whitelisted emails list
+  const getWhitelistedList = () => {
+    const envEmails = import.meta.env.VITE_ADMIN_EMAILS || '';
+    const stored = typeof window !== 'undefined' ? localStorage.getItem('apniride_admin_whitelist') || '' : '';
+    const merged = `${envEmails},${stored}`
+      .split(',')
+      .map(e => e.trim().toLowerCase())
+      .filter(Boolean);
+    return merged;
+  };
+
+  // Check Google Auth session & 3-day expiration
+  useEffect(() => {
+    const client = getSupabaseClient();
+    if (!client) {
+      setAuthChecking(false);
+      return;
+    }
+
+    const verifySession = async () => {
+      try {
+        const { data: { session }, error } = await client.auth.getSession();
+        if (error || !session) {
+          setCurrentUser(null);
+          setAuthChecking(false);
+          return;
+        }
+
+        // Check 3-day session expiry
+        const sessionTime = localStorage.getItem('apniride_admin_session_time');
+        if (sessionTime && (Date.now() - Number(sessionTime) > THREE_DAYS_MS)) {
+          await signOutAdmin();
+          setCurrentUser(null);
+          setAuthError('Your 3-day administrator session has expired. Please sign in with Google again.');
+          setAuthChecking(false);
+          return;
+        }
+
+        const userEmail = session.user.email?.toLowerCase();
+        const whitelist = getWhitelistedList();
+
+        if (whitelist.length > 0 && !whitelist.includes(userEmail)) {
+          setCurrentUser(null);
+          setUnauthorizedEmail(session.user.email || '');
+          setAuthError(`Access Denied: ${session.user.email} is not in the authorized administrator whitelist.`);
+          setAuthChecking(false);
+          return;
+        }
+
+        if (!sessionTime) {
+          localStorage.setItem('apniride_admin_session_time', Date.now().toString());
+        }
+        setCurrentUser(session.user);
+        setUnauthorizedEmail('');
+        setAuthError('');
+      } catch (err) {
+        console.warn('[Admin Auth] Session verification error:', err);
+      } finally {
+        setAuthChecking(false);
+      }
+    };
+
+    verifySession();
+
+    const { data: { subscription } } = client.auth.onAuthStateChange(async (event, session) => {
+      if (session?.user) {
+        const userEmail = session.user.email?.toLowerCase();
+        const whitelist = getWhitelistedList();
+
+        if (whitelist.length > 0 && !whitelist.includes(userEmail)) {
+          setCurrentUser(null);
+          setUnauthorizedEmail(session.user.email || '');
+          setAuthError(`Access Denied: ${session.user.email} is not authorized as an administrator.`);
+          return;
+        }
+
+        localStorage.setItem('apniride_admin_session_time', Date.now().toString());
+        setCurrentUser(session.user);
+        setUnauthorizedEmail('');
+        setAuthError('');
+      } else {
+        setCurrentUser(null);
+      }
+    });
+
+    return () => {
+      subscription?.unsubscribe();
+    };
+  }, []);
+
   // Subscribe to adminStore updates
   useEffect(() => {
     const syncData = () => {
@@ -95,24 +197,31 @@ export default function AdminPage() {
     return () => unsubscribe();
   }, []);
 
-  // Handle PIN Authentication
-  const handlePinSubmit = (e) => {
-    e.preventDefault();
-    if (pinInput === '1234' || pinInput === 'admin2026') {
-      if (rememberDevice) {
-        sessionStorage.setItem('apniride_admin_auth', 'true');
-      }
-      setIsAuthenticated(true);
-      setPinError('');
-    } else {
-      setPinError('Invalid PIN code. Please enter default PIN (1234).');
+  // Handle Google Sign-In
+  const handleGoogleSignIn = async () => {
+    setSigningIn(true);
+    setAuthError('');
+    try {
+      await signInWithGoogle();
+    } catch (err) {
+      setAuthError(err.message || 'Failed to connect to Google OAuth. Please check Supabase configuration.');
+      setSigningIn(false);
     }
   };
 
-  const handleLogout = () => {
-    sessionStorage.removeItem('apniride_admin_auth');
-    setIsAuthenticated(false);
-    setPinInput('');
+  // Handle Sign Out
+  const handleAdminLogout = async () => {
+    await signOutAdmin();
+    setCurrentUser(null);
+    setUnauthorizedEmail('');
+  };
+
+  // Save Whitelist to LocalStorage
+  const handleSaveWhitelist = (e) => {
+    e.preventDefault();
+    localStorage.setItem('apniride_admin_whitelist', whitelistInput.trim());
+    setAuthError('');
+    alert('Whitelist updated successfully!');
   };
 
   // Smart price auto-formatter (supports 2XX, X99, 9X7, 399, ₹1,499/day)
@@ -405,8 +514,20 @@ export default function AdminPage() {
     return matchesSearch && matchesStatus;
   });
 
-  // 1. PIN LOCK GATE MODAL
-  if (!isAuthenticated) {
+  // 1. AUTH CHECKING SPINNER
+  if (authChecking) {
+    return (
+      <div className="min-h-[70vh] flex items-center justify-center px-4">
+        <div className="flex flex-col items-center space-y-3">
+          <div className="w-8 h-8 border-3 border-[#E64A19] border-t-transparent rounded-full animate-spin" />
+          <span className="font-mono text-xs text-[#7C776E] uppercase tracking-wider">Verifying Admin Session...</span>
+        </div>
+      </div>
+    );
+  }
+
+  // 2. GOOGLE OAUTH SIGN-IN GATE (PIN REMOVED)
+  if (!currentUser) {
     return (
       <div className="min-h-[75vh] flex items-center justify-center px-4 py-12">
         <motion.div
@@ -415,62 +536,70 @@ export default function AdminPage() {
           className="bg-white rounded-2xl border border-[#1E1B18]/15 p-8 sm:p-10 max-w-md w-full shadow-lg text-center space-y-6"
         >
           <div className="w-14 h-14 rounded-2xl bg-[#0B132B] text-[#C89D3C] mx-auto flex items-center justify-center border border-[#C89D3C]/30 shadow-xs">
-            <span className="material-symbols-outlined text-3xl">lock</span>
+            <span className="material-symbols-outlined text-3xl">admin_panel_settings</span>
           </div>
 
           <div className="space-y-1">
+            <div className="inline-flex items-center gap-1.5 bg-[#E64A19]/10 text-[#E64A19] px-2.5 py-0.5 rounded font-mono text-[10px] font-bold border border-[#E64A19]/25">
+              [SECURE PORTAL]
+            </div>
             <h2 className="font-display font-bold text-2xl text-[#1E1B18] uppercase tracking-tight">
               ApniRide Admin Studio
             </h2>
-            <p className="font-body text-xs text-[#7C776E]">
-              Protected management portal for Shivpuri vehicle pricing & customer surveys.
+            <p className="font-body text-xs text-[#7C776E] leading-relaxed">
+              Protected operations portal for Shivpuri vehicle pricing & survey CRM.
             </p>
           </div>
 
-          <form onSubmit={handlePinSubmit} className="space-y-4 text-left">
-            <div>
-              <label className="block font-mono text-[11px] font-semibold uppercase text-[#45413B] mb-1.5">
-                Enter Admin Access PIN (Default: 1234)
-              </label>
-              <input
-                type="password"
-                maxLength={8}
-                value={pinInput}
-                onChange={e => setPinInput(e.target.value)}
-                placeholder="Enter 4-digit PIN..."
-                autoFocus
-                className="w-full px-4 py-3 rounded-xl border border-[#1E1B18]/20 bg-[#F5F2EB] text-center font-mono text-xl tracking-widest text-[#1E1B18] focus:outline-none focus:ring-2 focus:ring-[#E64A19]/30"
-              />
-              {pinError && <p className="font-body text-xs text-red-600 mt-1.5">{pinError}</p>}
+          {authError && (
+            <div className="p-3.5 bg-red-50 border border-red-200 text-red-700 rounded-xl text-xs font-mono text-left space-y-1">
+              <div className="font-bold flex items-center gap-1">
+                <span className="material-symbols-outlined text-sm">error</span>
+                <span>Access Denied</span>
+              </div>
+              <p className="font-body text-xs leading-relaxed">{authError}</p>
+              {unauthorizedEmail && (
+                <p className="font-mono text-[10px] text-red-800 pt-1">
+                  Logged in as: <strong>{unauthorizedEmail}</strong>
+                </p>
+              )}
             </div>
+          )}
 
-            <div className="flex items-center gap-2 pt-1">
-              <input
-                type="checkbox"
-                id="remember"
-                checked={rememberDevice}
-                onChange={e => setRememberDevice(e.target.checked)}
-                className="rounded border-[#1E1B18]/20 text-[#E64A19] focus:ring-[#E64A19]"
-              />
-              <label htmlFor="remember" className="font-body text-xs text-[#45413B] cursor-pointer">
-                Keep studio unlocked on this browser session
-              </label>
-            </div>
-
+          <div className="space-y-3 pt-2">
             <button
-              type="submit"
-              className="w-full bg-[#E64A19] hover:bg-[#D84315] text-white font-mono text-xs font-semibold py-3.5 px-4 rounded-xl shadow-xs transition-all flex items-center justify-center gap-2 cursor-pointer uppercase tracking-wider"
+              onClick={handleGoogleSignIn}
+              disabled={signingIn}
+              className="w-full bg-white hover:bg-[#F5F2EB] text-[#1E1B18] border border-[#1E1B18]/25 hover:border-[#E64A19] font-mono text-xs font-semibold py-3.5 px-4 rounded-xl shadow-xs transition-all flex items-center justify-center gap-3 cursor-pointer"
             >
-              <span>UNLOCK CONTROL PANEL</span>
-              <span>→</span>
+              {/* Google SVG Logo */}
+              <svg className="w-4 h-4 shrink-0" viewBox="0 0 24 24">
+                <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17z"/>
+                <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.26v3.15C3.26 21.36 7.34 24 12 24z"/>
+                <path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.26C.46 8.16 0 9.94 0 12s.46 3.84 1.26 5.42l4.02-3.15z"/>
+                <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.34 0 3.26 2.64 1.26 6.58l4.02 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/>
+              </svg>
+              <span>{signingIn ? 'Connecting to Google...' : (unauthorizedEmail ? 'Sign In with Different Account' : 'Continue with Google')}</span>
             </button>
-          </form>
+
+            <div className="bg-[#F5F2EB] p-3.5 rounded-lg border border-[#1E1B18]/10 text-left space-y-1.5">
+              <div className="font-mono text-[10px] font-bold text-[#45413B] uppercase tracking-wider flex items-center gap-1">
+                <span className="material-symbols-outlined text-xs text-[#E64A19]">verified_user</span>
+                <span>Security Policies</span>
+              </div>
+              <ul className="font-body text-[11px] text-[#7C776E] space-y-0.5 list-disc list-inside">
+                <li>Email Whitelist Verification</li>
+                <li>Session automatically expires in 3 days</li>
+                <li>Single Sign-On (SSO) Protected</li>
+              </ul>
+            </div>
+          </div>
         </motion.div>
       </div>
     );
   }
 
-  // 2. MAIN COMPLETED ADMIN PANEL
+  // 3. MAIN COMPLETED ADMIN PANEL (AUTHENTICATED)
   return (
     <div className="py-6 sm:py-8 px-4 sm:px-6 max-w-content mx-auto space-y-6 sm:space-y-8">
       {/* Studio Header with Supabase Live Cloud Sync Bar */}
@@ -490,6 +619,27 @@ export default function AdminPage() {
           </div>
 
           <div className="flex flex-wrap items-center gap-2 w-full md:w-auto">
+            {/* Authenticated Admin Badge */}
+            {currentUser && (
+              <div className="flex items-center gap-2 bg-[#F5F2EB] border border-[#1E1B18]/15 px-2.5 py-1.5 rounded-lg shadow-2xs">
+                {currentUser.user_metadata?.avatar_url ? (
+                  <img src={currentUser.user_metadata.avatar_url} alt="Admin Avatar" className="w-5 h-5 rounded-full object-cover" />
+                ) : (
+                  <span className="w-5 h-5 rounded-full bg-[#E64A19] text-white flex items-center justify-center text-[10px] font-bold">
+                    {currentUser.email?.charAt(0).toUpperCase()}
+                  </span>
+                )}
+                <div className="text-left">
+                  <div className="font-mono text-[11px] text-[#1E1B18] font-semibold truncate max-w-[130px] sm:max-w-[170px]" title={currentUser.email}>
+                    {currentUser.email}
+                  </div>
+                  <div className="font-mono text-[9px] text-emerald-700 font-bold uppercase">
+                    3-Day Session Active
+                  </div>
+                </div>
+              </div>
+            )}
+
             <button
               onClick={() => {
                 setShowCloudModal(true);
@@ -500,7 +650,7 @@ export default function AdminPage() {
               title="Configure Supabase Cloud Settings"
             >
               <span className="material-symbols-outlined text-sm">cloud_sync</span>
-              <span>{cloudConfigured ? 'Cloud Configured' : 'Connect Cloud (Supabase)'}</span>
+              <span>{cloudConfigured ? 'Cloud Configured' : 'Connect Cloud'}</span>
             </button>
             <Button variant="outline" size="sm" icon="sync" onClick={handleCloudSync} disabled={syncingCloud} className="flex-1 sm:flex-initial">
               {syncingCloud ? 'Syncing...' : 'Sync Cloud'}
@@ -509,11 +659,11 @@ export default function AdminPage() {
               Add Vehicle
             </Button>
             <button
-              onClick={handleLogout}
-              className="p-2 rounded-lg text-[#7C776E] hover:bg-[#EFECE4] transition-colors cursor-pointer"
-              title="Lock Admin Panel"
+              onClick={handleAdminLogout}
+              className="p-2 rounded-lg text-[#7C776E] hover:bg-[#EFECE4] hover:text-red-600 transition-colors cursor-pointer"
+              title="Sign Out from Admin Panel"
             >
-              <span className="material-symbols-outlined text-lg">lock</span>
+              <span className="material-symbols-outlined text-lg">logout</span>
             </button>
           </div>
         </div>
@@ -1938,6 +2088,27 @@ export default function AdminPage() {
                     {pushResult.message}
                   </div>
                 )}
+              </div>
+
+              {/* Email Whitelist Manager Section */}
+              <div className="bg-[#F5F2EB] p-4 rounded-xl border border-[#1E1B18]/15 space-y-3">
+                <div>
+                  <h4 className="font-display font-bold text-sm text-[#1E1B18]">Authorized Admin Emails (Whitelist)</h4>
+                  <p className="font-body text-xs text-[#7C776E]">Only Google accounts with these email addresses can access the Admin Studio.</p>
+                </div>
+                <form onSubmit={handleSaveWhitelist} className="space-y-2">
+                  <input
+                    type="text"
+                    value={whitelistInput}
+                    onChange={e => setWhitelistInput(e.target.value)}
+                    placeholder="e.g. admin@gmail.com, your-email@gmail.com"
+                    className="w-full px-3 py-2 rounded-lg border border-[#1E1B18]/20 bg-white text-xs font-mono focus:outline-none focus:ring-2 focus:ring-[#E64A19]/30"
+                  />
+                  <p className="font-body text-[11px] text-[#7C776E]">Separate multiple emails with commas. You can also set `VITE_ADMIN_EMAILS` in Vercel.</p>
+                  <Button type="submit" variant="outline" size="sm" icon="check">
+                    Save Whitelist
+                  </Button>
+                </form>
               </div>
 
               {/* Vercel Permanent Auto-Sync Guide */}

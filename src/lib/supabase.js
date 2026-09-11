@@ -77,6 +77,52 @@ export function clearSupabaseCredentials() {
 }
 
 /**
+ * Google OAuth Sign In for Admin Panel
+ */
+export async function signInWithGoogle() {
+  const client = getSupabaseClient();
+  if (!client) {
+    throw new Error('Supabase client is not configured.');
+  }
+
+  const redirectTo = typeof window !== 'undefined'
+    ? `${window.location.origin}/admin`
+    : 'http://localhost:5173/admin';
+
+  const { data, error } = await client.auth.signInWithOAuth({
+    provider: 'google',
+    options: {
+      redirectTo,
+      queryParams: {
+        access_type: 'offline',
+        prompt: 'select_account'
+      }
+    }
+  });
+
+  if (error) throw error;
+  return data;
+}
+
+/**
+ * Admin Sign Out
+ */
+export async function signOutAdmin() {
+  const client = getSupabaseClient();
+  if (client) {
+    try {
+      await client.auth.signOut();
+    } catch (e) {
+      console.warn('[Supabase Auth] Error signing out:', e);
+    }
+  }
+  if (typeof window !== 'undefined') {
+    localStorage.removeItem('apniride_admin_session_time');
+    localStorage.removeItem('apniride_admin_auth');
+  }
+}
+
+/**
  * Bulk Upsert All Vehicles to Supabase
  */
 export async function pushAllVehiclesToSupabase(vehiclesList) {
