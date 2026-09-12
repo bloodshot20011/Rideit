@@ -10,7 +10,7 @@ export default function VehicleDetailModal({ vehicle, onClose }) {
 
 
   const getWhatsAppBookingLink = () => {
-    const text = `Hi ApniRide team! I am interested in renting the *${vehicle.name}* (${vehicle.pricePerDay}) in Shivpuri. Please share availability & booking details.`;
+    const text = `Hi RIDEONN team! I am interested in renting the *${vehicle.name}* (${vehicle.pricePerDay}) in Shivpuri. Please share availability & booking details.`;
     return `https://wa.me/9183892226?text=${encodeURIComponent(text)}`;
   };
 
@@ -118,7 +118,7 @@ export default function VehicleDetailModal({ vehicle, onClose }) {
           <div className="bg-[#EFECE4] p-3.5 rounded-xl border border-[#1E1B18]/10 space-y-2 font-body text-xs text-[#45413B]">
             <h4 className="font-mono text-[11px] font-bold text-[#1E1B18] uppercase tracking-wider flex items-center gap-1.5">
               <span className="material-symbols-outlined text-sm text-[#E64A19]">verified</span>
-              ApniRide Rental Guarantee
+              RIDEONN Rental Guarantee
             </h4>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-1.5 text-[11px]">
               <div className="flex items-center gap-1">

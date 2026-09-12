@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { NavLink, Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useSurvey } from '../context/SurveyContext';
+import logoImg from '../assets/logo.png';
 
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -18,32 +19,24 @@ export default function Navbar() {
   return (
     <header className="sticky top-0 z-50 bg-[#F5F2EB]/95 backdrop-blur-md border-b border-[#1E1B18]/10 text-[#1E1B18] transition-all">
       <div className="max-w-content mx-auto px-4 sm:px-6 h-16 sm:h-18 flex items-center justify-between">
-        {/* Brand Lockup: Circular Seal + APNI / RIDE */}
+        {/* Brand Lockup: RIDEONN 3D Logo + Wordmark */}
         <Link
           to="/"
-          className="flex items-center gap-3 group cursor-pointer"
+          className="flex items-center gap-2.5 group cursor-pointer"
           onClick={() => setMobileMenuOpen(false)}
-          aria-label="ApniRide Home"
+          aria-label="RIDEONN Home"
         >
-          {/* Circular Tri-Segment Seal Icon */}
-          <div className="w-8 h-8 rounded-full border border-[#1E1B18]/30 overflow-hidden relative flex flex-col shrink-0 shadow-2xs group-hover:scale-105 transition-transform">
-            <div className="h-1/2 w-full bg-[#E64A19]" />
-            <div className="h-1/2 w-full flex">
-              <div className="w-1/2 bg-[#C89D3C]" />
-              <div className="w-1/2 bg-[#0B132B]" />
-            </div>
-            <div className="absolute inset-0 rounded-full border border-black/10" />
-          </div>
+          {/* Logo Graphic */}
+          <img
+            src={logoImg}
+            alt="RIDEONN Logo"
+            className="w-8 h-8 sm:w-9 sm:h-9 rounded-lg object-contain shrink-0 shadow-2xs group-hover:scale-105 transition-transform bg-white/40 p-0.5 border border-[#1E1B18]/10"
+          />
 
-          {/* Stacked Wordmark */}
-          <div className="flex flex-col leading-none">
-            <span className="font-mono text-[11px] font-bold tracking-widest text-[#1E1B18]">
-              APNI
-            </span>
-            <span className="font-mono text-[11px] font-bold tracking-widest text-[#1E1B18]">
-              RIDE
-            </span>
-          </div>
+          {/* Wordmark */}
+          <span className="font-display font-black text-base sm:text-lg tracking-wider text-[#1E1B18] group-hover:text-[#E64A19] transition-colors">
+            RIDEONN
+          </span>
         </Link>
 
         {/* Center Navigation Links with Active Black Dot */}

@@ -1,7 +1,7 @@
 export const FAQS_DATA = [
   {
-    question: "When is ApniRide officially launching in Shivpuri?",
-    answer: "ApniRide is currently in the pre-launch validation stage. We are onboarding early waitlist members and checking local customer requirements in Shivpuri to prepare for our operational launch soon."
+    question: "When is RIDEONN officially launching in Shivpuri?",
+    answer: "RIDEONN is currently in the pre-launch validation stage. We are onboarding early waitlist members and checking local customer requirements in Shivpuri to prepare for our operational launch soon."
   },
   {
     question: "How will vehicle rentals work for customers?",

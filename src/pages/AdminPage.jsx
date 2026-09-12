@@ -431,7 +431,7 @@ export default function AdminPage() {
   // Export Data to CSV (Excel format)
   const handleExportCSV = (datasetName) => {
     let rows = [];
-    let filename = `apniride_${datasetName}_${new Date().toISOString().slice(0, 10)}.csv`;
+    let filename = `rideonn_${datasetName}_${new Date().toISOString().slice(0, 10)}.csv`;
 
     if (datasetName === 'requirements') {
       rows = [
@@ -555,7 +555,7 @@ export default function AdminPage() {
               [SECURE PORTAL]
             </div>
             <h2 className="font-display font-bold text-2xl text-[#1E1B18] uppercase tracking-tight">
-              ApniRide Admin Studio
+              RIDEONN Admin Studio
             </h2>
             <p className="font-body text-xs text-[#7C776E] leading-relaxed">
               Protected operations portal for Shivpuri vehicle pricing & survey CRM.
@@ -619,7 +619,7 @@ export default function AdminPage() {
           <div>
             <div className="inline-flex items-center gap-2 bg-[#0B132B] text-[#C89D3C] px-3 py-1 rounded-md font-mono text-[10px] font-semibold uppercase tracking-wider border border-[#C89D3C]/40 shadow-2xs">
               <span className="w-1.5 h-1.5 rounded-full bg-[#E64A19] animate-pulse" />
-              APNIRIDE OPERATIONS SUITE
+              RIDEONN OPERATIONS SUITE
             </div>
             <h1 className="font-display font-light text-2xl sm:text-3xl text-[#1E1B18] uppercase tracking-tight mt-1">
               Control Panel & Fleet Manager
@@ -826,7 +826,7 @@ export default function AdminPage() {
                     </div>
                     <div className="pt-2">
                       <a
-                        href={getWhatsAppLink(req.whatsapp, `Hi ${req.fullName}! This is ApniRide Shivpuri team regarding your ${req.purpose} rental requirement.`)}
+                        href={getWhatsAppLink(req.whatsapp, `Hi ${req.fullName}! This is RIDEONN Shivpuri team regarding your ${req.purpose} rental requirement.`)}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="w-full inline-flex items-center justify-center gap-1.5 bg-[#25D366] text-white py-2 rounded-lg text-xs font-semibold"
@@ -879,7 +879,7 @@ export default function AdminPage() {
                         </td>
                         <td className="p-3 text-right">
                           <a
-                            href={getWhatsAppLink(req.whatsapp, `Hi ${req.fullName}! This is ApniRide Shivpuri team regarding your ${req.purpose} rental requirement.`)}
+                            href={getWhatsAppLink(req.whatsapp, `Hi ${req.fullName}! This is RIDEONN Shivpuri team regarding your ${req.purpose} rental requirement.`)}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="inline-flex items-center gap-1.5 bg-[#25D366] text-white px-3 py-1.5 rounded-lg text-xs font-semibold hover:bg-[#20ba59] transition-colors"
@@ -1166,7 +1166,7 @@ export default function AdminPage() {
 
                 <div className="flex items-center gap-2 pt-1">
                   <a
-                    href={getWhatsAppLink(req.whatsapp, `Hi ${req.fullName}! This is ApniRide Shivpuri team regarding your ${req.purpose} rental requirement.`)}
+                    href={getWhatsAppLink(req.whatsapp, `Hi ${req.fullName}! This is RIDEONN Shivpuri team regarding your ${req.purpose} rental requirement.`)}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex-1 inline-flex items-center justify-center gap-1.5 bg-[#25D366] text-white py-2 rounded-lg text-xs font-semibold"
@@ -1244,7 +1244,7 @@ export default function AdminPage() {
                     </td>
                     <td className="p-3 text-right space-x-2">
                       <a
-                        href={getWhatsAppLink(req.whatsapp, `Hi ${req.fullName}! This is ApniRide Shivpuri team regarding your ${req.purpose} rental requirement.`)}
+                        href={getWhatsAppLink(req.whatsapp, `Hi ${req.fullName}! This is RIDEONN Shivpuri team regarding your ${req.purpose} rental requirement.`)}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="inline-flex items-center gap-1 bg-[#25D366] text-white px-2.5 py-1 rounded text-xs font-semibold hover:bg-[#20ba59]"
@@ -1325,7 +1325,7 @@ export default function AdminPage() {
 
                 <div className="flex items-center gap-2 pt-1">
                   <a
-                    href={getWhatsAppLink(h.whatsapp, `Hi ${h.fullName}! This is ApniRide team regarding your ${h.modelName} host registration in Shivpuri.`)}
+                    href={getWhatsAppLink(h.whatsapp, `Hi ${h.fullName}! This is RIDEONN team regarding your ${h.modelName} host registration in Shivpuri.`)}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex-1 inline-flex items-center justify-center gap-1.5 bg-[#25D366] text-white py-2 rounded-lg text-xs font-semibold"
@@ -1413,7 +1413,7 @@ export default function AdminPage() {
                     </td>
                     <td className="p-3 text-right space-x-2">
                       <a
-                        href={getWhatsAppLink(h.whatsapp, `Hi ${h.fullName}! This is ApniRide team regarding your ${h.modelName} host registration in Shivpuri.`)}
+                        href={getWhatsAppLink(h.whatsapp, `Hi ${h.fullName}! This is RIDEONN team regarding your ${h.modelName} host registration in Shivpuri.`)}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="inline-flex items-center gap-1 bg-[#25D366] text-white px-2.5 py-1 rounded text-xs font-semibold hover:bg-[#20ba59]"
@@ -1477,7 +1477,7 @@ export default function AdminPage() {
 
                 <div className="pt-1">
                   <a
-                    href={getWhatsAppLink(w.whatsapp, `Hi ${w.fullName}! Congratulations, you have priority access for ApniRide Shivpuri launch with 20% discount.`)}
+                    href={getWhatsAppLink(w.whatsapp, `Hi ${w.fullName}! Congratulations, you have priority access for RIDEONN Shivpuri launch with 20% discount.`)}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="w-full inline-flex items-center justify-center gap-1.5 bg-[#25D366] text-white py-2 rounded-lg text-xs font-semibold"
@@ -1516,7 +1516,7 @@ export default function AdminPage() {
                     <td className="p-3 text-xs text-[#45413B]">{w.preferenceText || 'General'}</td>
                     <td className="p-3 text-right">
                       <a
-                        href={getWhatsAppLink(w.whatsapp, `Hi ${w.fullName}! Congratulations, you have priority access for ApniRide Shivpuri launch with 20% discount.`)}
+                        href={getWhatsAppLink(w.whatsapp, `Hi ${w.fullName}! Congratulations, you have priority access for RIDEONN Shivpuri launch with 20% discount.`)}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="inline-flex items-center gap-1 bg-[#25D366] text-white px-2.5 py-1 rounded text-xs font-semibold hover:bg-[#20ba59]"
@@ -1720,7 +1720,7 @@ export default function AdminPage() {
 
               <div className="flex gap-2 pt-2">
                 <a
-                  href={getWhatsAppLink(selectedRequirement.whatsapp, `Hi ${selectedRequirement.fullName}! This is ApniRide team regarding your ${selectedRequirement.purpose} rental requirement in Shivpuri.`)}
+                  href={getWhatsAppLink(selectedRequirement.whatsapp, `Hi ${selectedRequirement.fullName}! This is RIDEONN team regarding your ${selectedRequirement.purpose} rental requirement in Shivpuri.`)}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex-1 inline-flex items-center justify-center gap-1.5 bg-[#25D366] text-white py-2.5 rounded-lg text-xs font-semibold"
@@ -1781,7 +1781,7 @@ export default function AdminPage() {
 
               <div className="flex gap-2 pt-2">
                 <a
-                  href={getWhatsAppLink(selectedHost.whatsapp, `Hi ${selectedHost.fullName}! This is ApniRide team regarding your ${selectedHost.modelName} host registration in Shivpuri.`)}
+                  href={getWhatsAppLink(selectedHost.whatsapp, `Hi ${selectedHost.fullName}! This is RIDEONN team regarding your ${selectedHost.modelName} host registration in Shivpuri.`)}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex-1 inline-flex items-center justify-center gap-1.5 bg-[#25D366] text-white py-2.5 rounded-lg text-xs font-semibold"

@@ -156,7 +156,7 @@ export default function CarLoader({ onComplete }) {
             {/* Loading Headline & Progress Counter */}
             <div className="w-full space-y-2 text-center">
               <div className="font-display font-light text-xl sm:text-2xl text-[#1E1B18] tracking-tight uppercase">
-                Preparing <span className="text-[#E64A19] font-normal">ApniRide Fleet</span>
+                Preparing <span className="text-[#E64A19] font-normal">RIDEONN Fleet</span>
               </div>
 
               {/* Monospaced Progress Bar */}

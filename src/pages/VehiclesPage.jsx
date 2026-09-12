@@ -92,7 +92,7 @@ export default function VehiclesPage() {
       <ScrollReveal>
         <CTASection
           title="Be first to ride when we launch in Shivpuri"
-          description="Join the ApniRide waitlist to get priority notification and early booking discounts as soon as rentals go live."
+          description="Join the RIDEONN waitlist to get priority notification and early booking discounts as soon as rentals go live."
           primaryCtaText="Join the Waitlist"
           primaryCtaTo="/waitlist"
           secondaryCtaText="Quick Survey"

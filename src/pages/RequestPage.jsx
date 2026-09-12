@@ -104,13 +104,13 @@ export default function RequestPage() {
 
   if (submitted) {
     const defaultMsg = encodeURIComponent(
-      `Hi ApniRide! I submitted my rental requirements for ${fullName} (${purpose} in Shivpuri). Please update me regarding availability.`
+      `Hi RIDEONN! I submitted my rental requirements for ${fullName} (${purpose} in Shivpuri). Please update me regarding availability.`
     );
     return (
       <div className="py-16 px-4 max-w-lg mx-auto text-center">
         <SuccessState
           title="Requirements Received"
-          message={`Thank you, ${fullName}! We have noted your travel requirements. When ApniRide launches in Shivpuri, our local team will contact you directly via WhatsApp (${whatsapp}).`}
+          message={`Thank you, ${fullName}! We have noted your travel requirements. When RIDEONN launches in Shivpuri, our local team will contact you directly via WhatsApp (${whatsapp}).`}
           actionText="Back to Home"
           actionTo="/"
         />
@@ -346,7 +346,7 @@ export default function RequestPage() {
                 <span>→</span>
               </button>
               <p className="font-body text-xs text-[#7C776E] text-center mt-3">
-                🔒 Zero spam policy. ApniRide only contacts you regarding your Shivpuri rental request (+91 9183892226).
+                🔒 Zero spam policy. RIDEONN only contacts you regarding your Shivpuri rental request (+91 9183892226).
               </p>
             </div>
           </form>

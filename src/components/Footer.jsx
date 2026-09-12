@@ -2,6 +2,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { useSurvey } from '../context/SurveyContext';
 
+import logoImg from '../assets/logo.png';
+
 export default function Footer() {
   const { openSurvey } = useSurvey();
 
@@ -11,26 +13,19 @@ export default function Footer() {
         <div className="flex flex-col md:flex-row justify-between items-center md:items-start gap-8 text-center md:text-left">
           {/* Brand Info */}
           <div className="max-w-sm space-y-3">
-            <Link to="/" className="inline-flex items-center gap-3">
-              <div className="w-7 h-7 rounded-full border border-[#1E1B18]/30 overflow-hidden relative flex flex-col shrink-0">
-                <div className="h-1/2 w-full bg-[#E64A19]" />
-                <div className="h-1/2 w-full flex">
-                  <div className="w-1/2 bg-[#C89D3C]" />
-                  <div className="w-1/2 bg-[#0B132B]" />
-                </div>
-              </div>
-              <div className="flex flex-col leading-none text-left">
-                <span className="font-mono text-[11px] font-bold tracking-widest text-[#1E1B18]">APNI</span>
-                <span className="font-mono text-[11px] font-bold tracking-widest text-[#1E1B18]">RIDE</span>
-              </div>
+            <Link to="/" className="inline-flex items-center gap-2.5">
+              <img
+                src={logoImg}
+                alt="RIDEONN Logo"
+                className="w-8 h-8 rounded-lg object-contain shrink-0 bg-white/40 p-0.5 border border-[#1E1B18]/10 shadow-2xs"
+              />
+              <span className="font-display font-black text-lg tracking-wider text-[#1E1B18]">
+                RIDEONN
+              </span>
             </Link>
             <p className="font-body text-xs sm:text-sm text-[#45413B] leading-relaxed">
               Modern mobility rental platform starting in Shivpuri, Madhya Pradesh. Rent verified bikes and cars tailored to your travel requirements.
             </p>
-            <div className="inline-flex items-center gap-2 bg-[#EFECE4] text-[#E64A19] px-3 py-1 rounded-full text-xs font-mono font-semibold border border-[#1E1B18]/10">
-              <span className="w-2 h-2 rounded-full bg-[#E64A19] animate-pulse" />
-              Pre-launch Phase • Shivpuri, India
-            </div>
           </div>
 
           {/* Quick Links */}
@@ -96,7 +91,7 @@ export default function Footer() {
 
         {/* Bottom Metadata & Discreet Admin Link */}
         <div className="border-t border-[#1E1B18]/10 mt-10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 font-mono text-xs text-[#7C776E]">
-          <p>© {new Date().getFullYear()} ApniRide. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} RIDEONN. All rights reserved.</p>
           <div className="flex items-center gap-3">
             <span>Shivpuri, MP</span>
             <span>•</span>

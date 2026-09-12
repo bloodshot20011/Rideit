@@ -14,14 +14,14 @@ export default function AboutPage() {
       <section className="text-center pt-6 max-w-3xl mx-auto space-y-4">
         <div className="inline-flex items-center gap-1.5 bg-[#0B132B] text-[#C89D3C] px-3 py-1 rounded-md font-mono text-[11px] font-semibold uppercase tracking-wider border border-[#C89D3C]/40 shadow-2xs">
           <span className="w-1.5 h-1.5 rounded-full bg-[#E64A19] animate-pulse" />
-          ABOUT APNIRIDE
+          ABOUT RIDEONN
         </div>
         <h1 className="font-display font-light text-4xl sm:text-5xl lg:text-6xl text-[#1E1B18] tracking-tight uppercase leading-tight">
           Bringing Modern Mobility to <br className="hidden sm:block" />
           <span className="text-[#E64A19] font-normal">Shivpuri, India</span>
         </h1>
         <p className="font-body text-base sm:text-lg text-[#45413B] leading-relaxed max-w-2xl mx-auto">
-          ApniRide is a pre-launch mobility platform built specifically to make bike and car rentals simple, transparent, and requirement-focused in Shivpuri, Madhya Pradesh.
+          RIDEONN is a pre-launch mobility platform built specifically to make bike and car rentals simple, transparent, and requirement-focused in Shivpuri, Madhya Pradesh.
         </p>
       </section>
 
@@ -41,14 +41,14 @@ export default function AboutPage() {
             In cities like Shivpuri, mobility options are often limited to purchasing personal vehicles or relying on erratic public transit.
           </p>
           <p className="font-body text-sm sm:text-base text-[#45413B] leading-relaxed">
-            ApniRide bridges this gap by offering a transparent vehicle rental service tailored to your exact travel requirements, whether you need a scooter for daily errands or a car for outstation travel.
+            RIDEONN bridges this gap by offering a transparent vehicle rental service tailored to your exact travel requirements, whether you need a scooter for daily errands or a car for outstation travel.
           </p>
         </div>
 
         <div className="relative rounded-xl overflow-hidden border border-[#1E1B18]/15 shadow-sm">
           <img
             src={IMAGES.shivpuriLandscape}
-            alt="ApniRide Shivpuri Network"
+            alt="RIDEONN Shivpuri Network"
             className="w-full h-72 object-cover"
           />
         </div>
@@ -61,7 +61,7 @@ export default function AboutPage() {
             [CORE FOUNDATIONS]
           </span>
           <h2 className="font-display font-bold text-2xl sm:text-3xl text-[#1E1B18] tracking-tight uppercase">
-            Why Choose ApniRide
+            Why Choose RIDEONN
           </h2>
           <p className="font-body text-sm text-[#45413B]">
             Our core values for building a trusted mobility network in Shivpuri.
@@ -114,13 +114,13 @@ export default function AboutPage() {
             Have questions or feedback?
           </h3>
           <p className="font-body text-sm text-[#45413B] max-w-lg mx-auto">
-            We are actively gathering input from Shivpuri residents, students, and commuters to refine ApniRide before launch.
+            We are actively gathering input from Shivpuri residents, students, and commuters to refine RIDEONN before launch.
           </p>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-left pt-2">
           <a
-            href="https://wa.me/9183892226?text=Hi%20ApniRide,%20I%20have%20a%20query."
+            href="https://wa.me/9183892226?text=Hi%20RIDEONN,%20I%20have%20a%20query."
             target="_blank"
             rel="noopener noreferrer"
             className="bg-white p-4 rounded-xl border border-[#1E1B18]/15 flex items-center gap-3 hover:border-[#25D366] transition-colors shadow-2xs"
@@ -172,7 +172,7 @@ export default function AboutPage() {
 
       {/* Final Waitlist CTA */}
       <CTASection
-        title="Be among the first to experience ApniRide"
+        title="Be among the first to experience RIDEONN"
         description="Join our Shivpuri pre-launch waitlist to get early notification as soon as matching rentals go live."
         primaryCtaText="Join the Waitlist"
         primaryCtaTo="/waitlist"

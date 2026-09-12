@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 
 export default function WhatsAppButton() {
   const whatsappNumber = "9183892226"; 
-  const defaultText = encodeURIComponent("Hi ApniRide! I want to check vehicle availability and rental details in Shivpuri.");
+  const defaultText = encodeURIComponent("Hi RIDEONN! I want to check vehicle availability and rental details in Shivpuri.");
   const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${defaultText}`;
 
   return (
@@ -17,8 +17,8 @@ export default function WhatsAppButton() {
       whileTap={{ scale: 0.92 }}
       transition={{ type: 'spring', stiffness: 400, damping: 22 }}
       className="fixed bottom-5 right-5 sm:bottom-6 sm:right-6 z-40 bg-[#25D366] text-white p-3.5 sm:p-4 rounded-full shadow-lg hover:shadow-xl flex items-center justify-center group cursor-pointer border-2 border-white"
-      aria-label="Chat with ApniRide on WhatsApp (+91 9183892226)"
-      title="Chat with ApniRide on WhatsApp (+91 9183892226)"
+      aria-label="Chat with RIDEONN on WhatsApp (+91 9183892226)"
+      title="Chat with RIDEONN on WhatsApp (+91 9183892226)"
     >
       {/* Subtle pulse ring animation behind button */}
       <span className="absolute inset-0 rounded-full bg-[#25D366] animate-ping opacity-25 pointer-events-none" />

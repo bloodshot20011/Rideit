@@ -147,7 +147,7 @@ export default function SurveyModal() {
   };
 
   const whatsappMessage = encodeURIComponent(
-    `Namaste ApniRide! I just filled the quick survey on your website.\n*Name:* ${fullName.trim()}\n*Vehicle Needed:* ${customVehicleName || selectedVehicle}\n*Purpose:* ${purpose}\n*Location:* ${preferredLocation}`
+    `Namaste RIDEONN! I just filled the quick survey on your website.\n*Name:* ${fullName.trim()}\n*Vehicle Needed:* ${customVehicleName || selectedVehicle}\n*Purpose:* ${purpose}\n*Location:* ${preferredLocation}`
   );
 
   return (

@@ -26,20 +26,20 @@ export default function HomePage() {
 
   return (
     <div className="space-y-8 sm:space-y-16 lg:space-y-20 pb-10">
-      {/* 1. EXACT NEO-MIRAI SPLIT HERO SECTION WITH COMPACT MOBILE SCALING */}
+      {/* 1. EXACT NEO-MIRAI SPLIT HERO SECTION WITH CLEAN MOBILE LAYOUT */}
       <section className="relative w-full min-h-[75vh] sm:min-h-[85vh] flex items-center overflow-hidden bg-[#F5F2EB] text-[#1E1B18] -mt-16 pt-20 pb-12 sm:pb-16 border-b border-[#1E1B18]/10">
-        {/* Right Side Indian City Retro-Futurist Artwork (Desktop) */}
-        <div className="hidden lg:block absolute top-0 right-0 bottom-0 w-[68%] h-full overflow-hidden pointer-events-none z-0">
+        {/* Right Side Indian City Retro-Futurist Artwork */}
+        <div className="absolute top-0 right-0 bottom-0 w-full lg:w-[68%] h-full overflow-hidden pointer-events-none z-0">
           <motion.img
             src={IMAGES.heroBackground}
             alt="Neo-Mirai Indian Retro-Futuristic Shivpuri Mobility Art"
             initial={{ scale: 1.04, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ duration: 1.2, ease: "easeOut" }}
-            className="w-full h-full object-cover object-right opacity-100"
+            className="w-full h-full object-cover object-right opacity-30 sm:opacity-40 lg:opacity-100"
           />
           {/* Seamless Left-Edge Paper Gradient */}
-          <div className="absolute inset-0 bg-gradient-to-r from-[#F5F2EB] via-[#F5F2EB]/85 to-transparent w-2/5 pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#F5F2EB] via-[#F5F2EB]/85 to-transparent w-full lg:w-2/5 pointer-events-none" />
           <div className="absolute inset-0 bg-gradient-to-t from-[#F5F2EB] via-transparent to-transparent h-20 bottom-0 pointer-events-none" />
         </div>
 
@@ -68,14 +68,14 @@ export default function HomePage() {
                 </span>
               </div>
 
-              {/* Main Neo-Mirai Display Headline - BOLD ON MOBILE FOR CRISP VISIBILITY */}
+              {/* Main Neo-Mirai Display Headline */}
               <motion.h1
                 initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.1 }}
-                className="font-display font-bold sm:font-light text-3xl sm:text-5xl lg:text-7xl text-[#1E1B18] tracking-tight leading-[1.06] sm:leading-[0.98] mb-3 uppercase"
+                className="font-display font-light text-3xl sm:text-5xl lg:text-7xl text-[#1E1B18] tracking-tight leading-[1.06] sm:leading-[0.98] mb-3 uppercase"
               >
-                APNIRIDE<br />
+                RIDEONN<br />
                 BIKE & CAR<br />
                 RENTALS
               </motion.h1>
@@ -85,29 +85,9 @@ export default function HomePage() {
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.2 }}
-                className="font-serif text-xl sm:text-2xl lg:text-3xl text-[#D84315] font-bold sm:font-semibold mb-2"
+                className="font-serif text-xl sm:text-2xl lg:text-3xl text-[#D84315] font-normal mb-4"
               >
                 Shivpuri 2026
-              </motion.div>
-
-              {/* Dedicated 16:9 Mobile Hero Image */}
-              <motion.div
-                initial={{ opacity: 0, scale: 0.98 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.6, delay: 0.25 }}
-                className="lg:hidden w-full aspect-[16/9] rounded-2xl overflow-hidden shadow-sm border border-[#1E1B18]/15 mb-4 relative"
-              >
-                <img
-                  src={IMAGES.heroMobile}
-                  alt="Shivpuri Royal Chhatris Heritage & Mobility"
-                  className="w-full h-full object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none" />
-                <div className="absolute bottom-2.5 left-3">
-                  <span className="font-mono text-[10px] font-bold text-white bg-black/60 backdrop-blur-xs px-2.5 py-1 rounded">
-                    📍 Royal Chhatris, Shivpuri
-                  </span>
-                </div>
               </motion.div>
 
               {/* Clear, Jargon-Free Basic Business Info with updated 199/- and 1099/- */}
@@ -163,7 +143,7 @@ export default function HomePage() {
               A Modern Way to Travel Across <span className="text-[#E64A19] font-normal">Shivpuri</span>
             </h2>
             <p className="font-body text-xs sm:text-sm text-[#45413B] leading-relaxed max-w-xl mx-auto">
-              ApniRide is introducing convenient, verified self-drive bike and car rentals designed around everyday local routines.
+              RIDEONN is introducing convenient, verified self-drive bike and car rentals designed around everyday local routines.
             </p>
             {/* Continuous Ad Connecting Line without emoji or zero downpayment */}
             <div className="pt-1">
@@ -188,7 +168,7 @@ export default function HomePage() {
                 </span>
               </h3>
               <p className="font-body text-xs sm:text-sm text-[#45413B] leading-relaxed">
-                Whether you live in Shivpuri or are visiting, ApniRide makes getting a vehicle as simple as booking in a few taps. Low daily rates, minimal security charges, and zero hidden costs.
+                Whether you live in Shivpuri or are visiting, RIDEONN makes getting a vehicle as simple as booking in a few taps. Low daily rates, minimal security charges, and zero hidden costs.
               </p>
             </div>
 
@@ -526,7 +506,7 @@ export default function HomePage() {
                 Have an idle bike or car in Shivpuri?
               </h2>
               <p className="font-body text-xs sm:text-sm text-[#F5F2EB]/80 leading-relaxed">
-                List your parked vehicle on ApniRide. We handle renter verification, rental agreements, and secure handovers.
+                List your parked vehicle on RIDEONN. We handle renter verification, rental agreements, and secure handovers.
               </p>
               <div className="pt-1">
                 <Link
@@ -548,7 +528,7 @@ export default function HomePage() {
           <div className="relative rounded-xl sm:rounded-2xl overflow-hidden bg-[#EFECE4] border border-[#C89D3C]/40 p-6 sm:p-10 text-center space-y-4">
             <div className="relative z-10 max-w-lg mx-auto space-y-3">
               <h2 className="font-display font-light text-2xl sm:text-3xl text-[#1E1B18] tracking-tight uppercase">
-                Be among the first to <span className="font-normal text-[#E64A19]">ApniRide</span>
+                Be among the first to <span className="font-normal text-[#E64A19]">RIDEONN</span>
               </h2>
               <p className="font-body text-xs sm:text-sm text-[#45413B]">
                 Join our pre-launch waitlist today to receive priority access and exclusive 20% discount on day one in Shivpuri.

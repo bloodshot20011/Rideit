@@ -101,7 +101,7 @@ export default function ListVehiclePage() {
           List Your Vehicle & <span className="text-[#E64A19] font-normal">Earn Monthly</span>
         </h1>
         <p className="font-body text-sm sm:text-base text-[#45413B] leading-relaxed">
-          Have an idle scooter, bike, or car in Shivpuri? Earn flexible rental income safely through ApniRide.
+          Have an idle scooter, bike, or car in Shivpuri? Earn flexible rental income safely through RIDEONN.
         </p>
       </div>
 
@@ -137,7 +137,7 @@ export default function ListVehiclePage() {
                   <span className="material-symbols-outlined text-base text-[#E64A19] shrink-0 mt-0.5">description</span>
                   <div>
                     <strong className="text-[#1E1B18] block font-display">Standard Rental Agreement</strong>
-                    ApniRide handles all legal documentation, security deposits, and handover checks.
+                    RIDEONN handles all legal documentation, security deposits, and handover checks.
                   </div>
                 </div>
                 <div className="flex items-start gap-2.5">
@@ -317,7 +317,7 @@ export default function ListVehiclePage() {
                 <span>→</span>
               </button>
               <p className="font-body text-xs text-[#7C776E] text-center mt-3">
-                🔒 Zero setup fee. ApniRide verifies all renters and provides legal rental agreements.
+                🔒 Zero setup fee. RIDEONN verifies all renters and provides legal rental agreements.
               </p>
             </div>
           </form>

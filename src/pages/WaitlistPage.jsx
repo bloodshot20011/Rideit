@@ -60,7 +60,7 @@ export default function WaitlistPage() {
       <div className="py-16 px-4 max-w-lg mx-auto text-center">
         <SuccessState
           title="You're on the list."
-          message={`Thank you, ${fullName}! You have successfully reserved early access for ApniRide in Shivpuri. We will notify you on WhatsApp (${whatsapp}) with your 20% launch discount code.`}
+          message={`Thank you, ${fullName}! You have successfully reserved early access for RIDEONN in Shivpuri. We will notify you on WhatsApp (${whatsapp}) with your 20% launch discount code.`}
           actionText="Explore Planned Vehicles"
           actionTo="/vehicles"
         />

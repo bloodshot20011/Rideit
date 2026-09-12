@@ -59,7 +59,7 @@ export default function ImagePlaceholder({
         {title}
       </span>
       <span className="font-body text-xs text-on-surface-variant/70 mt-1 uppercase tracking-wider font-medium">
-        ApniRide Fleet
+        RIDEONN Fleet
       </span>
     </div>
   );
