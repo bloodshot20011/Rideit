@@ -1,13 +1,13 @@
-import shivpuriChhatris from '../assets/shivpuri_chhatris_hero.jpg';
-import shivpuriMadhavLake from '../assets/shivpuri_sakhya_sagar_lake.jpg';
-import shivpuriGeorgeCastle from '../assets/shivpuri_george_castle_cars.jpg';
-import shivpuriSultanGarh from '../assets/shivpuri_sultan_garh_falls.jpg';
-import shivpuriBhadaiyaKund from '../assets/shivpuri_bhadaiya_kund.jpg';
-import shivpuriNarwarFort from '../assets/shivpuri_narwar_fort.jpg';
-import shivpuriManikhedaDam from '../assets/shivpuri_manikheda_dam.jpg';
-import shivpuriNarwarLakeResort from '../assets/shivpuri_narwar_lake_resort.jpg';
-import shivpuriBhuraKho from '../assets/shivpuri_bhura_kho.jpg';
-import shivpuriTundaBharka from '../assets/shivpuri_tunda_bharka.jpg';
+import destManikhedaDam from '../assets/dest_manikheda_dam.jpg';
+import destNarwarLakeResort from '../assets/dest_narwar_lake_resort.jpg';
+import destBhuraKho from '../assets/dest_bhura_kho.jpg';
+import destTundaBharka from '../assets/shivpuri_tunda_bharka.jpg';
+import destSultanGarh from '../assets/dest_sultan_garh_falls.jpg';
+import destRoyalChhatris from '../assets/dest_royal_chhatris.jpg';
+import destMadhavPark from '../assets/dest_madhav_national_park.jpg';
+import destGeorgeCastle from '../assets/dest_george_castle.jpg';
+import destNarwarFort from '../assets/dest_narwar_fort.jpg';
+import destBhadaiyaKund from '../assets/dest_bhadaiya_kund.jpg';
 
 export const SHIVPURI_DESTINATIONS = [
   {
@@ -18,7 +18,7 @@ export const SHIVPURI_DESTINATIONS = [
     recommendedRide: 'Maruti Swift / Brezza',
     recommendedCategory: 'car',
     description: 'Massive concrete dam on the Sindh river with expansive blue reservoir and scenic hill viewpoints.',
-    image: shivpuriManikhedaDam
+    image: destManikhedaDam
   },
   {
     id: 'narwar-lake-resort',
@@ -28,7 +28,7 @@ export const SHIVPURI_DESTINATIONS = [
     recommendedRide: 'Car / Royal Enfield',
     recommendedCategory: 'car',
     description: 'Tranquil waterfront resort and promenade on Mohini Sagar reservoir near Narwar.',
-    image: shivpuriNarwarLakeResort
+    image: destNarwarLakeResort
   },
   {
     id: 'bhura-kho',
@@ -38,7 +38,7 @@ export const SHIVPURI_DESTINATIONS = [
     recommendedRide: 'Activa / Hero Splendor',
     recommendedCategory: 'bike',
     description: 'Scenic natural plunge pool waterfall and rocky gorge surrounded by dense lush forest.',
-    image: shivpuriBhuraKho
+    image: destBhuraKho
   },
   {
     id: 'tunda-warkha',
@@ -48,7 +48,7 @@ export const SHIVPURI_DESTINATIONS = [
     recommendedRide: 'Bikes / Compact SUV',
     recommendedCategory: 'bike',
     description: 'Prehistoric rocky gorge and natural waterfall stream nestled in the Vindhyan forest.',
-    image: shivpuriTundaBharka
+    image: destTundaBharka
   },
   {
     id: 'sultan-garh-falls',
@@ -58,7 +58,7 @@ export const SHIVPURI_DESTINATIONS = [
     recommendedRide: 'Swift / Punch / SUV',
     recommendedCategory: 'car',
     description: 'Spectacular natural river cascade over massive granite boulders on the Parvati river.',
-    image: shivpuriSultanGarh
+    image: destSultanGarh
   },
   {
     id: 'scindia-chhatris',
@@ -68,7 +68,7 @@ export const SHIVPURI_DESTINATIONS = [
     recommendedRide: 'Activa 6G / Scooter',
     recommendedCategory: 'bike',
     description: 'Intricate Scindia royal marble cenotaphs surrounded by manicured Mughal charbagh gardens.',
-    image: shivpuriChhatris
+    image: destRoyalChhatris
   },
   {
     id: 'madhav-national-park',
@@ -78,7 +78,7 @@ export const SHIVPURI_DESTINATIONS = [
     recommendedRide: 'Royal Enfield / SUV',
     recommendedCategory: 'car',
     description: 'Expansive forest reserve with Sakhya Sagar Lake, Sailing Club pier, deer, and leopards.',
-    image: shivpuriMadhavLake
+    image: destMadhavPark
   },
   {
     id: 'george-castle',
@@ -88,7 +88,7 @@ export const SHIVPURI_DESTINATIONS = [
     recommendedRide: 'Car / Scooter / Bike',
     recommendedCategory: 'car',
     description: 'Historic colonial stone hunting castle offering panoramic 360° sunset vistas over the national park.',
-    image: shivpuriGeorgeCastle
+    image: destGeorgeCastle
   },
   {
     id: 'narwar-fort',
@@ -98,7 +98,7 @@ export const SHIVPURI_DESTINATIONS = [
     recommendedRide: 'Maruti Swift / Cruiser Bike',
     recommendedCategory: 'car',
     description: 'Historic hilltop stone fortress spanning an 8-sq-km cliff high above the Sindh river.',
-    image: shivpuriNarwarFort
+    image: destNarwarFort
   },
   {
     id: 'bhadaiya-kund',
@@ -108,6 +108,6 @@ export const SHIVPURI_DESTINATIONS = [
     recommendedRide: 'Activa 6G / Splendor',
     recommendedCategory: 'bike',
     description: 'Natural mineral spring in a rocky ravine popular for cool fresh water and monsoon picnics.',
-    image: shivpuriBhadaiyaKund
+    image: destBhadaiyaKund
   }
 ];

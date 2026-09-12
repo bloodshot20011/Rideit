@@ -131,44 +131,22 @@ export default function HomePage() {
       {/* TYRE MARKS SPEED DIVIDER */}
       <TyreMarksDivider variant="primary" />
 
-      {/* 2. WELCOMING BRIDGE & CONTINUOUS ADVERTISEMENT STORYTELLING */}
-      <section className="px-4 sm:px-6 max-w-content mx-auto space-y-6 sm:space-y-8">
-        {/* Gentle Bridge Transition Line */}
+      {/* 2. STREAMLINED VALUE PROPOSITION & USE CASES */}
+      <section className="px-4 sm:px-6 max-w-content mx-auto">
         <ScrollReveal>
-          <div className="text-center max-w-2xl mx-auto space-y-3">
-            <span className="font-mono text-[11px] font-semibold text-[#E64A19] uppercase tracking-wider">
-              [WELCOME TO SHIVPURI MOBILITY]
-            </span>
-            <h2 className="font-display font-light text-2xl sm:text-3xl lg:text-4xl text-[#1E1B18] tracking-tight uppercase">
-              A Modern Way to Travel Across <span className="text-[#E64A19] font-normal">Shivpuri</span>
-            </h2>
-            <p className="font-body text-xs sm:text-sm text-[#45413B] leading-relaxed max-w-xl mx-auto">
-              RIDEONN is introducing convenient, verified self-drive bike and car rentals designed around everyday local routines.
-            </p>
-            {/* Continuous Ad Connecting Line without emoji or zero downpayment */}
-            <div className="pt-1">
-              <div className="inline-block bg-[#EFECE4] text-[#1E1B18] px-4 py-2 rounded-full font-mono text-xs sm:text-sm font-medium border border-[#E64A19]/30 shadow-2xs">
-                <span className="text-[#E64A19] font-bold">Low cost daily rentals with minimal charges and full fuel freedom.</span> Shivpuri residents, get ready for budget-friendly self-drive rides.
-              </div>
-            </div>
-          </div>
-        </ScrollReveal>
-
-        {/* Practical Business Benefits Card */}
-        <ScrollReveal delay={0.1}>
-          <div className="bg-white rounded-xl sm:rounded-2xl border border-[#1E1B18]/15 p-4 sm:p-8 lg:p-10 shadow-xs space-y-6">
+          <div className="bg-white rounded-xl sm:rounded-2xl border border-[#1E1B18]/15 p-5 sm:p-8 lg:p-10 shadow-xs space-y-6">
             <div className="text-center max-w-xl mx-auto space-y-2">
               <span className="font-mono text-[10px] font-bold text-[#E64A19] uppercase tracking-wider bg-[#E64A19]/10 px-2.5 py-0.5 rounded border border-[#E64A19]/25">
                 EASY & TRANSPARENT RENTALS
               </span>
-              <h3 className="font-display font-bold text-xl sm:text-2xl text-[#1E1B18] tracking-tight uppercase">
+              <h2 className="font-display font-bold text-2xl sm:text-3xl text-[#1E1B18] tracking-tight uppercase">
                 Gaadi Kharidne ki Zaroorat Nahi. <br className="hidden sm:block" />
-                <span className="text-[#D84315] font-serif normal-case text-base sm:text-xl font-normal block sm:inline">
-                  Rent verified bikes and cars whenever you need.
+                <span className="text-[#D84315] font-serif normal-case text-lg sm:text-2xl font-normal block sm:inline">
+                  Rent verified bikes from 199/- & cars from 1099/-.
                 </span>
-              </h3>
+              </h2>
               <p className="font-body text-xs sm:text-sm text-[#45413B] leading-relaxed">
-                Whether you live in Shivpuri or are visiting, RIDEONN makes getting a vehicle as simple as booking in a few taps. Low daily rates, minimal security charges, and zero hidden costs.
+                Low daily rates, minimal security charges, zero maintenance, and full fuel freedom across Shivpuri.
               </p>
             </div>
 

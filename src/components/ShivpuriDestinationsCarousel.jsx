@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { SHIVPURI_DESTINATIONS } from '../data/destinations';
 import { useSurvey } from '../context/SurveyContext';
@@ -8,6 +8,16 @@ export default function ShivpuriDestinationsCarousel() {
   const { openSurvey } = useSurvey();
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
+
+  // Dynamic Fisher-Yates shuffle on mount so users get a fresh order each visit
+  const destinations = useMemo(() => {
+    const list = [...SHIVPURI_DESTINATIONS];
+    for (let i = list.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [list[i], list[j]] = [list[j], list[i]];
+    }
+    return list;
+  }, []);
 
   const checkScroll = () => {
     if (scrollContainerRef.current) {
@@ -90,7 +100,7 @@ export default function ShivpuriDestinationsCarousel() {
           className="flex gap-4 overflow-x-auto pb-3 pt-1 snap-x snap-mandatory scrollbar-none -mx-4 px-4 sm:-mx-6 sm:px-6"
           style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
         >
-          {SHIVPURI_DESTINATIONS.map((dest) => (
+          {destinations.map((dest) => (
             <div
               key={dest.id}
               className="w-[78vw] sm:w-[300px] md:w-[320px] shrink-0 snap-start bg-white rounded-xl border border-[#1E1B18]/12 shadow-2xs hover:shadow-sm overflow-hidden flex flex-col justify-between transition-all duration-200 group"
