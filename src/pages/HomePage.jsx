@@ -28,18 +28,18 @@ export default function HomePage() {
     <div className="space-y-8 sm:space-y-16 lg:space-y-20 pb-10">
       {/* 1. EXACT NEO-MIRAI SPLIT HERO SECTION WITH COMPACT MOBILE SCALING */}
       <section className="relative w-full min-h-[75vh] sm:min-h-[85vh] flex items-center overflow-hidden bg-[#F5F2EB] text-[#1E1B18] -mt-16 pt-20 pb-12 sm:pb-16 border-b border-[#1E1B18]/10">
-        {/* Right Side Indian City Retro-Futurist Artwork */}
-        <div className="absolute top-0 right-0 bottom-0 w-full lg:w-[68%] h-full overflow-hidden pointer-events-none z-0">
+        {/* Right Side Indian City Retro-Futurist Artwork (Desktop) */}
+        <div className="hidden lg:block absolute top-0 right-0 bottom-0 w-[68%] h-full overflow-hidden pointer-events-none z-0">
           <motion.img
             src={IMAGES.heroBackground}
             alt="Neo-Mirai Indian Retro-Futuristic Shivpuri Mobility Art"
             initial={{ scale: 1.04, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ duration: 1.2, ease: "easeOut" }}
-            className="w-full h-full object-cover object-right opacity-40 lg:opacity-100"
+            className="w-full h-full object-cover object-right opacity-100"
           />
           {/* Seamless Left-Edge Paper Gradient */}
-          <div className="absolute inset-0 bg-gradient-to-r from-[#F5F2EB] via-[#F5F2EB]/85 to-transparent w-full lg:w-2/5 pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#F5F2EB] via-[#F5F2EB]/85 to-transparent w-2/5 pointer-events-none" />
           <div className="absolute inset-0 bg-gradient-to-t from-[#F5F2EB] via-transparent to-transparent h-20 bottom-0 pointer-events-none" />
         </div>
 
@@ -90,14 +90,34 @@ export default function HomePage() {
                 Shivpuri 2026
               </motion.div>
 
-              {/* Clear, Jargon-Free Basic Business Info */}
+              {/* Dedicated 16:9 Mobile Hero Image */}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.98 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.6, delay: 0.25 }}
+                className="lg:hidden w-full aspect-[16/9] rounded-2xl overflow-hidden shadow-sm border border-[#1E1B18]/15 mb-4 relative"
+              >
+                <img
+                  src={IMAGES.heroMobile}
+                  alt="Shivpuri Royal Chhatris Heritage & Mobility"
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none" />
+                <div className="absolute bottom-2.5 left-3">
+                  <span className="font-mono text-[10px] font-bold text-white bg-black/60 backdrop-blur-xs px-2.5 py-1 rounded">
+                    📍 Royal Chhatris, Shivpuri
+                  </span>
+                </div>
+              </motion.div>
+
+              {/* Clear, Jargon-Free Basic Business Info with updated 199/- and 1099/- */}
               <motion.p
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.3 }}
                 className="font-body text-sm sm:text-base text-[#1E1B18] sm:text-[#45413B] font-medium sm:font-normal max-w-lg mb-6 leading-relaxed"
               >
-                Shivpuri's first self-drive rental service. Rent scooters from ₹399/day and cars from ₹1,499/day with zero deposit hassles.
+                Shivpuri's first self-drive rental service. Rent bikes & scooters from 199/- and cars from 1099/- with minimal charges and transparent daily rates.
               </motion.p>
 
               {/* CTA Group */}
@@ -133,7 +153,7 @@ export default function HomePage() {
 
       {/* 2. WELCOMING BRIDGE & CONTINUOUS ADVERTISEMENT STORYTELLING */}
       <section className="px-4 sm:px-6 max-w-content mx-auto space-y-6 sm:space-y-8">
-        {/* Gentle Bridge Transition Line (Requested by User) */}
+        {/* Gentle Bridge Transition Line */}
         <ScrollReveal>
           <div className="text-center max-w-2xl mx-auto space-y-3">
             <span className="font-mono text-[11px] font-semibold text-[#E64A19] uppercase tracking-wider">
@@ -145,10 +165,10 @@ export default function HomePage() {
             <p className="font-body text-xs sm:text-sm text-[#45413B] leading-relaxed max-w-xl mx-auto">
               ApniRide is introducing convenient, verified self-drive bike and car rentals designed around everyday local routines.
             </p>
-            {/* Continuous Ad Connecting Line */}
+            {/* Continuous Ad Connecting Line without emoji or zero downpayment */}
             <div className="pt-1">
               <div className="inline-block bg-[#EFECE4] text-[#1E1B18] px-4 py-2 rounded-full font-mono text-xs sm:text-sm font-medium border border-[#E64A19]/30 shadow-2xs">
-                <span className="text-[#E64A19] font-bold">✨ Zero down payment, zero maintenance, 100% freedom.</span> Shivpuri residents, get ready for affordable daily rentals.
+                <span className="text-[#E64A19] font-bold">Low cost daily rentals with minimal charges and full fuel freedom.</span> Shivpuri residents, get ready for budget-friendly self-drive rides.
               </div>
             </div>
           </div>
@@ -168,7 +188,7 @@ export default function HomePage() {
                 </span>
               </h3>
               <p className="font-body text-xs sm:text-sm text-[#45413B] leading-relaxed">
-                Whether you live in Shivpuri or are visiting, ApniRide makes getting a vehicle as simple as booking in a few taps. No down payments, no maintenance worries.
+                Whether you live in Shivpuri or are visiting, ApniRide makes getting a vehicle as simple as booking in a few taps. Low daily rates, minimal security charges, and zero hidden costs.
               </p>
             </div>
 
@@ -184,11 +204,11 @@ export default function HomePage() {
                   </div>
                   <h4 className="font-display font-bold text-sm sm:text-base text-[#1E1B18] group-hover:text-[#E64A19] transition-colors">College & Daily Errands</h4>
                   <p className="font-body text-xs text-[#45413B] leading-relaxed">
-                    Need an Activa or Jupiter for college, coaching, or market runs? Rent affordably from ₹399/day.
+                    Need an Activa or Jupiter for college, coaching, or market runs? Rent affordably from 199/-.
                   </p>
                 </div>
                 <div className="pt-1 font-mono text-[11px] font-semibold text-[#E64A19] flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
-                  <span>Rates from ₹399/day</span>
+                  <span>Rates from 199/-</span>
                   <span>→</span>
                 </div>
               </Link>
@@ -207,7 +227,7 @@ export default function HomePage() {
                   </p>
                 </div>
                 <div className="pt-1 font-mono text-[11px] font-semibold text-[#C89D3C] flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
-                  <span>Rates from ₹1,499/day</span>
+                  <span>Rates from 1099/-</span>
                   <span>→</span>
                 </div>
               </Link>
@@ -269,8 +289,8 @@ export default function HomePage() {
                     onChange={(e) => setWidgetVehicleCategory(e.target.value)}
                     className="w-full px-3 py-2 rounded-lg border border-[#1E1B18]/20 bg-white text-[#1E1B18] font-body text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-[#E64A19]/30"
                   >
-                    <option value="bikes">Bike / Scooter (from ₹399/day)</option>
-                    <option value="cars">Car / SUV (from ₹1,499/day)</option>
+                    <option value="bikes">Bike / Scooter (from 199/-)</option>
+                    <option value="cars">Car / SUV (from 1099/-)</option>
                   </select>
                 </div>
 
@@ -356,7 +376,7 @@ export default function HomePage() {
                       PETROL
                     </span>
                     <span className="px-2 py-0.5 rounded bg-[#E64A19]/10 font-bold text-[#E64A19]">
-                      FROM ₹399/DAY
+                      FROM 199/-
                     </span>
                   </div>
                 </div>
@@ -408,7 +428,7 @@ export default function HomePage() {
                       SUV
                     </span>
                     <span className="px-2 py-0.5 rounded bg-[#E64A19]/10 font-bold text-[#E64A19]">
-                      FROM ₹1,499/DAY
+                      FROM 1099/-
                     </span>
                   </div>
                 </div>

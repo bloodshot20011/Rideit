@@ -76,16 +76,18 @@ export default function Footer() {
               <ul className="space-y-2 text-[#45413B]">
                 <li>
                   <a
-                    href="https://wa.me/918370092226"
+                    href="https://wa.me/9183892226"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="hover:text-[#25D366] transition-colors flex items-center gap-1"
                   >
-                    <span>WhatsApp: +91 8370092226</span>
+                    <span>WhatsApp: +91 9183892226</span>
                   </a>
                 </li>
                 <li>
-                  <span className="text-[#7C776E]">hello@apniride.in</span>
+                  <a href="mailto:rideonnshivpuri@gmail.com" className="text-[#7C776E] hover:text-[#E64A19] transition-colors">
+                    rideonnshivpuri@gmail.com
+                  </a>
                 </li>
               </ul>
             </div>

@@ -116,12 +116,12 @@ export default function RequestPage() {
         />
         <div className="mt-6">
           <a
-            href={`https://wa.me/918370092226?text=${defaultMsg}`}
+            href={`https://wa.me/9183892226?text=${defaultMsg}`}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 bg-[#25D366] hover:bg-[#20bd5a] text-white font-mono text-xs font-semibold px-6 py-3 rounded-full shadow-md transition-all"
           >
-            <span>CONFIRM ON WHATSAPP (+91 8370092226)</span>
+            <span>CONFIRM ON WHATSAPP (+91 9183892226)</span>
             <span>→</span>
           </a>
         </div>
@@ -346,7 +346,7 @@ export default function RequestPage() {
                 <span>→</span>
               </button>
               <p className="font-body text-xs text-[#7C776E] text-center mt-3">
-                🔒 Zero spam policy. ApniRide only contacts you regarding your Shivpuri rental request (+91 8370092226).
+                🔒 Zero spam policy. ApniRide only contacts you regarding your Shivpuri rental request (+91 9183892226).
               </p>
             </div>
           </form>

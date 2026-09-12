@@ -2,7 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 
 export default function WhatsAppButton() {
-  const whatsappNumber = "918370092226"; 
+  const whatsappNumber = "9183892226"; 
   const defaultText = encodeURIComponent("Hi ApniRide! I want to check vehicle availability and rental details in Shivpuri.");
   const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${defaultText}`;
 
@@ -17,8 +17,8 @@ export default function WhatsAppButton() {
       whileTap={{ scale: 0.92 }}
       transition={{ type: 'spring', stiffness: 400, damping: 22 }}
       className="fixed bottom-5 right-5 sm:bottom-6 sm:right-6 z-40 bg-[#25D366] text-white p-3.5 sm:p-4 rounded-full shadow-lg hover:shadow-xl flex items-center justify-center group cursor-pointer border-2 border-white"
-      aria-label="Chat with ApniRide on WhatsApp (+91 8370092226)"
-      title="Chat with ApniRide on WhatsApp (+91 8370092226)"
+      aria-label="Chat with ApniRide on WhatsApp (+91 9183892226)"
+      title="Chat with ApniRide on WhatsApp (+91 9183892226)"
     >
       {/* Subtle pulse ring animation behind button */}
       <span className="absolute inset-0 rounded-full bg-[#25D366] animate-ping opacity-25 pointer-events-none" />
@@ -34,7 +34,7 @@ export default function WhatsAppButton() {
 
       {/* Floating Tooltip Desktop */}
       <span className="hidden md:block absolute right-full mr-3 bg-[#1E1B18] text-white text-xs font-mono font-medium px-3 py-1.5 rounded-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity shadow-md pointer-events-none">
-        WhatsApp: +91 8370092226
+        WhatsApp: +91 9183892226
       </span>
     </motion.a>
   );

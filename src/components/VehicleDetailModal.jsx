@@ -11,7 +11,7 @@ export default function VehicleDetailModal({ vehicle, onClose }) {
 
   const getWhatsAppBookingLink = () => {
     const text = `Hi ApniRide team! I am interested in renting the *${vehicle.name}* (${vehicle.pricePerDay}) in Shivpuri. Please share availability & booking details.`;
-    return `https://wa.me/918370092226?text=${encodeURIComponent(text)}`;
+    return `https://wa.me/9183892226?text=${encodeURIComponent(text)}`;
   };
 
   return (

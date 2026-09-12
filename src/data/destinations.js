@@ -4,90 +4,110 @@ import shivpuriGeorgeCastle from '../assets/shivpuri_george_castle_cars.jpg';
 import shivpuriSultanGarh from '../assets/shivpuri_sultan_garh_falls.jpg';
 import shivpuriBhadaiyaKund from '../assets/shivpuri_bhadaiya_kund.jpg';
 import shivpuriNarwarFort from '../assets/shivpuri_narwar_fort.jpg';
+import shivpuriManikhedaDam from '../assets/shivpuri_manikheda_dam.jpg';
+import shivpuriNarwarLakeResort from '../assets/shivpuri_narwar_lake_resort.jpg';
+import shivpuriBhuraKho from '../assets/shivpuri_bhura_kho.jpg';
+import shivpuriTundaBharka from '../assets/shivpuri_tunda_bharka.jpg';
 
 export const SHIVPURI_DESTINATIONS = [
   {
-    id: 'sultan-garh-falls',
-    name: 'Sultan Garh Waterfalls',
-    tagline: 'Natural River Cascade & Granite Rocks',
-    category: 'Nature & Adventure',
-    categoryBadge: 'Scenic Waterfall',
-    distance: '50 km from City Center',
-    idealDuration: 'Half Day Road Trip (4-5 hrs)',
-    recommendedRide: 'Maruti Swift / Tata Punch / SUV',
+    id: 'manikheda-dam',
+    name: 'Manikheda Dam',
+    categoryBadge: 'Mega Reservoir',
+    distance: '27 km from Shivpuri',
+    recommendedRide: 'Maruti Swift / Brezza',
     recommendedCategory: 'car',
-    description: 'A breathtaking natural waterfall cascading over massive granite boulders on the Parvati river. Ideal for a refreshing weekend drive with family and friends.',
-    image: shivpuriSultanGarh,
-    highlights: ['Natural River Rock Formations', 'Picnic Spot', 'Scenic Outstation Drive']
+    description: 'Massive concrete dam on the Sindh river with expansive blue reservoir and scenic hill viewpoints.',
+    image: shivpuriManikhedaDam
   },
   {
-    id: 'madhav-national-park',
-    name: 'Madhav National Park & Sakhya Sagar',
-    tagline: 'Wildlife Safari & Lakeside Forest Reserve',
-    category: 'Wildlife & Safari',
-    categoryBadge: 'National Park',
-    distance: '5 km from City Center',
-    idealDuration: '2 - 4 Hours',
-    recommendedRide: 'Royal Enfield 350 / Brezza SUV',
+    id: 'narwar-lake-resort',
+    name: 'Narwar Lake Resort',
+    categoryBadge: 'Lakeside Stay',
+    distance: '40 km from Shivpuri',
+    recommendedRide: 'Car / Royal Enfield',
     recommendedCategory: 'car',
-    description: 'Expansive forest reserve home to Sakhya Sagar Lake, the historic Sailing Club, deer, leopards, and migratory birds. Perfect for sunrise and afternoon safari drives.',
-    image: shivpuriMadhavLake,
-    highlights: ['Sakhya Sagar Lake Pier', 'Migratory Bird Watching', 'Dense Teak Jungles']
+    description: 'Tranquil waterfront resort and promenade on Mohini Sagar reservoir near Narwar.',
+    image: shivpuriNarwarLakeResort
+  },
+  {
+    id: 'bhura-kho',
+    name: 'Bhura Kho',
+    categoryBadge: 'Natural Cascade',
+    distance: '12 km from City Center',
+    recommendedRide: 'Activa / Hero Splendor',
+    recommendedCategory: 'bike',
+    description: 'Scenic natural plunge pool waterfall and rocky gorge surrounded by dense lush forest.',
+    image: shivpuriBhuraKho
+  },
+  {
+    id: 'tunda-warkha',
+    name: 'Tunda Warkha',
+    categoryBadge: 'Rock Gorge',
+    distance: '15 km from City Center',
+    recommendedRide: 'Bikes / Compact SUV',
+    recommendedCategory: 'bike',
+    description: 'Prehistoric rocky gorge and natural waterfall stream nestled in the Vindhyan forest.',
+    image: shivpuriTundaBharka
+  },
+  {
+    id: 'sultan-garh-falls',
+    name: 'Sultan Garh Waterfalls',
+    categoryBadge: 'Scenic Waterfall',
+    distance: '50 km from City Center',
+    recommendedRide: 'Swift / Punch / SUV',
+    recommendedCategory: 'car',
+    description: 'Spectacular natural river cascade over massive granite boulders on the Parvati river.',
+    image: shivpuriSultanGarh
   },
   {
     id: 'scindia-chhatris',
-    name: 'The Royal Chhatris of Scindia',
-    tagline: 'Intricate Marble Cenotaphs & Mughal Gardens',
-    category: 'Royal Heritage',
+    name: 'The Royal Chhatris',
     categoryBadge: 'Historic Landmark',
     distance: '2 km from Madhav Chowk',
-    idealDuration: '1 - 2 Hours',
-    recommendedRide: 'Activa 6G / TVS Jupiter',
+    recommendedRide: 'Activa 6G / Scooter',
     recommendedCategory: 'bike',
-    description: 'Grand architectural marvels built by the Scindia rulers, set in beautifully manicured Mughal charbagh gardens with marble pavilions and peaceful water fountains.',
-    image: shivpuriChhatris,
-    highlights: ['Indo-Islamic & Rajput Architecture', 'Reflecting Pools', 'Evening Aarti & Music']
+    description: 'Intricate Scindia royal marble cenotaphs surrounded by manicured Mughal charbagh gardens.',
+    image: shivpuriChhatris
+  },
+  {
+    id: 'madhav-national-park',
+    name: 'Madhav National Park & Lake',
+    categoryBadge: 'Wildlife Safari',
+    distance: '5 km from City Center',
+    recommendedRide: 'Royal Enfield / SUV',
+    recommendedCategory: 'car',
+    description: 'Expansive forest reserve with Sakhya Sagar Lake, Sailing Club pier, deer, and leopards.',
+    image: shivpuriMadhavLake
   },
   {
     id: 'george-castle',
-    name: 'George Castle (Hilltop Point)',
-    tagline: 'Colonial Forest Castle & Sunset Vista',
-    category: 'Panoramic Viewpoint',
-    categoryBadge: 'Highest Peak',
+    name: 'George Castle',
+    categoryBadge: 'Hilltop Viewpoint',
     distance: '9 km from City Center',
-    idealDuration: '2 - 3 Hours',
     recommendedRide: 'Car / Scooter / Bike',
     recommendedCategory: 'car',
-    description: 'Built in 1911 by Jivaji Rao Scindia atop the highest point in the forest, offering spectacular 360-degree panoramic views of lakes, jungle canopy, and sunsets.',
-    image: shivpuriGeorgeCastle,
-    highlights: ['Highest Point in National Park', 'Golden Hour Sunset Views', 'Historic Stone Architecture']
+    description: 'Historic colonial stone hunting castle offering panoramic 360° sunset vistas over the national park.',
+    image: shivpuriGeorgeCastle
   },
   {
     id: 'narwar-fort',
     name: 'Narwar Fort',
-    tagline: 'Historic Medieval Citadel above Sindh River',
-    category: 'Ancient Citadel',
     categoryBadge: 'Medieval Fort',
     distance: '42 km from Shivpuri',
-    idealDuration: 'Half Day (4-6 hrs)',
-    recommendedRide: 'Maruti Swift / Royal Enfield',
+    recommendedRide: 'Maruti Swift / Cruiser Bike',
     recommendedCategory: 'car',
-    description: 'Perched on an 8-sq-km steep hill above the Sindh river, Narwar Fort boasts majestic bastions, ancient palace halls, and Rajput-Mughal history.',
-    image: shivpuriNarwarFort,
-    highlights: ['Panoramic River Views', 'Ancient Stone Bastions', 'Highway Road Trip']
+    description: 'Historic hilltop stone fortress spanning an 8-sq-km cliff high above the Sindh river.',
+    image: shivpuriNarwarFort
   },
   {
     id: 'bhadaiya-kund',
     name: 'Bhadaiya Kund',
-    tagline: 'Natural Mineral Spring & Rocky Ravine',
-    category: 'Monsoon Picnic',
     categoryBadge: 'Natural Spring',
     distance: '4 km from City Center',
-    idealDuration: '1 - 2 Hours',
-    recommendedRide: 'Activa 6G / Hero Splendor',
+    recommendedRide: 'Activa 6G / Splendor',
     recommendedCategory: 'bike',
-    description: 'A beloved local natural spring in a rocky ravine known for its cool therapeutic mineral waters, monsoon water stream, and peaceful natural surroundings.',
-    image: shivpuriBhadaiyaKund,
-    highlights: ['Natural Flowing Spring', 'Monsoon Favorite', 'Quiet Local Retreat']
+    description: 'Natural mineral spring in a rocky ravine popular for cool fresh water and monsoon picnics.',
+    image: shivpuriBhadaiyaKund
   }
 ];

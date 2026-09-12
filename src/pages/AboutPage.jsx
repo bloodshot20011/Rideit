@@ -120,7 +120,7 @@ export default function AboutPage() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-left pt-2">
           <a
-            href="https://wa.me/918370092226?text=Hi%20ApniRide,%20I%20have%20a%20query."
+            href="https://wa.me/9183892226?text=Hi%20ApniRide,%20I%20have%20a%20query."
             target="_blank"
             rel="noopener noreferrer"
             className="bg-white p-4 rounded-xl border border-[#1E1B18]/15 flex items-center gap-3 hover:border-[#25D366] transition-colors shadow-2xs"
@@ -130,19 +130,22 @@ export default function AboutPage() {
             </div>
             <div>
               <div className="font-display font-bold text-sm text-[#1E1B18]">WhatsApp Support</div>
-              <div className="font-mono text-xs text-[#45413B]">+91 8370092226 (Chat Now)</div>
+              <div className="font-mono text-xs text-[#45413B]">+91 9183892226 (Chat Now)</div>
             </div>
           </a>
 
-          <div className="bg-white p-4 rounded-xl border border-[#1E1B18]/15 flex items-center gap-3 shadow-2xs">
+          <a
+            href="mailto:rideonnshivpuri@gmail.com"
+            className="bg-white p-4 rounded-xl border border-[#1E1B18]/15 flex items-center gap-3 hover:border-[#E64A19] transition-colors shadow-2xs"
+          >
             <div className="w-10 h-10 rounded-lg bg-[#E64A19]/10 text-[#E64A19] flex items-center justify-center shrink-0">
               <span className="material-symbols-outlined">mail</span>
             </div>
             <div>
               <div className="font-display font-bold text-sm text-[#1E1B18]">Official Email</div>
-              <div className="font-mono text-xs text-[#45413B]">hello@apniride.in</div>
+              <div className="font-mono text-xs text-[#45413B]">rideonnshivpuri@gmail.com</div>
             </div>
-          </div>
+          </a>
         </div>
 
         <div className="pt-2 flex flex-col sm:flex-row gap-3 justify-center">

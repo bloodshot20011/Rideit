@@ -1,10 +1,12 @@
 import shivpuriChhatrisHero from '../assets/shivpuri_chhatris_hero.jpg';
+import shivpuriHeroMobile from '../assets/shivpuri_hero_mobile.jpg';
 import shivpuriMadhavParkBikes from '../assets/shivpuri_madhav_park_bikes.jpg';
 import shivpuriGeorgeCastleCars from '../assets/shivpuri_george_castle_cars.jpg';
 
 export const IMAGES = {
   // Hero Section Shivpuri Chhatris Historic Landmark Visual
   heroBackground: shivpuriChhatrisHero,
+  heroMobile: shivpuriHeroMobile,
   
   // Category Showcase Art (Madhav National Park Lake & George Castle / Palace Hilltop)
   bikesCategory: shivpuriMadhavParkBikes,

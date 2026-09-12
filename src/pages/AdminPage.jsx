@@ -699,7 +699,7 @@ export default function AdminPage() {
           </div>
 
           <div className="text-[#7C776E]">
-            Shivpuri Hub: <strong>+91 8370092226</strong>
+            Shivpuri Hub: <strong>+91 9183892226</strong>
           </div>
         </div>
       </div>

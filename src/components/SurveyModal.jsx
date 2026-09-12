@@ -261,7 +261,7 @@ export default function SurveyModal() {
 
                 <div className="pt-3 flex flex-col sm:flex-row items-center justify-center gap-3">
                   <a
-                    href={`https://wa.me/918370092226?text=${whatsappMessage}`}
+                    href={`https://wa.me/9183892226?text=${whatsappMessage}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#1EBE5D] text-white font-mono text-xs font-bold px-5 py-3 rounded-xl shadow-xs transition-all cursor-pointer"
