@@ -31,7 +31,8 @@ export default function AdminPage() {
   const [whitelistInput, setWhitelistInput] = useState(() => {
     const envEmails = import.meta.env.VITE_ADMIN_EMAILS || '';
     const stored = typeof window !== 'undefined' ? localStorage.getItem('apniride_admin_whitelist') || '' : '';
-    return stored || envEmails;
+    const defaultInit = 'spidiweb438@gmail.com, rideonnshivpuri@gmail.com';
+    return stored || (envEmails ? `${defaultInit}, ${envEmails}` : defaultInit);
   });
 
   // Cloud Database Connection State
@@ -97,12 +98,12 @@ export default function AdminPage() {
   const getWhitelistedList = () => {
     const envEmails = import.meta.env.VITE_ADMIN_EMAILS || '';
     const stored = typeof window !== 'undefined' ? localStorage.getItem('apniride_admin_whitelist') || '' : '';
-    const defaults = 'spidiweb438@gmail.com';
+    const defaults = 'spidiweb438@gmail.com,rideonnshivpuri@gmail.com';
     const merged = `${defaults},${envEmails},${stored}`
       .split(',')
       .map(e => e.trim().toLowerCase())
       .filter(Boolean);
-    return merged;
+    return [...new Set(merged)];
   };
 
   // Check Google Auth session & 3-day expiration
