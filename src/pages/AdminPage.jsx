@@ -31,8 +31,8 @@ export default function AdminPage() {
   const [whitelistInput, setWhitelistInput] = useState(() => {
     const envEmails = import.meta.env.VITE_ADMIN_EMAILS || '';
     const stored = typeof window !== 'undefined' ? localStorage.getItem('apniride_admin_whitelist') || '' : '';
-    const defaultInit = 'spidiweb438@gmail.com, rideonnshivpuri@gmail.com, khusharthsharma@gmail.com, panditakhilsharma@gmail.com';
-    return stored || (envEmails ? `${defaultInit}, ${envEmails}` : defaultInit);
+    const defaultInit = 'spidiweb438@gmail.com, rideonnshivpuri@gmail.com, khusharthsharma@gmail.com, sharmapanditakhil@gmail.com';
+    return stored ? stored.replace(/panditakhilsharma@gmail\.com/gi, 'sharmapanditakhil@gmail.com') : (envEmails ? `${defaultInit}, ${envEmails}` : defaultInit);
   });
 
   // Cloud Database Connection State
@@ -98,11 +98,11 @@ export default function AdminPage() {
   const getWhitelistedList = () => {
     const envEmails = import.meta.env.VITE_ADMIN_EMAILS || '';
     const stored = typeof window !== 'undefined' ? localStorage.getItem('apniride_admin_whitelist') || '' : '';
-    const defaults = 'spidiweb438@gmail.com,rideonnshivpuri@gmail.com,khusharthsharma@gmail.com,panditakhilsharma@gmail.com';
+    const defaults = 'spidiweb438@gmail.com,rideonnshivpuri@gmail.com,khusharthsharma@gmail.com,sharmapanditakhil@gmail.com';
     const merged = `${defaults},${envEmails},${stored}`
       .split(',')
       .map(e => e.trim().toLowerCase())
-      .filter(Boolean);
+      .filter(e => Boolean(e) && e !== 'panditakhilsharma@gmail.com');
     return [...new Set(merged)];
   };
 
