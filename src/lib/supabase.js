@@ -223,10 +223,27 @@ export async function uploadVehicleImageToSupabase(file) {
  */
 export async function saveRequirementToSupabase(requirement) {
   const client = getSupabaseClient();
-  if (!client) return null;
+  if (!client || !requirement) return null;
   try {
-    const { data, error } = await client.from('requirements').insert([requirement]);
-    if (error) console.warn('[Supabase] Failed to save requirement:', error.message);
+    const payload = {
+      id: requirement.id || `req-${Date.now()}`,
+      fullName: requirement.fullName || requirement.name || '',
+      whatsapp: requirement.whatsapp || requirement.phone || '',
+      email: requirement.email || '',
+      purpose: requirement.purpose || '',
+      vehicleCategory: requirement.vehicleCategory || requirement.category || 'bike',
+      subType: requirement.subType || requirement.model || '',
+      pickupDate: requirement.pickupDate || '',
+      returnDate: requirement.returnDate || '',
+      location: requirement.location || '',
+      notes: requirement.notes || '',
+      status: requirement.status || 'New'
+    };
+    const { data, error } = await client.from('requirements').upsert([payload], { onConflict: 'id' });
+    if (error) {
+      console.warn('[Supabase] Failed to save requirement:', error.message);
+      return null;
+    }
     return data;
   } catch (err) {
     console.warn('[Supabase] Error saving requirement:', err);
@@ -249,7 +266,15 @@ export async function syncRequirementsFromSupabase() {
       console.warn('[Supabase] Failed to fetch requirements:', error.message);
       return null;
     }
-    return data;
+    return (data || []).map(r => ({
+      ...r,
+      fullName: r.fullName || r.full_name || '',
+      vehicleCategory: r.vehicleCategory || r.vehicle_category || 'bike',
+      subType: r.subType || r.sub_type || '',
+      pickupDate: r.pickupDate || r.pickup_date || '',
+      returnDate: r.returnDate || r.return_date || '',
+      createdAt: r.created_at || r.createdAt || new Date().toISOString()
+    }));
   } catch (err) {
     console.warn('[Supabase] Error fetching requirements:', err);
     return null;
@@ -261,10 +286,26 @@ export async function syncRequirementsFromSupabase() {
  */
 export async function saveHostVehicleToSupabase(hostVehicle) {
   const client = getSupabaseClient();
-  if (!client) return null;
+  if (!client || !hostVehicle) return null;
   try {
-    const { data, error } = await client.from('host_vehicles').insert([hostVehicle]);
-    if (error) console.warn('[Supabase] Failed to save host vehicle:', error.message);
+    const payload = {
+      id: hostVehicle.id || `host-${Date.now()}`,
+      fullName: hostVehicle.fullName || hostVehicle.name || '',
+      whatsapp: hostVehicle.whatsapp || hostVehicle.phone || '',
+      email: hostVehicle.email || '',
+      vehicleCategory: hostVehicle.vehicleCategory || hostVehicle.category || 'bike',
+      modelName: hostVehicle.modelName || hostVehicle.model || '',
+      year: hostVehicle.year ? String(hostVehicle.year) : '',
+      location: hostVehicle.location || '',
+      photos: Array.isArray(hostVehicle.photos) ? hostVehicle.photos : [],
+      notes: hostVehicle.notes || '',
+      status: hostVehicle.status || 'New'
+    };
+    const { data, error } = await client.from('host_vehicles').upsert([payload], { onConflict: 'id' });
+    if (error) {
+      console.warn('[Supabase] Failed to save host vehicle:', error.message);
+      return null;
+    }
     return data;
   } catch (err) {
     console.warn('[Supabase] Error saving host vehicle:', err);
@@ -287,7 +328,14 @@ export async function syncHostVehiclesFromSupabase() {
       console.warn('[Supabase] Failed to fetch host vehicles:', error.message);
       return null;
     }
-    return data;
+    return (data || []).map(h => ({
+      ...h,
+      fullName: h.fullName || h.full_name || '',
+      vehicleCategory: h.vehicleCategory || h.vehicle_category || 'bike',
+      modelName: h.modelName || h.model_name || '',
+      photos: Array.isArray(h.photos) ? h.photos : (typeof h.photos === 'string' ? JSON.parse(h.photos || '[]') : []),
+      createdAt: h.created_at || h.createdAt || new Date().toISOString()
+    }));
   } catch (err) {
     console.warn('[Supabase] Error fetching host vehicles:', err);
     return null;
@@ -299,10 +347,23 @@ export async function syncHostVehiclesFromSupabase() {
  */
 export async function saveWaitlistToSupabase(waitlistEntry) {
   const client = getSupabaseClient();
-  if (!client) return null;
+  if (!client || !waitlistEntry) return null;
   try {
-    const { data, error } = await client.from('waitlist').insert([waitlistEntry]);
-    if (error) console.warn('[Supabase] Failed to save waitlist entry:', error.message);
+    const payload = {
+      id: waitlistEntry.id || `wait-${Date.now()}`,
+      fullName: waitlistEntry.fullName || waitlistEntry.name || '',
+      whatsapp: waitlistEntry.whatsapp || waitlistEntry.phone || '',
+      email: waitlistEntry.email || '',
+      interest: waitlistEntry.interest || 'both',
+      timing: waitlistEntry.timing || '',
+      preferenceText: waitlistEntry.preferenceText || '',
+      status: waitlistEntry.status || 'New'
+    };
+    const { data, error } = await client.from('waitlist').upsert([payload], { onConflict: 'id' });
+    if (error) {
+      console.warn('[Supabase] Failed to save waitlist entry:', error.message);
+      return null;
+    }
     return data;
   } catch (err) {
     console.warn('[Supabase] Error saving waitlist:', err);
@@ -325,7 +386,12 @@ export async function syncWaitlistFromSupabase() {
       console.warn('[Supabase] Failed to fetch waitlist:', error.message);
       return null;
     }
-    return data;
+    return (data || []).map(w => ({
+      ...w,
+      fullName: w.fullName || w.full_name || '',
+      preferenceText: w.preferenceText || w.preference_text || '',
+      createdAt: w.created_at || w.createdAt || new Date().toISOString()
+    }));
   } catch (err) {
     console.warn('[Supabase] Error fetching waitlist:', err);
     return null;

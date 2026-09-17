@@ -121,6 +121,24 @@ class AdminStore {
     if (!creds.isConfigured) return { success: false, message: 'Supabase not configured' };
 
     try {
+      // Push any existing local records to Supabase first so offline/local submissions are preserved
+      try {
+        const localReqs = this.getRequirements();
+        if (localReqs && localReqs.length > 0) {
+          await Promise.allSettled(localReqs.map(r => saveRequirementToSupabase(r)));
+        }
+        const localHosts = this.getHostVehicles();
+        if (localHosts && localHosts.length > 0) {
+          await Promise.allSettled(localHosts.map(h => saveHostVehicleToSupabase(h)));
+        }
+        const localWaitlist = this.getWaitlist();
+        if (localWaitlist && localWaitlist.length > 0) {
+          await Promise.allSettled(localWaitlist.map(w => saveWaitlistToSupabase(w)));
+        }
+      } catch (pushErr) {
+        console.warn('[AdminStore] Error pushing local data to Supabase:', pushErr);
+      }
+
       const [cloudVehicles, cloudReqs, cloudHosts, cloudWaitlist] = await Promise.all([
         syncVehiclesFromSupabase(),
         syncRequirementsFromSupabase(),
